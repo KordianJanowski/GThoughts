@@ -1,0 +1,6 @@
+import Cookies from 'universal-cookie';
+import { Iuser, IarticleBody ,Iarticle } from './models'
+const cookies: Cookies = new Cookies();
+
+export const user: Iuser = cookies.get('user')
+export const jwt: string | boolean = cookies.get('jwt') ? cookies.get('jwt') : false

@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments_and_feedbacks",
+  "info": {
+    "name": "CommentsAndFeedbacks",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "comments": {
+      "type": "json"
+    },
+    "feedbacks": {
+      "type": "json"
+    }
+  }
+}
