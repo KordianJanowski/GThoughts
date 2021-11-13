@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useFormik  } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
-import API_URL from '../../API_URL'
 
+import API_URL from '../../API_URL'
 import { Icomment } from '../../models/models';
-import {user, jwt} from '../../models/const-variables';
+import {user, jwt, authorization} from '../../models/const-variables';
+import Comments from './Comments'
 
 type Props = {
   id: string;
@@ -18,11 +19,8 @@ const AddComment: React.FC<Props> = ({ id }) =>{
 
   useEffect(() => {
     const fetchComments = async () =>{
-      await axios.get(`${API_URL}/articles/${id}`)
-      .then(async response =>{
-        await axios.get(`${API_URL}/comments-and-feedbacks/${response.data.commentsAndFeedbacks_id}`)
-        .then(res => setComments([...res.data.comments]))
-      })
+      await axios.get(`${API_URL}/comments`, { headers: { article_id: id } })
+      .then(res => setComments(res.data))
       .catch(err => console.log(err))
     }
     fetchComments();
@@ -38,43 +36,25 @@ const AddComment: React.FC<Props> = ({ id }) =>{
     }),
     onSubmit: ({body}) =>{
       const postComment = async () =>{
-        await axios.get(`${API_URL}/articles/${id}`)
-        .then(async response =>{
-          console.log(response)
-          await axios.get(`${API_URL}/comments-and-feedbacks/${response.data.commentsAndFeedbacks_id}`)
-          .then(async res => {
-            const newComments: Icomment[] = res.data.comments;
-            newComments.push({
-              body,
-              username: user.username,
-              user_avatar: user.avatar,
-              id: Math.random()
-            })
+        const comment: Icomment = {
+          body,
+          user_id: user.id,
+          username: user.username,
+          user_avatar: user.avatar,
+          article_id: id,
+          id_: Math.random()
+        }
 
-            await axios.put(`${API_URL}/comments-and-feedbacks/${response.data.commentsAndFeedbacks_id}`,
-            { comments: newComments },
-            { headers: { Authorization: `Bearer ${jwt}` } })
-            .then(res => {
-              setComments(res.data.comments)
-            })
-            .catch(err => console.log(err));
-          })
-          .catch(err => console.log(err));
-        })
+        await axios.post(`${API_URL}/comments`, comment, authorization)
+        .then(res => setComments([...comments, res.data]))
         .catch(err => console.log(err))
       }
       postComment();
     }
   })
 
-  const commentMap = comments.map((comment: Icomment) =>{
-    return (
-      <div key={ comment.id }>
-        <img src={ comment.user_avatar } alt="" />
-        <div>{ comment.username }</div>
-        <div>{ comment.body }</div>
-      </div>
-    )
+  const commentsMap = comments.map((comment: Icomment) =>{
+    return <Comments comment={comment} />
   })
 
   return(
@@ -88,7 +68,7 @@ const AddComment: React.FC<Props> = ({ id }) =>{
         />
         {values.body}
       </form>
-      { commentMap }
+      { commentsMap }
     </div>
   )
 }

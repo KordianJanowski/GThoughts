@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import React, {useEffect, useState} from 'react'
 import Cookies from 'universal-cookie';
@@ -8,7 +9,9 @@ import API_URL from '../API_URL';
 import ApproveLayer from '../components/ApproveLayer'
 
 import { Iuser, IarticleBody, Iarticle } from '../models/models'
-import {user, jwt} from '../models/const-variables'
+import {user, jwt, authorization} from '../models/const-variables'
+
+
 
 const Dashboard:React.FC = () =>{
   const cookies: Cookies = new Cookies();
@@ -23,9 +26,18 @@ const Dashboard:React.FC = () =>{
   useEffect(() =>{
     if(!jwt) history.push('/login')
 
+    // const config = {
+    //   headers: {
+    //     article_id: '618823a3e7d2ef2fc4fc98b5'
+    //   }
+    // }
+
+    // axios.get(`${API_URL}/comments`, config)
+    // .then(res => console.log(res))
+    // .catch(err => console.log(err))
+
     const fetchArticles = async () =>{
-      await axios.get(`${API_URL}/users/${user.id}`,
-      { headers: { Authorization: `Bearer ${jwt}` } })
+      await axios.get(`${API_URL}/users/${user.id}`)
       .then(res => {
         if(!res.data.articles_ids) {
           return
@@ -51,23 +63,20 @@ const Dashboard:React.FC = () =>{
     setIsDeleteLayerShow(!isDeleteLayerShow);
   }
 
-  const deleteArticle = async (id: string) =>{
-    await axios.delete(`${API_URL}/articles/${id}`,
-    { headers: { Authorization: `Bearer ${jwt}` } })
+  const deleteArticle = async () =>{
+    await axios.delete(`${API_URL}/articles/${selectedArticleID}`,authorization)
     .then(() => console.log('deleted'))
 
-    await axios.get(`${API_URL}/users/${user.id}`,
-    { headers: { Authorization: `Bearer ${jwt}` } })
+    await axios.get(`${API_URL}/users/${user.id}`,authorization)
     .then(async res =>{
-      const index = res.data.articles_ids.findIndex((article_id: string) => article_id === id);
+      const index = res.data.articles_ids.findIndex((article_id: string) => article_id === selectedArticleID);
       const newArticles_ids: string[] = res.data.articles_ids;
       newArticles_ids.splice(index,1)
 
       await axios.put(`${API_URL}/users/${user.id}`,
-      { articles_ids: newArticles_ids },
-      { headers: { Authorization: `Bearer ${jwt}` } })
+      { articles_ids: newArticles_ids }, authorization)
       .then(() =>{
-        const index = articles.findIndex((article: Iarticle) => article.id === id);
+        const index = articles.findIndex((article: Iarticle) => article.id === selectedArticleID);
         const newArticles: Iarticle[] = articles;
         newArticles.splice(index,1)
 

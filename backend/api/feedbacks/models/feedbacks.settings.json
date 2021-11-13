@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "articles",
+  "collectionName": "feedbacks",
   "info": {
-    "name": "Article",
+    "name": "Feedbacks",
     "description": ""
   },
   "options": {
@@ -12,20 +12,23 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "title": {
-      "type": "string"
-    },
     "body": {
-      "type": "json"
+      "type": "text"
     },
-    "main_image": {
+    "username": {
       "type": "string"
     },
-    "author_id": {
+    "user_avatar": {
       "type": "string"
     },
-    "author_name": {
+    "user_id": {
       "type": "string"
+    },
+    "article_id": {
+      "type": "string"
+    },
+    "id_": {
+      "type": "float"
     }
   }
 }

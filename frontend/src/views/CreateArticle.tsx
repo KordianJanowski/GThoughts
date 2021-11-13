@@ -8,7 +8,7 @@ import { Link, useHistory } from "react-router-dom";
 import API_URL from '../API_URL'
 
 import { Iuser, IarticleBody } from '../models/models'
-import {user, jwt} from '../models/const-variables'
+import {user, jwt, authorization} from '../models/const-variables'
 
 const CreateArticle: React.FC = () =>{
   const history: any = useHistory();
@@ -31,45 +31,28 @@ const CreateArticle: React.FC = () =>{
     }),
     onSubmit: ({title}) =>{
       const postArticle = async () =>{
-        await axios.post(`${API_URL}/comments-and-feedbacks`,
-        {
-          comments: [],
-          feedbacks: [],
-        },
-        { headers: { Authorization: `Bearer ${jwt}` } })
-        .then(async res => {
-          const article = {
-            title,
-            body: articleBodies,
-            author_id: user.id,
-            author_name: user.username,
-            main_image: '',
-            commentsAndFeedbacks_id: res.data.id
-          }
+        const article = {
+          title,
+          body: articleBodies,
+          author_id: user.id,
+          author_name: user.username,
+          main_image: '',
+        }
 
-          await axios.post(`${API_URL}/articles`,
-          article,
-          { headers: { Authorization: `Bearer ${jwt}` } })
-          .then(async articleResponse => {
-            await axios.get(`${API_URL}/users/${user.id}`,
-            { headers: { Authorization: `Bearer ${jwt}` } })
-            .then(async res =>{
-              const newArticles: string[] = res.data.articles_ids;
-              newArticles.push(articleResponse.data.id)
+        await axios.post(`${API_URL}/articles`, article, authorization)
+        .then( async articleResponse => {
+          await axios.get(`${API_URL}/users/${user.id}`)
+          .then(async res =>{
+            const newArticles: string[] = res.data.articles_ids;
+            newArticles.push(articleResponse.data.id)
 
-              await axios.put(`${API_URL}/users/${user.id}`,
-              { articles_ids: newArticles },
-              { headers: { Authorization: `Bearer ${jwt}` } })
-              .then(() => history.push('/dashboard'))
-              .catch(err => console.log(err))
-            })
+            await axios.put(`${API_URL}/users/${user.id}`, { articles_ids: newArticles }, authorization)
+            .then(() => history.push('/dashboard'))
             .catch(err => console.log(err))
           })
           .catch(err => console.log(err))
-          })
+        })
         .catch(err => console.log(err))
-
-
       }
       postArticle()
     }

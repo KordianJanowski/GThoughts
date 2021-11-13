@@ -26,12 +26,18 @@ export interface Icomment{
   body: string;
   username: string;
   user_avatar: string;
-  id: number;
+  user_id: string
+  article_id: string;
+  id_: number;
+  id?: string;
 }
 
 export interface Ifeedback{
   body: string;
   username: string;
   user_avatar: string;
-  id: number;
+  user_id: string
+  article_id: string;
+  id_: number;
+  id?: string;
 }

@@ -13,7 +13,7 @@ module.exports = {
 
     const [article] = await strapi.services.article.find({
       id: ctx.params.id,
-      'author.id': ctx.state.user.id,
+      'author_id': ctx.state.user.id,
     });
 
     if (!article) {

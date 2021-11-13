@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { useFormik  } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
-import API_URL from '../../API_URL'
 
+import API_URL from '../../API_URL'
 import { Ifeedback } from '../../models/models';
-import {user, jwt} from '../../models/const-variables';
+import {user, jwt, authorization} from '../../models/const-variables';
+
+import Feedbacks from './Feedbacks';
 
 type Props = {
   id: string;
@@ -17,15 +19,12 @@ const AddComment: React.FC<Props> = ({ id }) =>{
   const[feedbacks, setFeedbacks] = useState<Ifeedback[]>([])
 
   useEffect(() => {
-    const fetchComments = async () =>{
-      await axios.get(`${API_URL}/articles/${id}`)
-      .then(async response =>{
-        await axios.get(`${API_URL}/comments-and-feedbacks/${response.data.commentsAndFeedbacks_id}`)
-        .then(res => setFeedbacks([...res.data.feedbacks]))
-      })
+    const fetchFeedbacks = async () =>{
+      await axios.get(`${API_URL}/feedbacks`, { headers: { article_id: id } })
+      .then(res => setFeedbacks(res.data))
       .catch(err => console.log(err))
     }
-    fetchComments();
+    fetchFeedbacks();
   }, [])
 
   const {handleSubmit, handleChange, values, touched, errors, handleBlur} = useFormik({
@@ -37,44 +36,27 @@ const AddComment: React.FC<Props> = ({ id }) =>{
         .max(1000, 'title must be shortet than 50 chars').required(),
     }),
     onSubmit: ({body}) =>{
-      const postFeedback = async () =>{
-        await axios.get(`${API_URL}/articles/${id}`)
-        .then(async response =>{
-          console.log(response)
-          await axios.get(`${API_URL}/comments-and-feedbacks/${response.data.commentsAndFeedbacks_id}`)
-          .then(async res => {
-            const newFeedback: Ifeedback[] = res.data.feedbacks;
-            newFeedback.push({
-              body,
-              username: user.username,
-              user_avatar: user.avatar,
-              id: Math.random()
-            })
+      const postComment = async () =>{
+        const feedback: Ifeedback = {
+          body,
+          user_id: user.id,
+          username: user.username,
+          user_avatar: user.avatar,
+          article_id: id,
+          id_: Math.random()
+        }
 
-            await axios.put(`${API_URL}/comments-and-feedbacks/${response.data.commentsAndFeedbacks_id}`,
-            { feedbacks: newFeedback },
-            { headers: { Authorization: `Bearer ${jwt}` } })
-            .then(res => {
-              setFeedbacks(res.data.feedbacks)
-            })
-            .catch(err => console.log(err));
-          })
-          .catch(err => console.log(err));
-        })
+        await axios.post(`${API_URL}/feedbacks`, feedback, authorization)
+        .then(res => setFeedbacks([...feedbacks, res.data]))
         .catch(err => console.log(err))
+        values.body = '';
       }
-      postFeedback();
+      postComment();
     }
   })
 
   const feedbacksMap = feedbacks.map((feedback: Ifeedback) =>{
-    return (
-      <div key={ feedback.id }>
-        <img src={ feedback.user_avatar } alt="" />
-        <div>{ feedback.username }</div>
-        <div>{ feedback.body }</div>
-      </div>
-    )
+    return <Feedbacks feedback={feedback} />
   })
 
   return(

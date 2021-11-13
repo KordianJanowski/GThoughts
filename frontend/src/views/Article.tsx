@@ -66,17 +66,13 @@ const Article:React.FC = () =>{
         <h1 className="text-4xl">
           COMMENTS
         </h1>
-        <AddComment
-          id={id}
-        />
+        <AddComment id={id} />
       </div>
       <div >
         <h1 className="text-4xl">
           FEEDBACK
         </h1>
-        <AddFeedback
-          id={id}
-        />
+        <AddFeedback id={id} />
       </div>
 
     </div>
