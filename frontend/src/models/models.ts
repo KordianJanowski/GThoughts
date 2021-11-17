@@ -12,14 +12,18 @@ export interface IarticleBody{
   id: number;
 }
 
-export interface Iarticle{
+export interface Iarticle {
   title: string;
   body: IarticleBody[];
   main_image: string;
   author_id: string;
   author_name: string;
+  createdAt: string;
+  published_at: string;
+  updatedAt: string;
   id: string;
   _id: string;
+  __v: number;
 }
 
 export interface Icomment{

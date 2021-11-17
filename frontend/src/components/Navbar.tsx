@@ -40,7 +40,7 @@ const Navbar: React.FC = () =>{
         <div className="md:flex md:items-center md:justify-between">
           <div className="flex items-center justify-between">
             <div className="text-xl font-semibold text-gray-700 -mt-1">
-              <Link to="/" className="text-2xl font-bold text-gray-800 dark:text-white lg:text-3xl hover:text-gray-700 dark:hover:text-gray-300">GThoughts</Link>
+              <Link to="/" className="text-2xl font-bold text-gray-800 dark:text-white lg:text-3xl hover:text-gray-700 dark:hover:text-gray-300">goldenArts</Link>
             </div>
             <div className="flex md:hidden">
               <button type="button" className="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400" aria-label="toggle menu">

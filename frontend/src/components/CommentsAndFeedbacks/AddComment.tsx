@@ -62,7 +62,7 @@ const AddComment: React.FC<Props> = ({ id }) =>{
       <form onSubmit={handleSubmit}>
         <textarea name="body" onChange={handleChange} value={values.body}></textarea>
         <input
-          className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-green-700 to-green-600 text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"
+          className="cursor-pointer flex p-2 bg-gray-800 text-white"
           type="submit"
           value="add comment"
         />
