@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "likeds",
+  "info": {
+    "name": "Liked"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user_id": {
+      "type": "string"
+    },
+    "article_id": {
+      "type": "string"
+    }
+  }
+}

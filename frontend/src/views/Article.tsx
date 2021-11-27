@@ -16,9 +16,6 @@ interface Props {
 }
 
 const Article:React.FC = () =>{
-  const history: any = useHistory();
-  const cookies: Cookies = new Cookies();
-
   const id: string = useParams<Props>().id;
 
   const[article, setArticle] = useState<Iarticle>();

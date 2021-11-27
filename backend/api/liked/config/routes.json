@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/likeds",
+      "handler": "liked.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/likeds/count",
+      "handler": "liked.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/likeds/:id",
+      "handler": "liked.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/likeds",
+      "handler": "liked.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/likeds/:id",
+      "handler": "liked.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/likeds/:id",
+      "handler": "liked.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

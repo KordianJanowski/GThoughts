@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useFormik  } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
+import { Link, useHistory } from 'react-router-dom';
 
 import API_URL from '../../API_URL'
 import { Icomment } from '../../models/models';
@@ -59,15 +60,18 @@ const AddComment: React.FC<Props> = ({ id }) =>{
 
   return(
     <div>
-      <form onSubmit={handleSubmit}>
-        <textarea name="body" onChange={handleChange} value={values.body}></textarea>
-        <input
-          className="cursor-pointer flex p-2 bg-gray-800 text-white"
-          type="submit"
-          value="add comment"
-        />
-        {values.body}
-      </form>
+      {jwt ?
+        <form onSubmit={handleSubmit}>
+          <textarea name="body" onChange={handleChange} value={values.body}></textarea>
+          <input
+            className="cursor-pointer flex p-2 bg-gray-800 text-white"
+            type="submit"
+            value="add comment"
+          />
+          {values.body}
+        </form>
+      : <h1>aby dodac komentarz, musisz sie <Link to="/login" className=' font-bold'>zalogowac</Link></h1>}
+
       { commentsMap }
     </div>
   )

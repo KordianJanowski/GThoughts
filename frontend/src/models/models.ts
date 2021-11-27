@@ -24,6 +24,7 @@ export interface Iarticle {
   id: string;
   _id: string;
   __v: number;
+  isLiked?: boolean;
 }
 
 export interface Icomment{
@@ -43,5 +44,11 @@ export interface Ifeedback{
   user_id: string
   article_id: string;
   id_: number;
+  id?: string;
+}
+
+export interface Iliked{
+  article_id: string;
+  user_id: string;
   id?: string;
 }

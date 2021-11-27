@@ -1,45 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import API_URL from '../API_URL'
 import axios from 'axios'
-import { Iarticle, IarticleBody } from '../models/models';
-import { Link } from 'react-router-dom'
+import { Iarticle, IarticleBody, Iliked } from '../models/models';
 import ArticlesSorting from '../components/ArticlesSorting';
 import ArticleSearching from '../components/ArticleSearching';
+import Article from '../components/Article';
+import { user, jwt } from '../models/const-variables';
 
 const Home: React.FC = () => {
   const [articles, setArticles] = useState<Iarticle[]>([])
   const [articlesCopy, setArticlesCopy] = useState<Iarticle[]>([])
 
+  const [likeds, setLikeds] = useState<Iliked[]>([])
+
   useEffect(() => {
-    axios.get(`${API_URL}/articles`)
-    .then(res => {
-      setArticles(res.data)
-      setArticlesCopy(res.data)
-    })
-    .catch( err => console.log(err))
+    const fetchArticlesData = async () =>{
+      if(jwt){
+        await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+        .then(res => setLikeds(res.data))
+        .catch(err => console.log(err))
+      }
+      await axios.get(`${API_URL}/articles`)
+      .then(res => {
+        setArticles(res.data)
+        setArticlesCopy(res.data)
+      })
+      .catch( err => console.log(err))
+    }
+    fetchArticlesData();
   }, [])
-  
+
   const articlesMap = articles.map((article: Iarticle) => {
     return (
-      <Link to={`/articles/${article.id}`} key={article.id}>
-        <div className='my-1 bg-gray-100 border-2'>
-          <h1 className='text-4xl'>
-            {article.title}
-          </h1>
-          { article.body.map((body: IarticleBody) =>{
-            return (
-              <div key={body.id}>
-                <h1 className='text-2xl'>
-                  {body.subtitle}
-                </h1>
-                <p>
-                  {body.body}
-                </p>
-              </div>
-            )
-          }) }
-        </div>
-      </Link>
+      <Article
+        article={article}
+        route='/'
+        toggleDeleteArticleLayer={() =>{}}
+        likeds={likeds}
+      />
     )
   })
 
@@ -58,9 +56,9 @@ const Home: React.FC = () => {
           <ArticlesSorting articles={articles} setArticles={setArticles} />
         </div>
         <div>
-          {   
+          {
             articles.length !== 0 ?
-              articlesMap 
+              articlesMap
             :
               <p>Nie znaleziono żadnych artykułów</p>
           }

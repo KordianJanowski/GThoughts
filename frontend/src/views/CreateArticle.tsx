@@ -16,7 +16,7 @@ const CreateArticle: React.FC = () =>{
 
   const [articleBodies, setArticleBodies] = useState<IarticleBody[]>([]);
 
-  useEffect(() => { if(!jwt) history.push('/login') }, [])
+  useEffect(() => { if(!jwt) return history.push('/login') }, [])
 
   const {handleSubmit, handleChange, values, touched, errors, handleBlur} = useFormik({
     initialValues: {

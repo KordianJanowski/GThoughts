@@ -1,4 +1,4 @@
-import React, {FormEventHandler, useLayoutEffect, useState} from 'react'
+import React, {FormEventHandler, useEffect, useState} from 'react'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from "react-router-dom";
@@ -26,8 +26,8 @@ const Register:React.FC = () =>{
   const[image, setImage] = useState<any>();
   const[imageURL, setImageURL] = useState();
 
-  useLayoutEffect(() => {
-    if(jwt) history.push('/dashboard')
+  useEffect(() => {
+    if(jwt) return history.push('/dashboard')
   }, []);
 
   const resizeFile = (file: Blob) => new Promise(resolve => {

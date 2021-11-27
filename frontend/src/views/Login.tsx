@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie';
 import { Link, useHistory } from "react-router-dom";
 
 import API_URL from '../API_URL';
+import { jwt } from '../models/const-variables';
 
 interface CookieArguments {
   time: string;
@@ -17,9 +18,7 @@ const Login:React.FC = () =>{
   const cookies = new Cookies();
 
   useLayoutEffect(() => {
-    if(cookies.get('jwt')){
-      history.push('/dashboard')
-    }// eslint-disable-next-line
+    if(jwt) return history.push('/dashboard')
   }, []);
 
   const {handleSubmit, handleChange, values, touched, errors, handleBlur} = useFormik({
