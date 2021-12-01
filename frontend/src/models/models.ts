@@ -52,3 +52,8 @@ export interface Iliked{
   user_id: string;
   id?: string;
 }
+
+export interface Ilink {
+  name: string;
+  url: string;
+}

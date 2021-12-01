@@ -127,9 +127,9 @@ const Register:React.FC = () =>{
   })
 
   return(
-  <div className="w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-600 to-green-800">
+  <div className="w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-b from-main to-second">
     <div className="flex flex-col items-center bg-white w-96 md:w-108 h-auto rounded-lg">
-      <h2 className="text-2xl font-normal mt-10 text-green-600">Create account</h2>
+      <h2 className="text-2xl font-normal mt-10 text-main">Create account</h2>
       <form className="p-10 w-full" onSubmit={handleSubmit}>
         <div className="login-register-input-box">
           <label htmlFor="">Username</label>
@@ -210,7 +210,7 @@ const Register:React.FC = () =>{
           />
         </div>
         <input
-          className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-green-700 to-green-600 text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"
+          className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-main to-second text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"
           type="submit"
           value="Register"
         />
@@ -218,31 +218,31 @@ const Register:React.FC = () =>{
     </div>
     <div className="grid grid-cols-2">
         {touched.username && errors.username ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
             <p className="font-bold">Username</p>
             <p>{ errors.username }</p>
           </div>
         ): null}
         {touched.email && errors.email ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
             <p className="font-bold">Email</p>
             <p>{ errors.email }</p>
           </div>
         ): null}
         {touched.password && errors.password ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
             <p className="font-bold">Password</p>
             <p>{ errors.password }</p>
           </div>
         ): null}
         {touched.repeatPassword && errors.repeatPassword ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
             <p className="font-bold">Repeat Password</p>
             <p>{ errors.repeatPassword }</p>
           </div>
         ): null}
         {isValidation ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
             <p className="font-bold">Date base</p>
             <p>{ validationText }</p>
           </div>

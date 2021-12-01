@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './views/Home'
@@ -13,35 +12,41 @@ import NotFound from './components/NotFound';
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route path="/create-article">
-          <CreateArticle />
-        </Route>
-        <Route path="/articles/:id">
-          <Article />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/dashboard">
-          <Dashboard />
-        </Route>
-        <Route path="/saved">
-          <Saved />
-        </Route>
-        <Route>
-          <NotFound />
-        </Route>
-      </Switch>
-    </Router>
+    <div className='flex justify-center'>
+      <Router>
+        <div className='flex flex-row bg-second'>
+          <Switch>
+            <Route exact path="/">
+              <Navbar />
+              <Home />
+            </Route>
+            <Route path="/create-article">
+              <CreateArticle />
+            </Route>
+            <Route path="/articles/:id">
+              <Article />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/dashboard">
+              <Navbar />
+              <Dashboard />
+            </Route>
+            <Route path="/saved">
+              <Navbar />
+              <Saved />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </div>
   );
 }
 

@@ -33,6 +33,7 @@ const Home: React.FC = () => {
   const articlesMap = articles.map((article: Iarticle) => {
     return (
       <Article
+        key={article.id}
         article={article}
         route='/'
         toggleDeleteArticleLayer={() =>{}}
@@ -42,29 +43,23 @@ const Home: React.FC = () => {
   })
 
   return(
-    <>
-      <header className='w-full h-96 my-10 bg-gray-800 text-white flex items-center justify-center'>
-        <h1 className='text-3xl font-thin grid grid-cols-1 gap-2'>
-          <span>write.</span>
-          <span>read.</span>
-          <span>learn.</span>
-        </h1>
-      </header>
-      <div className='flex flex-col items-center'>
-        <div className='flex flex-row'>
-          <ArticleSearching articlesCopy={articlesCopy} setArticles={setArticles} />
-          <ArticlesSorting articles={articles} setArticles={setArticles} />
-        </div>
-        <div>
-          {
-            articles.length !== 0 ?
-              articlesMap
-            :
-              <p>Nie znaleziono żadnych artykułów</p>
-          }
-        </div>
+    <div className='absolute top-0 left-1/2 min-h-full flex flex-col items-center px-10 bg-second transform -translate-x-1/4'>
+      <div className='w-full border-b border-blue-500 mb-3'>
+        <h2 className='my-5 text-3xl'>Główna</h2>
       </div>
-    </>
+      <div className='flex flex-col-reverse'>
+        {
+          articles.length !== 0 ?
+            articlesMap
+          :
+            <p>Nie znaleziono żadnych artykułów</p>
+        }
+      </div>
+      <div className='flex flex-row'>
+        <ArticleSearching articlesCopy={articlesCopy} setArticles={setArticles} />
+        <ArticlesSorting articles={articles} setArticles={setArticles} />
+      </div>
+    </div>
   )
 }
 

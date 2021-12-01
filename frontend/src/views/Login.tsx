@@ -51,9 +51,9 @@ const Login:React.FC = () =>{
   })
 
   return(
-    <div className="w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-b from-green-600 to-green-800">
+    <div className="w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-b from-main to-second">
       <div className="flex flex-col items-center bg-white w-96 md:w-108 h-auto rounded-lg">
-        <h2 className="text-2xl font-normal mt-10 text-green-600">Login to your account</h2>
+        <h2 className="text-2xl font-normal mt-10 text-second">Login to your account</h2>
         <form onSubmit={handleSubmit} className="p-10 w-full">
           <div className="login-register-input-box">
             <label htmlFor="">e-mail</label>
@@ -90,7 +90,7 @@ const Login:React.FC = () =>{
             />
           </div>
           <input
-            className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-green-700 to-green-600 text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"
+            className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-main to-second text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"
             type="submit"
             value="login"
           />
@@ -99,18 +99,18 @@ const Login:React.FC = () =>{
           to="/register"
           className="w-full flex justify-center items-center pb-6 p-5 bg-gray-100 text-gray-600 text-lg border-t border-gray-300 rounded-b-lg"
         >
-          New on the page ? <span className="text-green-600 ml-2"> Register</span>
+          New on the page ? <span className="text-second ml-2"> Register</span>
         </Link>
       </div>
       <div className="top-3/4 absolute">
         {touched.email && errors.email ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-orange-700 p-4 w-96" role="alert">
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-4 w-96" role="alert">
             <p className="font-bold">Email error</p>
             <p>{ errors.email }</p>
           </div>
         ): null}
         {touched.password && errors.password ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-orange-700 p-4 w-96 mt-2" role="alert">
+          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-4 w-96 mt-2" role="alert">
             <p className="font-bold">Password error</p>
             <p>{ errors.password }</p>
           </div>

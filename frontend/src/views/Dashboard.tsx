@@ -95,7 +95,7 @@ const Dashboard:React.FC = () =>{
   })
 
   return(
-    <div>
+    <div className='absolute top-0 left-1/2 min-h-full flex flex-col items-center px-10 bg-second transform -translate-x-1/4'>
       { isDeleteLayerShow ?
         <ApproveLayer
           id={selectedArticleID}
