@@ -7,14 +7,15 @@ import Article from './views/Article'
 import Login from './views/Login'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
+import ProfilesUsers from './views/ProfilesUsers'
 import Saved from './views/Saved';
 import NotFound from './components/NotFound';
 
-function App() {
+const App: React.FC = () =>{
   return (
     <div className='flex justify-center'>
       <Router>
-        <div className='flex flex-row bg-second'>
+        <div className='flex flex-row bg-main-color'>
           <Switch>
             <Route exact path="/">
               <Navbar />
@@ -35,6 +36,10 @@ function App() {
             <Route path="/dashboard">
               <Navbar />
               <Dashboard />
+            </Route>
+            <Route path="/profiles-users/:id">
+              <Navbar />
+              <ProfilesUsers />
             </Route>
             <Route path="/saved">
               <Navbar />

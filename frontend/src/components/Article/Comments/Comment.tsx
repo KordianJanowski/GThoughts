@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 
-import { Icomment } from '../../models/models';
-import {user, jwt, authorization} from '../../models/const-variables';
-import API_URL from '../../API_URL';
-import ApproveLayer from '../ApproveLayer'
+import { Icomment } from '../../../models/models';
+import {user, authorization} from '../../../models/const-variables';
+import API_URL from '../../../API_URL';
+import ApproveLayer from '../../ApproveLayer'
 
 type Props = {
   comment: Icomment;

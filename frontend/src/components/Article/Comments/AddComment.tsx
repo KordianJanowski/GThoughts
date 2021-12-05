@@ -4,11 +4,10 @@ import * as Yup from 'yup'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom';
 
-import API_URL from '../../API_URL'
-import { Ifeedback } from '../../models/models';
-import {user, jwt, authorization} from '../../models/const-variables';
-
-import Feedbacks from './Feedbacks';
+import API_URL from '../../../API_URL'
+import { Icomment } from '../../../models/models';
+import {user, jwt, authorization} from '../../../models/const-variables';
+import Comment from './Comment'
 
 type Props = {
   id: string;
@@ -17,15 +16,15 @@ type Props = {
 
 const AddComment: React.FC<Props> = ({ id }) =>{
 
-  const[feedbacks, setFeedbacks] = useState<Ifeedback[]>([])
+  const[comments, setComments] = useState<Icomment[]>([])
 
   useEffect(() => {
-    const fetchFeedbacks = async () =>{
-      await axios.get(`${API_URL}/feedbacks`, { headers: { article_id: id } })
-      .then(res => setFeedbacks(res.data))
+    const fetchComments = async () =>{
+      await axios.get(`${API_URL}/comments`, { headers: { article_id: id } })
+      .then(res => setComments(res.data))
       .catch(err => console.log(err))
     }
-    fetchFeedbacks();
+    fetchComments();
   }, [])
 
   const {handleSubmit, handleChange, values, touched, errors, handleBlur} = useFormik({
@@ -38,7 +37,7 @@ const AddComment: React.FC<Props> = ({ id }) =>{
     }),
     onSubmit: ({body}) =>{
       const postComment = async () =>{
-        const feedback: Ifeedback = {
+        const comment: Icomment = {
           body,
           user_id: user.id,
           username: user.username,
@@ -47,17 +46,16 @@ const AddComment: React.FC<Props> = ({ id }) =>{
           id_: Math.random()
         }
 
-        await axios.post(`${API_URL}/feedbacks`, feedback, authorization)
-        .then(res => setFeedbacks([...feedbacks, res.data]))
+        await axios.post(`${API_URL}/comments`, comment, authorization)
+        .then(res => setComments([...comments, res.data]))
         .catch(err => console.log(err))
-        values.body = '';
       }
       postComment();
     }
   })
 
-  const feedbacksMap = feedbacks.map((feedback: Ifeedback) =>{
-    return <Feedbacks feedback={feedback} />
+  const commentsMap = comments.map((comment: Icomment) =>{
+    return <Comment comment={comment} />
   })
 
   return(
@@ -68,13 +66,13 @@ const AddComment: React.FC<Props> = ({ id }) =>{
           <input
             className="cursor-pointer flex p-2 bg-gray-800 text-white"
             type="submit"
-            value="add feedback"
+            value="add comment"
           />
           {values.body}
         </form>
       : <h1>aby dodac komentarz, musisz sie <Link to="/login" className=' font-bold'>zalogowac</Link></h1>}
 
-      { feedbacksMap }
+      { commentsMap }
     </div>
   )
 }

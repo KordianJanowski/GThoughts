@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, Route, useHistory } from 'react-router-dom'
 
-import { Iarticle, IarticleBody, Iliked } from '../models/models';
+import { Iarticle, IarticleBody, Ifollowed, Iliked } from '../models/models';
 import API_URL from '../API_URL';
 
 import ArticlesSorting from '../components/ArticlesSorting';
 import ArticleSearching from '../components/ArticleSearching';
-import Article from '../components/Article';
+import Article from '../components/Article/Article';
 
 import { user, jwt } from '../models/const-variables';
 const Saved: React.FC = () =>{
@@ -15,11 +15,20 @@ const Saved: React.FC = () =>{
 
   const [articles, setArticles] = useState<Iarticle[]>([])
   const [likeds, setLikeds] = useState<Iliked[]>([])
+  const [followeds, setFolloweds] = useState<Ifollowed[]>([])
+
+  const fetchFolloweds = async () =>{
+    await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+    .then(res => setFolloweds(res.data))
+    .catch(err => console.log(err))
+  }
 
   useEffect(() => {
     if(!jwt) return history.push('/login')
 
     const fetchArticlesData = async () =>{
+      fetchFolloweds()
+
       await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
       .then(async res => {
         setLikeds(res.data);
@@ -42,6 +51,8 @@ const Saved: React.FC = () =>{
         route='/saved'
         toggleDeleteArticleLayer={() =>{}}
         likeds={likeds}
+        followeds={followeds}
+        fetchFolloweds={fetchFolloweds}
       />
     )
   })

@@ -4,8 +4,8 @@ import axios from 'axios'
 import Cookies from 'universal-cookie';
 import { useParams } from 'react-router-dom';
 
-import AddComment from '../components/CommentsAndFeedbacks/AddComment';
-import AddFeedback from '../components/CommentsAndFeedbacks/AddFeedback';
+import AddComment from '../components/Article/Comments/AddComment';
+import AddFeedback from '../components/Article/Feedbacks/AddFeedback';
 
 import API_URL from '../API_URL';
 import { Iuser, IarticleBody ,Iarticle } from '../models/models'

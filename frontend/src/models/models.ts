@@ -53,6 +53,12 @@ export interface Iliked{
   id?: string;
 }
 
+export interface Ifollowed{
+  author_id: string;
+  user_id: string;
+  id?: string;
+}
+
 export interface Ilink {
   name: string;
   url: string;

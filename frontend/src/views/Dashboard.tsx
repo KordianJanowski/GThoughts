@@ -10,7 +10,7 @@ import ApproveLayer from '../components/ApproveLayer'
 
 import { Iuser, IarticleBody, Iarticle } from '../models/models'
 import {user, jwt, authorization} from '../models/const-variables'
-import Article from '../components/Article';
+import Article from '../components/Article/Article';
 
 
 
@@ -90,6 +90,8 @@ const Dashboard:React.FC = () =>{
         route='/dashboard'
         toggleDeleteArticleLayer={toggleDeleteArticleLayer}
         likeds={[]}
+        followeds={[]}
+        fetchFolloweds={() => {}}
       />
     )
   })
