@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
 import Home from './views/Home'
 import CreateArticle from './views/CreateArticle'
 import Article from './views/Article'
@@ -13,43 +12,34 @@ import NotFound from './components/NotFound';
 
 const App: React.FC = () =>{
   return (
-    <div className='flex justify-center'>
+    <div className='flex justify-center items-center'>
       <Router>
-        <div className='flex flex-row bg-main-color'>
-          <Switch>
-            <Route exact path="/">
-              <Navbar />
-              <Home />
-            </Route>
-            <Route path="/create-article">
-              <CreateArticle />
-            </Route>
-            <Route path="/articles/:id">
-              <Article />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/dashboard">
-              <Navbar />
-              <Dashboard />
-            </Route>
-            <Route path="/profiles-users/:id">
-              <Navbar />
-              <ProfilesUsers />
-            </Route>
-            <Route path="/saved">
-              <Navbar />
-              <Saved />
-            </Route>
-            <Route>
-              <NotFound />
-            </Route>
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/create-article">
+            <CreateArticle />
+          </Route>
+          <Route path="/articles/:id">
+            <Article />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
+          <Route path="/saved">
+            <Saved />
+          </Route>
+          <Route>
+            <NotFound />
+          </Route>
+        </Switch>
       </Router>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState  } from 'react'
 import { Iarticle } from '../models/models';
 
 interface IProps {
@@ -26,11 +26,11 @@ const ArticlesSorting: React.FC<IProps> = ({ articles, setArticles }) => {
     <select
       value={sortingValue}
       onChange={sortingChange}
-      className='ml-2 my-2 bg-gray-100 p-2 text-lg'
+      className='text-gray-300 bg-main my-2 px-2 py-1 border border-gray-600 rounded-md focus:border-blue-500 focus:outline-none focus:ring'
     >
       <option value="" disabled hidden selected>Sortowanie</option>
-      <option value="date-newest">Data: od najnowszego</option>
-      <option value="date-oldest">Data: od najstarszego</option>
+      <option value="date-newest">Data: najnowsze</option>
+      <option value="date-oldest">Data: najstarsze</option>
     </select>
   )
 }

@@ -1,35 +1,36 @@
 import React, { useState, useEffect } from 'react'
+import API_URL from '../API_URL'
 import axios from 'axios'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import Cookies from 'universal-cookie';
 import { Link, useHistory } from "react-router-dom";
-
-import API_URL from '../API_URL'
-
-import { Iuser, IarticleBody } from '../models/models'
+import { Iuser, IarticleBody, InewHashtag } from '../models/models'
 import {user, jwt, authorization} from '../models/const-variables'
 
-const CreateArticle: React.FC = () =>{
+const CreateArticle: React.FC = () => {
   const history: any = useHistory();
   const cookies: Cookies = new Cookies();
 
   const [articleBodies, setArticleBodies] = useState<IarticleBody[]>([]);
 
-  useEffect(() => { if(!jwt) return history.push('/login') }, [])
+  useEffect(() => { 
+    if(!jwt) return history.push('/login') 
+  }, [])
 
   const {handleSubmit, handleChange, values, touched, errors, handleBlur} = useFormik({
     initialValues: {
       title: '',
       subtitle: '',
       body: '',
+      tags: ''
     },
     validationSchema: Yup.object({
       title: Yup.string()
         .min(4, 'Password should be longer tan 4 characters').required()
         .max(50, 'title must be shortet than 50 chars').required(),
     }),
-    onSubmit: ({title}) =>{
+    onSubmit: ({title}) => {
       const postArticle = async () =>{
         const article = {
           title,
@@ -53,6 +54,21 @@ const CreateArticle: React.FC = () =>{
           .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
+
+        const tags = values.tags.split(' ')
+
+        tags.forEach(async tag => {
+          const newHashtag:InewHashtag = { 
+            name: tag
+          }
+          await axios.post(`${API_URL}/hashtags`, newHashtag, authorization)
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        })
       }
       postArticle()
     }
@@ -88,9 +104,9 @@ const CreateArticle: React.FC = () =>{
   })
 
   return(
-    <div>
+    <div className='text-2xl text-black'>
       <h1>Create article</h1>
-      <form onSubmit={handleSubmit}>
+      <form className='flex flex-col' onSubmit={handleSubmit}>
         <input
           placeholder="title"
           onChange={handleChange}
@@ -98,10 +114,20 @@ const CreateArticle: React.FC = () =>{
           name="title"
           type="text"
           maxLength={50}
-          className=""
+          className="mb-1"
           value={values.title}
         />
-        <div>
+        <input
+          placeholder="tags"
+          onChange={handleChange}
+          onBlur={handleBlur}
+          name="tags"
+          type="text"
+          maxLength={50}
+          className="mb-4"
+          value={values.tags}
+        />
+        <div className='flex flex-col mb-4'>
           <input
             placeholder="subtitle"
             name="subtitle"
@@ -110,6 +136,7 @@ const CreateArticle: React.FC = () =>{
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.subtitle}
+            className='mb-1'
           />
           <textarea
             placeholder="body"
@@ -122,12 +149,12 @@ const CreateArticle: React.FC = () =>{
           ></textarea>
         </div>
         <input
-          className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-green-700 to-green-600 text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"
+          className="cursor-pointer w-full h-20 bg-gray-700 text-white rounded-md"
           type="submit"
           value="create article"
         />
       </form>
-      <button className="w-96 h-96 bg-white text-black" onClick={addArticleBody}>add new part</button>
+      <button className="bg-gray-300 text-black mt-1 w-72 p-1 rounded-md" onClick={addArticleBody}>add new part</button>
       { articleBodiesMap }
     </div>
   )

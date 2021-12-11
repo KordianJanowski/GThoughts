@@ -63,3 +63,12 @@ export interface Ilink {
   name: string;
   url: string;
 }
+
+export interface InewHashtag {
+  name: string;
+}
+
+export interface Ihashtag {
+  name: string;
+  counter: number;
+}

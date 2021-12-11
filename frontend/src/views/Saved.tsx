@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Link, Route, useHistory } from 'react-router-dom'
-
-import { Iarticle, IarticleBody, Ifollowed, Iliked } from '../models/models';
 import API_URL from '../API_URL';
-
-import ArticlesSorting from '../components/ArticlesSorting';
-import ArticleSearching from '../components/ArticleSearching';
+import axios from 'axios'
+import { Iarticle, IarticleBody, Ifollowed, Iliked } from '../models/models';
+import { user, jwt } from '../models/const-variables';
+import { Link, Route, useHistory } from 'react-router-dom'
 import Article from '../components/Article/Article';
 
-import { user, jwt } from '../models/const-variables';
 const Saved: React.FC = () =>{
   const history: any = useHistory();
 
