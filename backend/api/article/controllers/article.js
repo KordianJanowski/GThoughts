@@ -6,6 +6,19 @@ const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
  */
 
 module.exports = {
+  async find(ctx) {
+    let entity = await strapi.services.article.find();
+    let articles = [];
+    if(ctx.request.header.hash_name) {
+      entity.forEach(article =>{
+        if(article.hashtags.includes(ctx.request.header.hash_name)){
+          articles.push(article);
+        }
+      })
+      entity = articles;
+    }
+    return sanitizeEntity(entity, { model: strapi.models.article });
+  },
   async update(ctx) {
     const { id } = ctx.params;
 

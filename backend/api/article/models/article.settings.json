@@ -26,6 +26,9 @@
     },
     "author_name": {
       "type": "string"
+    },
+    "hashtags": {
+      "type": "json"
     }
   }
 }

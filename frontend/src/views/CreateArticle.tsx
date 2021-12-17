@@ -31,13 +31,20 @@ const CreateArticle: React.FC = () => {
         .max(50, 'title must be shortet than 50 chars').required(),
     }),
     onSubmit: ({title}) => {
+      const tagsAsString = values.tags.replaceAll(/\s/g,'')
+      let tags = tagsAsString.split(',')
+      tags = tags.filter(function(str) {
+        return /\S/.test(str);
+      });
+
       const postArticle = async () =>{
         const article = {
           title,
           body: articleBodies,
+          main_image: '',
           author_id: user.id,
           author_name: user.username,
-          main_image: '',
+          hashtags: tags
         }
 
         await axios.post(`${API_URL}/articles`, article, authorization)
@@ -54,8 +61,6 @@ const CreateArticle: React.FC = () => {
           .catch(err => console.log(err))
         })
         .catch(err => console.log(err))
-
-        const tags = values.tags.split(' ')
 
         tags.forEach(async tag => {
           const newHashtag:InewHashtag = { 

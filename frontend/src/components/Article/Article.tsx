@@ -39,7 +39,7 @@ const Article: React.FC<Props> = ({
     <div>
       <Link to={`/articles/${article.id}`} key={article.id}>
         <div className='flex flex-row justify-between p-5 mb-4'>
-          <div className='flex flex-col justify-between w-full'>
+          <div className='flex flex-col items-start justify-start w-full'>
             <div className='flex flex-row justify-between'>
               <div className='flex flex-row items-center'>
                 <img
@@ -49,7 +49,7 @@ const Article: React.FC<Props> = ({
                 />
                 <div className='flex flex-col text-gray-300'>
                   <span className='font-semibold'>{ article.author_name }</span>
-                  <span className='text-xs text-gray-400'>04.12.2021</span>
+                  <span className='text-xs text-gray-400'>--.--.----</span>
                 </div>
               </div>
               <div>
@@ -81,11 +81,11 @@ const Article: React.FC<Props> = ({
                 : null}
               </div>
             </div>
-            <div className='text-2xl font-bold'>
-              <textarea className='w-full bg-transparent font-bold resize-none' disabled>
-                { article.title }
-              </textarea>
-            </div>
+            <textarea 
+              disabled
+              value={article.title}
+              className='w-full bg-transparent font-bold resize-none h-auto text-2xl my-2'
+            ></textarea>
             <span className='text-gray-400'>{ article.body[0].body.substr(0,50) + '...' }</span>
           </div>
           <img

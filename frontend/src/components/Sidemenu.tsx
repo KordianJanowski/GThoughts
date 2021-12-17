@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import API_URL from '../API_URL'
+import { Link } from 'react-router-dom'
 import { Ihashtag } from '../models/models';
 import Cookies from 'universal-cookie';
 import { Iuser, Iarticle } from '../models/models';
@@ -31,7 +32,9 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
   // mapping only 3 first elements of array
   const hashtagsMap = hashtags.slice(0, 3).map(hash => {
     return(
-      <li>#{hash.name}</li>
+      <li>
+        <Link to={`/hashtags/${hash.name}`}>#{hash.name}</Link>
+      </li>
     )
   })
 

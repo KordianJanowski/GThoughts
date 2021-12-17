@@ -18,6 +18,7 @@ export interface Iarticle {
   main_image: string;
   author_id: string;
   author_name: string;
+  hashtags: string[];
   createdAt: string;
   published_at: string;
   updatedAt: string;
@@ -62,6 +63,7 @@ export interface Ifollowed{
 export interface Ilink {
   name: string;
   url: string;
+  icon: string;
 }
 
 export interface InewHashtag {

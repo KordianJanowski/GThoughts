@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './views/Home'
+import SingleHashtag from './views/SingleHashtag'
 import CreateArticle from './views/CreateArticle'
 import Article from './views/Article'
 import Login from './views/Login'
@@ -17,6 +18,9 @@ const App: React.FC = () =>{
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/hashtags/:hashtag">
+            <SingleHashtag />
           </Route>
           <Route path="/create-article">
             <CreateArticle />

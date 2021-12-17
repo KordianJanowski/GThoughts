@@ -6,6 +6,26 @@ body {
   @apply bg-main text-white;
 }
 
+.wrapper {
+  @apply relative flex flex-row container justify-between px-28;
+}
+
+.main {
+  @apply min-h-screen flex flex-col items-center px-10 bg-second;
+}
+
+.main-header {
+  @apply w-full flex justify-between items-center border-b border-blue-500 mb-3 px-2;
+}
+
+.main-header-text {
+  @apply my-5 text-3xl;
+}
+
+.main-content {
+  @apply flex flex-col;
+}
+
 .login-register-input {
   @apply w-full h-11 bg-white text-base text-gray-700 outline-none pl-12 pr-2 my-2 placeholder-gray-500 border border-gray-300 shadow-inner
   focus:shadow focus:border-second transition duration-200 rounded;

@@ -8,8 +8,15 @@ import ArticleSearching from '../components/ArticlesSearching';
 import Navbar from '../components/Navbar';
 import Sidemenu from '../components/Sidemenu';
 import Article from '../components/Article/Article';
+import { useParams } from 'react-router-dom';
+
+interface Props {
+  hashtag:string;
+}
 
 const Home: React.FC = () => {
+  const hashtag:string = useParams<Props>().hashtag;
+
   const [articles, setArticles] = useState<Iarticle[]>([])
   const [articlesCopy, setArticlesCopy] = useState<Iarticle[]>([])
 
@@ -30,8 +37,9 @@ const Home: React.FC = () => {
 
       fetchFolloweds()
 
-      await axios.get(`${API_URL}/articles`)
+      await axios.get(`${API_URL}/articles`, { headers: { hash_name: hashtag } })
       .then(res => {
+        console.log(res.data)
         setArticles(res.data)
         setArticlesCopy(res.data)
       })
@@ -39,7 +47,7 @@ const Home: React.FC = () => {
     }
     fetchArticlesData();
 
-  }, [])
+  }, [hashtag])
 
   const articlesMap = articles.map((article: Iarticle) => {
     return (
@@ -60,7 +68,7 @@ const Home: React.FC = () => {
       <Navbar />
       <div className='main'>
         <div className='main-header'>
-          <h2 className='main-header-text'>Główna</h2>
+          <h2 className='main-header-text'>Hashtag: <span className='text-blue-400 font-bold'>{hashtag}</span></h2>
         </div>
         <div className='main-content'>
           {
