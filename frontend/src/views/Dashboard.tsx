@@ -30,9 +30,7 @@ const Dashboard:React.FC = () =>{
     const fetchArticles = async () =>{
       await axios.get(`${API_URL}/users/${user.id}`)
       .then(res => {
-        if(!res.data.articles_ids) {
-          return
-        }
+        if(!res.data.articles_ids) return
         const newArticles: Iarticle[] = []
         res.data.articles_ids.forEach(async (article_id: string, index: number) =>{
           await axios.get(`${API_URL}/articles/${article_id}`)
@@ -48,6 +46,13 @@ const Dashboard:React.FC = () =>{
     }
     fetchArticles()
   }, [])
+
+  const logout = () =>{
+    cookies.remove('jwt')
+    cookies.remove('user')
+    history.push('/')
+    history.go(0)
+  }
 
   const toggleDeleteArticleLayer = (id:string) =>{
     setSelectedArticleID(id)
@@ -70,7 +75,7 @@ const Dashboard:React.FC = () =>{
         const newArticles: Iarticle[] = articles;
         newArticles.splice(index,1)
 
-        setArticles([...newArticles])
+        setArticles(newArticles)
         toggleDeleteArticleLayer('')
       })
     })
@@ -109,6 +114,8 @@ const Dashboard:React.FC = () =>{
           {articlesMap}
         </div>
       }
+
+      <button onClick={logout}>logout</button>
 
       {user?.username}
       {user?.id}

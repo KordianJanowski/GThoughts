@@ -38,7 +38,7 @@ const Article: React.FC<Props> = ({
   return(
     <div>
       <Link to={`/articles/${article.id}`} key={article.id}>
-        <div className='flex flex-row justify-between p-5 mb-4'>
+        <div className='flex flex-col md:flex-row items-start justify-start lg:justify-between px-2 mb-4 py-2'>
           <div className='flex flex-col items-start justify-start w-full'>
             <div className='flex flex-row justify-between'>
               <div className='flex flex-row items-center'>
@@ -49,7 +49,7 @@ const Article: React.FC<Props> = ({
                 />
                 <div className='flex flex-col text-gray-300'>
                   <span className='font-semibold'>{ article.author_name }</span>
-                  <span className='text-xs text-gray-400'>--.--.----</span>
+                  <span className='text-xs text-gray-400'>{ article.createdAt.substr(0,10) }</span>
                 </div>
               </div>
               <div>
@@ -71,28 +71,39 @@ const Article: React.FC<Props> = ({
 
                 { route === '/dashboard' ?
                   <div>
-                    <Link to='/dashboard' onClick={() => toggleDeleteArticleLayer(article.id)} className=' text-red-600'>
+                    <Link to='/dashboard' onClick={() => toggleDeleteArticleLayer(article.id)} className=' text-red-500'>
                       delete
                     </Link>
-                    <button className= ' text-blue-600'>
+                    <button className= ' text-blue-500'>
                       edit
                     </button>
                   </div>
                 : null}
               </div>
             </div>
-            <textarea 
-              disabled
-              value={article.title}
-              className='w-full bg-transparent font-bold resize-none h-auto text-2xl my-2'
-            ></textarea>
-            <span className='text-gray-400'>{ article.body[0].body.substr(0,50) + '...' }</span>
+            <div className='w-full bg-transparent font-bold resize-none h-auto text-xl md:text-2xl my-2'>
+              {article.title}
+            </div>
+            { article.body[0].body.length > 50 ?
+              <span className='text-gray-400'>{ article.body[0].body.substr(0,50) + '...' }</span>
+            :
+              <span className='text-gray-400'>{ article.body[0].body}</span>
+            }
           </div>
-          <img
-            className='w-56 ml-8'
-            src="https://archive.org/download/no-photo-available/no-photo-available.png"
-            alt=""
-          />
+
+          {article.main_image ?
+            <img
+              className='max-w-full md:w-52 lg:w-80 lg:ml-8 border-2 border-gray-600 lg:block mt-2 lg:mt-0'
+              src={article.main_image}
+              alt=""
+            />
+          :
+            <img
+              className=' max-w-full lg:max-w-min md:w-52 lg:w-72 lg:ml-8 border-2 border-gray-600 mt-2 lg:mt-0'
+              src="https://archive.org/download/no-photo-available/no-photo-available.png"
+              alt=""
+            />
+          }
         </div>
       </Link>
     </div>

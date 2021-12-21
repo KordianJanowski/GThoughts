@@ -4,9 +4,10 @@ import { Iarticle } from '../models/models';
 type Props = {
   articles: Iarticle[]
   setArticles: React.Dispatch<React.SetStateAction<Iarticle[]>>
+  openSidemenu: () => void
 }
 
-const ArticlesSearching: React.FC<Props> = ({ articles, setArticles }) => {
+const ArticlesSearching: React.FC<Props> = ({ articles, setArticles, openSidemenu}) => {
   const [searchingValue, setSearchingValue] = useState<string>('')
 
   const searchArticles = ():void => {
@@ -19,6 +20,7 @@ const ArticlesSearching: React.FC<Props> = ({ articles, setArticles }) => {
       let inputItem = searchingValue.toLowerCase().split(' ')
       return inputItem.every(searchingWord => keySearchingWords.toLowerCase().includes(searchingWord));
     })
+    openSidemenu()
     setArticles(filteredArticles)
   }
 
@@ -40,12 +42,12 @@ const ArticlesSearching: React.FC<Props> = ({ articles, setArticles }) => {
         </svg>
       </span>
 
-      <input  
+      <input
         onChange={searchInputChange}
         onKeyDown={checkInputKey}
         placeholder="Szukaj"
-        type="text" 
-        className="w-full py-2 pl-10 pr-4 border rounded-md bg-transparent text-gray-300 border-gray-600 focus:border-blue-500 focus:outline-none focus:ring" 
+        type="text"
+        className="w-full py-2 pl-10 pr-4 border rounded-md bg-transparent text-gray-300 border-gray-600 focus:border-red-400 focus:outline-none"
       />
     </div>
   )

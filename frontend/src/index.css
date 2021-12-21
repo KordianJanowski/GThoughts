@@ -15,7 +15,7 @@ body {
 }
 
 .main-header {
-  @apply w-full flex justify-between items-center border-b border-blue-500 mb-3 px-2;
+  @apply w-full flex justify-between items-center border-b border-red-500 mb-3 px-2;
 }
 
 .main-header-text {
@@ -37,4 +37,39 @@ body {
 
 .login-register-input-icon {
   @apply absolute border-r border-gray-200 left-2 bottom-4 py-1 pl-1 pr-2 text-second;
+}
+
+.button-animation {
+  @apply hover:opacity-80 duration-100;
+}
+
+@keyframes side-menu-animation{
+  0%{
+    left: 100vw;
+    /* left: calc(100vw - 8.33333%); */
+    display: block;
+  }
+  100%{
+    left: 0;
+  }
+}
+
+.side-menu{
+  animation: 0.5s side-menu-animation 1;
+}
+
+
+@keyframes side-menu-animation1{
+  0%{
+    left: 0;
+  }
+  100%{
+    left: 100vw;
+    /* left: calc(100vw - 8.33333%); */
+    display: none;
+  }
+}
+
+.side-menu1{
+  animation: 0.5s side-menu-animation1 1;
 }

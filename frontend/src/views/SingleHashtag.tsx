@@ -22,7 +22,7 @@ const Home: React.FC = () => {
 
   const[likeds, setLikeds] = useState<Iliked[]>([])
   const[followeds, setFolloweds] = useState<Ifollowed[]>([])
-  
+
   const fetchFolloweds= async () =>{
     await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
     .then(res => setFolloweds(res.data))
@@ -68,7 +68,7 @@ const Home: React.FC = () => {
       <Navbar />
       <div className='main'>
         <div className='main-header'>
-          <h2 className='main-header-text'>Hashtag: <span className='text-blue-400 font-bold'>{hashtag}</span></h2>
+          <h2 className='main-header-text'>Hashtag: <span className='text-red-400 font-bold'>{hashtag}</span></h2>
         </div>
         <div className='main-content'>
           {

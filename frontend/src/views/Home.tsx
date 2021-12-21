@@ -15,18 +15,25 @@ const Home: React.FC = () => {
 
   const[likeds, setLikeds] = useState<Iliked[]>([])
   const[followeds, setFolloweds] = useState<Ifollowed[]>([])
-  
+
   const fetchFolloweds= async () =>{
-    await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
-    .then(res => setFolloweds(res.data))
-    .catch(err => console.log(err))
+    if(jwt){
+      await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+      .then(res => setFolloweds(res.data))
+      .catch(err => console.log(err))
+    }
   }
 
   useEffect(() => {
     const fetchArticlesData = async () =>{
-      axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
-      .then(res => setLikeds(res.data))
-      .catch(err => console.log(err))
+      if(jwt){
+        await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+        .then(res => {
+          setLikeds([...res.data])
+          console.log(res)
+        })
+        .catch(err => console.log(err))
+      }
 
       fetchFolloweds()
 
@@ -38,34 +45,34 @@ const Home: React.FC = () => {
       .catch( err => console.log(err))
     }
     fetchArticlesData();
-
   }, [])
 
-  const articlesMap = articles.map((article: Iarticle) => {
-    return (
-      <Article
-        key={article.id}
-        article={article}
-        route='/'
-        toggleDeleteArticleLayer={() =>{}}
-        likeds={likeds}
-        followeds={followeds}
-        fetchFolloweds={fetchFolloweds}
-      />
-    )
-  })
+  // const articlesMap = articles.map((article: Iarticle) => {
+  //   return (
+  //     <Article
+  //       key={article.id}
+  //       article={article}
+  //       route='/'
+  //       toggleDeleteArticleLayer={() =>{}}
+  //       likeds={likeds}
+  //       followeds={followeds}
+  //       fetchFolloweds={fetchFolloweds}
+  //     />
+  //   )
+  // })
 
   return(
-    <div className='wrapper'>
+    <div className='relative w-full xl:w-auto flex flex-row justify-between px-28;'>
       <Navbar />
-      <div className='main'>
+      <div className='w-9/12 xl:w-auto main border-l border-r border-gray-600'>
         <div className='main-header'>
           <h2 className='main-header-text'>Główna</h2>
         </div>
-        <div className='main-content'>
+        <div className='main-content w-full'>
           {
             articles.length !== 0 ?
-              articlesMap
+              // articlesMapd
+              <div></div>
             :
               <p>Nie znaleziono żadnych artykułów</p>
           }

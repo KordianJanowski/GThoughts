@@ -16,7 +16,7 @@ const ArticlesSorting: React.FC<IProps> = ({ articles, setArticles }) => {
       case 'date-newest':
         setArticles([...articles.sort((art1, art2) => +new Date(art2.createdAt) - +new Date(art1.createdAt))])
         break;
-      case 'date-oldest': 
+      case 'date-oldest':
         setArticles([...articles.sort((art1, art2) => +new Date(art1.createdAt) - +new Date(art2.createdAt))])
         break;
       }
@@ -26,7 +26,7 @@ const ArticlesSorting: React.FC<IProps> = ({ articles, setArticles }) => {
     <select
       value={sortingValue}
       onChange={sortingChange}
-      className='text-gray-300 bg-main my-2 px-2 py-1 border border-gray-600 rounded-md focus:border-blue-500 focus:outline-none focus:ring'
+      className='text-gray-300 bg-main my-2 px-2 py-1 border border-gray-600 rounded-md focus:border-red-400 focus:outline-none'
     >
       <option value="" disabled hidden selected>Sortowanie</option>
       <option value="date-newest">Data: najnowsze</option>

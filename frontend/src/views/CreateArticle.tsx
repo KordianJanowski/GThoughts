@@ -7,16 +7,22 @@ import Cookies from 'universal-cookie';
 import { Link, useHistory } from "react-router-dom";
 import { Iuser, IarticleBody, InewHashtag } from '../models/models'
 import {user, jwt, authorization} from '../models/const-variables'
+import Resizer from 'react-image-file-resizer'
 
 const CreateArticle: React.FC = () => {
   const history: any = useHistory();
-  const cookies: Cookies = new Cookies();
 
   const [articleBodies, setArticleBodies] = useState<IarticleBody[]>([]);
+  const[image, setImage] = useState<any>('');
 
-  useEffect(() => { 
-    if(!jwt) return history.push('/login') 
-  }, [])
+  useEffect(() => { if(!jwt) return history.push('/login') }, [])
+
+  const resizeFile = (file: Blob) => new Promise(resolve => {
+    Resizer.imageFileResizer(file, 400, 400, 'JPEG/PNG/JPG', 100, 0,
+    (uri) => {
+      resolve(uri);
+    }, 'base64' );
+  });
 
   const {handleSubmit, handleChange, values, touched, errors, handleBlur} = useFormik({
     initialValues: {
@@ -27,21 +33,47 @@ const CreateArticle: React.FC = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string()
-        .min(4, 'Password should be longer tan 4 characters').required()
+        .min(4, 'title should be longer tan 4 characters').required()
         .max(50, 'title must be shortet than 50 chars').required(),
     }),
-    onSubmit: ({title}) => {
+    onSubmit: async ({title}) => {
       const tagsAsString = values.tags.replaceAll(/\s/g,'')
       let tags = tagsAsString.split(',')
       tags = tags.filter(function(str) {
         return /\S/.test(str);
       });
 
+      let isPostedImages: boolean = false;
+      let imageURL: string = ''
+
+      if(image !== ''){
+        const imageResized: any = await resizeFile(image)
+
+        const data = new FormData()
+        data.append('file', imageResized)
+        data.append("api_key", '732376169492789');
+        data.append("api_secret", 'A-dhHrnEZqJYnhAGqLAGcWSDI1M');
+        data.append("cloud_name", 'digj3w8rk');
+        data.append("upload_preset", "bb7forio");
+
+        await axios.post(
+          `	https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`,
+          data
+        )
+        .then(async res => {
+          imageURL = res.data.secure_url;
+          isPostedImages = true;
+        })
+        .catch(err => console.log(err))
+      } else{
+        isPostedImages = true;
+      }
+
       const postArticle = async () =>{
         const article = {
           title,
           body: articleBodies,
-          main_image: '',
+          main_image: imageURL,
           author_id: user.id,
           author_name: user.username,
           hashtags: tags
@@ -63,7 +95,7 @@ const CreateArticle: React.FC = () => {
         .catch(err => console.log(err))
 
         tags.forEach(async tag => {
-          const newHashtag:InewHashtag = { 
+          const newHashtag:InewHashtag = {
             name: tag
           }
           await axios.post(`${API_URL}/hashtags`, newHashtag, authorization)
@@ -75,7 +107,8 @@ const CreateArticle: React.FC = () => {
           })
         })
       }
-      postArticle()
+
+      if(isPostedImages) postArticle()
     }
   })
 
@@ -112,6 +145,15 @@ const CreateArticle: React.FC = () => {
     <div className='text-2xl text-black'>
       <h1>Create article</h1>
       <form className='flex flex-col' onSubmit={handleSubmit}>
+        <input
+          type="file"
+          accept="image/png, image/jpeg"
+          value=''
+          onChange={(e: any) => setImage(e.currentTarget.files[0])}
+        />
+        {image ?
+          <img src={URL.createObjectURL(image)}  className=" w-96 mt-2" alt="" />
+        : null}
         <input
           placeholder="title"
           onChange={handleChange}

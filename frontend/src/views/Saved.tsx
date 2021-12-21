@@ -5,11 +5,15 @@ import { Iarticle, IarticleBody, Ifollowed, Iliked } from '../models/models';
 import { user, jwt } from '../models/const-variables';
 import { Link, Route, useHistory } from 'react-router-dom'
 import Article from '../components/Article/Article';
+import Navbar from '../components/Navbar';
+import Sidemenu from '../components/Sidemenu';
 
 const Saved: React.FC = () =>{
   const history: any = useHistory();
 
   const [articles, setArticles] = useState<Iarticle[]>([])
+  const [articlesCopy, setArticlesCopy] = useState<Iarticle[]>([])
+
   const [likeds, setLikeds] = useState<Iliked[]>([])
   const [followeds, setFolloweds] = useState<Ifollowed[]>([])
 
@@ -28,10 +32,9 @@ const Saved: React.FC = () =>{
       await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
       .then(async res => {
         setLikeds(res.data);
-        console.log(res)
         await res.data.forEach(async (liked: Iliked) =>{
           await axios.get(`${API_URL}/articles/${liked.article_id}`)
-          .then(async articleRes => setArticles((prevArticles: Iarticle[]) => [...prevArticles, articleRes.data]))
+          .then(async articleRes =>  setArticles((prevArticles: Iarticle[]) => [...prevArticles, articleRes.data]))
           .catch(err => console.log(err))
         })
       })
@@ -54,8 +57,22 @@ const Saved: React.FC = () =>{
   })
 
   return(
-    <div>
-      {articlesMap}
+    <div className='relative flex flex-row container justify-between px-28'>
+      <Navbar />
+      <div className='min-h-screen flex flex-col items-center px-10 bg-second'>
+        <div className='w-full flex justify-between items-center mb-3 mt-2 border-b-2 border-red-400'>
+          <h2 className='my-5 text-3xl '>Zapisane</h2>
+        </div>
+        <div className='flex flex-col'>
+          {
+            articles.length !== 0 ?
+              articlesMap
+            :
+              <p>Nie znaleziono żadnych artykułów</p>
+          }
+        </div>
+      </div>
+      <Sidemenu articles={articlesCopy} setArticles={setArticles} />
     </div>
   )
 }

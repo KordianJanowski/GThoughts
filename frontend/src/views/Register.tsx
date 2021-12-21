@@ -24,11 +24,8 @@ const Register:React.FC = () =>{
   const[validationText, setValidationText] = useState<string>('');
 
   const[image, setImage] = useState<any>();
-  const[imageURL, setImageURL] = useState();
 
-  useEffect(() => {
-    if(jwt) return history.push('/dashboard')
-  }, []);
+  useEffect(() => { if(jwt) return history.push('/dashboard') }, []);
 
   const resizeFile = (file: Blob) => new Promise(resolve => {
     Resizer.imageFileResizer(file, 300, 300, 'JPEG/PNG/JPG', 100, 0,
@@ -108,17 +105,24 @@ const Register:React.FC = () =>{
           })
 
           const registerResponseJSON = await registerResponse.json();
-          console.log(registerResponseJSON)
 
           try{
             if(registerResponseJSON.message[0].messages[0].message === "Email already taken"){
+              setTimeout(() =>{
+                setIsValidation(false);
+              }, 4000)
+              setIsValidation(true);
               return setValidationText('Username already taken')
             }
             else{
+              setTimeout(() =>{
+                setIsValidation(false);
+              }, 4000)
+              setIsValidation(true);
               return setValidationText('Email already taken')
             }
           } catch(err) {
-            history.push('/login')
+            return history.push('/login')
           }
         }
       }
@@ -204,10 +208,11 @@ const Register:React.FC = () =>{
           <input
             type="file"
             accept="image/png, image/jpeg"
-            onChange={(e: any) => {
-              setImage(e.currentTarget.files[0]);
-            }}
+            onChange={(e: any) => setImage(e.currentTarget.files[0])}
           />
+          {image ?
+            <img src={URL.createObjectURL(image)} className="w-20 mt-2" alt="" />
+          : null}
         </div>
         <input
           className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-main to-second text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"

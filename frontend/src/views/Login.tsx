@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
@@ -17,6 +17,8 @@ const Login:React.FC = () =>{
   const history = useHistory();
   const cookies = new Cookies();
 
+  const[isValidate, setIsValidate] = useState<boolean>(false);
+
   useLayoutEffect(() => {
     if(jwt) return history.push('/dashboard')
   }, []);
@@ -26,10 +28,6 @@ const Login:React.FC = () =>{
       email: '',
       password: ''
     },
-    validationSchema: Yup.object({
-      email: Yup.string().max(20, 'email must be shortet than 20 char').required(),
-      password: Yup.string().min(4, 'Password should be longer tan 4 characters').required()
-    }),
     onSubmit: async ({email, password}) =>{
       await axios.post(`${API_URL}/auth/local`, {
         identifier: email,
@@ -42,10 +40,14 @@ const Login:React.FC = () =>{
 
         cookies.set('jwt', res.data.jwt, cookieArguments)
         cookies.set('user', res.data.user, cookieArguments)
-        history.push('/dashboard')
+        history.go(0)
+        return history.push('/dashboard')
       })
-      .catch(err =>{
-        console.log(err)
+      .catch(() =>{
+        setTimeout(() =>{
+          setIsValidate(false)
+        }, 4000)
+        setIsValidate(true)
       })
     }
   })
@@ -103,18 +105,12 @@ const Login:React.FC = () =>{
         </Link>
       </div>
       <div className="top-3/4 absolute">
-        {touched.email && errors.email ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-4 w-96" role="alert">
-            <p className="font-bold">Email error</p>
-            <p>{ errors.email }</p>
-          </div>
-        ): null}
-        {touched.password && errors.password ? (
+        {isValidate ?
           <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-4 w-96 mt-2" role="alert">
-            <p className="font-bold">Password error</p>
-            <p>{ errors.password }</p>
+            <p className="font-bold">Login error</p>
+            <p>email or password is incorrect</p>
           </div>
-        ): null}
+        : null}
       </div>
     </div>
   )
