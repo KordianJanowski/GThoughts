@@ -8,7 +8,7 @@ import API_URL from '../API_URL';
 
 import ApproveLayer from '../components/ApproveLayer'
 
-import { Iuser, IarticleBody, Iarticle } from '../models/models'
+import { Iuser, Iarticle } from '../models/models'
 import {user, jwt, authorization} from '../models/const-variables'
 import Article from '../components/Article/Article';
 
@@ -35,6 +35,7 @@ const Dashboard:React.FC = () =>{
         res.data.articles_ids.forEach(async (article_id: string, index: number) =>{
           await axios.get(`${API_URL}/articles/${article_id}`)
           .then(async response =>{
+            console.log(response.data)
             newArticles.push(response.data)
             if(newArticles.length === res.data.articles_ids.length){
               setArticles([...newArticles])

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Route, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 
 import API_URL from '../../API_URL';
-import { authorization, user, jwt } from '../../models/const-variables';
-import { Iarticle, IarticleBody, Iliked, Ifollowed, Iuser } from '../../models/models';
+import { user, jwt } from '../../models/const-variables';
+import { Iarticle, Iliked, Ifollowed, Iuser } from '../../models/models';
 import Liking from './Liking';
 import Following from './Following';
 
@@ -33,6 +33,8 @@ const Article: React.FC<Props> = ({
       .then(res => setAuthor(res.data))
     }
     fetchAuthorAvatar()
+
+    console.log(article.author_id)
   }, [])
 
   return(
@@ -81,14 +83,12 @@ const Article: React.FC<Props> = ({
                 : null}
               </div>
             </div>
-            <div className='w-full bg-transparent font-bold resize-none h-auto text-xl md:text-2xl my-2'>
+            <div className='w-full bg-transparent font-bold h-auto text-xl md:text-2xl my-2'>
               {article.title}
             </div>
-            { article.body[0].body.length > 50 ?
-              <span className='text-gray-400'>{ article.body[0].body.substr(0,50) + '...' }</span>
-            :
-              <span className='text-gray-400'>{ article.body[0].body}</span>
-            }
+            <div>
+              {article.body[0].text.substring(0,65) + '...'}
+            </div>
           </div>
 
           {article.main_image ?

@@ -15,9 +15,6 @@
     "title": {
       "type": "string"
     },
-    "body": {
-      "type": "json"
-    },
     "main_image": {
       "type": "string"
     },
@@ -28,6 +25,9 @@
       "type": "string"
     },
     "hashtags": {
+      "type": "json"
+    },
+    "body": {
       "type": "json"
     }
   }

@@ -92,7 +92,8 @@ const Register:React.FC = () =>{
             email: email,
             password: password,
             articles_ids: [],
-            avatar: imageURL
+            avatar: imageURL,
+            recent_hashtags: []
           }
 
           const registerResponse = await fetch(`${API_URL}/auth/local/register`, {

@@ -37,6 +37,9 @@ const App: React.FC = () =>{
           <Route path="/dashboard">
             <Dashboard />
           </Route>
+          <Route path="/user/:id">
+            <ProfilesUsers />
+          </Route>
           <Route path="/saved">
             <Saved />
           </Route>

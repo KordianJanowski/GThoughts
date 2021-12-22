@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react'
 import {useFormik} from 'formik'
-import * as Yup from 'yup'
 import axios from 'axios'
 import Cookies from 'universal-cookie';
 import { Link, useHistory } from "react-router-dom";
@@ -23,7 +22,7 @@ const Login:React.FC = () =>{
     if(jwt) return history.push('/dashboard')
   }, []);
 
-  const {handleSubmit, handleChange, values, touched, errors, handleBlur} = useFormik({
+  const {handleSubmit, handleChange, values, handleBlur} = useFormik({
     initialValues: {
       email: '',
       password: ''

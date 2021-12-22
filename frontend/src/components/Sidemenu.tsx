@@ -14,18 +14,10 @@ type Props = {
 }
 
 const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
-  const [hashtags, setHashtags] = useState<Ihashtag[]>([{name: '', counter: 0}])
-
-  useEffect(() => {
-    const fetchHashtags = async() => {
-      axios.get(`${API_URL}/hashtags`).then(res => {
-        const hashtagsCopy:Ihashtag[] = res.data
-        setHashtags(hashtagsCopy.sort((a, b) => b.counter - a.counter ))
-      })
-    }
-    fetchHashtags()
-  }, []);
-
+  const cookies: Cookies = new Cookies();
+  const user: Iuser = cookies.get('user');
+  const [popularHashtags, setPopularHashtags] = useState<Ihashtag[]>([{name: '', counter: 0}])
+  const [recentHashtags, setRecentHashtags] = useState<string[]>([''])
   const[isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false);
   const[isSideMenuAnimateUsed, setIsSideMenuAnimateUsed] = useState<boolean | null>(null);
 
@@ -40,11 +32,39 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
       setIsSideMenuOpen(true);
     }
   }
-  // mapping only 3 first elements of array
-  const hashtagsMap = hashtags.slice(0, 3).map(hash => {
+
+  useEffect(() => {
+    const fetchPopularHashtags = async() => {
+      axios.get(`${API_URL}/hashtags`).then(res => {
+        const hashtagsCopy:Ihashtag[] = res.data
+        setPopularHashtags(hashtagsCopy.sort((a, b) => b.counter - a.counter ))
+      })
+    }  
+    const fetchRecentHashtags = () => {
+      axios.get(`${API_URL}/users/${user.id}`).then(res => {
+        setRecentHashtags(res.data.recent_hashtags)
+      })
+    }
+
+    fetchPopularHashtags()
+    fetchRecentHashtags()
+
+  }, []);
+
+  // mapping only 3 first elements of popular hashtags array
+  const popularHashtagsMap = popularHashtags.slice(0, 3).map(hash => {
     return(
-      <li>
+      <li key={hash.name}>
         <Link className='hover:underline' to={`/hashtags/${hash.name}`}>#{hash.name}</Link>
+      </li>
+    )
+  })
+
+  // mapping only 3 first elements of recent hashtags array
+  const recentHashtagsMap = recentHashtags.slice(0, 3).map(hash => {
+    return(
+      <li key={hash}>
+        <Link className='hover:underline' to={`/hashtags/${hash}`}>#{hash}</Link>
       </li>
     )
   })
@@ -59,17 +79,21 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
             <div className='mt-5 border-2 border-gray-600 rounded-xl p-3 bg-second'>
               <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
               <ul className='m-1 text-red-400'>
-                <li>#Elektronika</li>
-                <li>#Szymool</li>
-                <li>#DealIt</li>
+                {
+                  recentHashtags.length > 0 ?
+                    recentHashtagsMap
+                  :
+                    <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+                }
               </ul>
             </div>
             <div className='mt-5 border-2 border-gray-600 rounded-2xl p-3 bg-second'>
               <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
               <ul className='m-1 text-red-400'>
                 {
-                  hashtags.length > 0 ?
-                    hashtagsMap
+                  popularHashtags.length > 0 
+                  ?
+                    popularHashtagsMap
                   :
                     <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
                 }
@@ -106,17 +130,21 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
                 <div className='mt-5 border-2 border-gray-600 rounded-xl p-3 bg-second'>
                   <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
                   <ul className='m-1 text-red-400'>
-                    <li>#Elektronika</li>
-                    <li>#Szymool</li>
-                    <li>#DealIt</li>
+                    {
+                      recentHashtags.length > 0 ?
+                        recentHashtagsMap
+                      :
+                        <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+                    }
                   </ul>
                 </div>
                 <div className='mt-5 border-2 border-gray-600 rounded-2xl p-3 bg-second'>
                   <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
                   <ul className='m-1 text-red-400'>
                     {
-                      hashtags.length > 0 ?
-                        hashtagsMap
+                      popularHashtags.length > 0 
+                      ?
+                        popularHashtagsMap
                       :
                         <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
                     }
@@ -133,3 +161,30 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
 }
 
 export default Sidemenu;
+
+
+// <nav className='w-60'>
+//   <div className='fixed flex flex-col justify-between text-white h-screen pt-16 py-10'>
+//     <div>
+//       <ArticleSearching articles={articles} setArticles={setArticles} />
+//       <ArticlesSorting articles={articles} setArticles={setArticles} />
+//       <div className='mt-5'>
+//         <h2 className='text-2xl font-semibold'>Ostatnie hashtagi</h2>
+//         <ul className='m-1 text-blue-400'>
+
+//         </ul>
+//       </div>
+//       <div className='mt-2'>
+//         <h2 className='text-2xl font-semibold'>Popularne hashtagi</h2>
+//         <ul className='m-1 text-blue-400'>
+//           {
+//             popularHashtags.length > 0 ?
+//               popularHashtagsMap
+//             :
+//               <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+//           }
+//         </ul>
+//       </div>
+//     </div>
+//   </div>
+// </nav>

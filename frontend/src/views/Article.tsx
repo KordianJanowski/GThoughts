@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from "react-router-dom";
 import axios from 'axios'
-import Cookies from 'universal-cookie';
 import { useParams } from 'react-router-dom';
 
 import AddComment from '../components/Article/Comments/AddComment';
 import AddFeedback from '../components/Article/Feedbacks/AddFeedback';
 
 import API_URL from '../API_URL';
-import { Iuser, IarticleBody ,Iarticle } from '../models/models'
-import {user, jwt} from '../models/const-variables'
+import { Iarticle, IarticleBody } from '../models/models'
+import { authorization, user} from '../models/const-variables'
 
 interface Props {
   id: string;
@@ -33,15 +31,40 @@ const Article:React.FC = () =>{
     fetchArticle()
   }, [])
 
-  const articleBodies = article?.body.map((body: IarticleBody) =>{
-    return(
-      <div>
-        <h2>{ body.subtitle }</h2>
-        <p>{ body.body }</p>
-        <img src={body.image} alt="" />
-      </div>
-    )
-  })
+  useEffect(() => {
+    if(isArticleExist) {
+      let userRecentHashtags:string[] = []
+  
+      const fetchUserRecentHashtags = async () => {
+        await axios.get(`${API_URL}/users/${user.id}`)
+        .then(res => {
+          userRecentHashtags = res.data.recent_hashtags
+          updateUserRecentHashtags()
+        })
+        .catch(err => console.log(err))
+      }
+  
+      const updateUserRecentHashtags = async () => {
+        article?.hashtags.forEach((hashtag: string) => {
+          if(!userRecentHashtags.includes(hashtag)) {
+            userRecentHashtags.unshift(hashtag)
+            if(userRecentHashtags.length > 50) {
+              userRecentHashtags.pop()
+            }
+          } else {
+            const index = userRecentHashtags.findIndex(el => el === hashtag)
+            userRecentHashtags.splice(index, 1)
+            userRecentHashtags.unshift(hashtag)
+          }
+        })
+   
+        await axios.put(`${API_URL}/users/${user.id}`, {recent_hashtags: userRecentHashtags}, authorization)
+        .catch(err => console.log(err))
+      }
+  
+      fetchUserRecentHashtags()
+    }
+  }, [isArticleExist])
 
   return(
     <div>
@@ -52,7 +75,13 @@ const Article:React.FC = () =>{
           { article?.title }
         </h1>
         <div>
-        { articleBodies }
+          { 
+            article?.body.map((block: IarticleBody) => {
+              return (
+                <p>{block.text}</p>
+              )
+            }) 
+          }
         </div>
 
         <div>{article?.author_name}</div>

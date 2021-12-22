@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useFormik  } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios'
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import API_URL from '../../../API_URL'
 import { Icomment } from '../../../models/models';

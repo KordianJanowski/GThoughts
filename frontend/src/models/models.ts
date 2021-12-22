@@ -5,13 +5,6 @@ export interface Iuser{
   avatar: string;
 }
 
-export interface IarticleBody{
-  subtitle: string;
-  body: string;
-  image?: string;
-  id: number;
-}
-
 export interface Iarticle {
   title: string;
   body: IarticleBody[];
@@ -26,6 +19,16 @@ export interface Iarticle {
   _id: string;
   __v: number;
   isLiked?: boolean;
+}
+
+export interface IarticleBody {
+  key: string;
+  text: string;
+  type: string;
+  depth: number;
+  inlineStyleRanges: any[];
+  entityRanges: any[];
+  data: {};
 }
 
 export interface Icomment{

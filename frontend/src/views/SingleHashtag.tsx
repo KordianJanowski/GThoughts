@@ -3,8 +3,6 @@ import API_URL from '../API_URL'
 import axios from 'axios'
 import { Iarticle, Iliked, Ifollowed } from '../models/models';
 import { user, jwt } from '../models/const-variables';
-import ArticlesSorting from '../components/ArticlesSorting';
-import ArticleSearching from '../components/ArticlesSearching';
 import Navbar from '../components/Navbar';
 import Sidemenu from '../components/Sidemenu';
 import Article from '../components/Article/Article';
@@ -39,7 +37,6 @@ const Home: React.FC = () => {
 
       await axios.get(`${API_URL}/articles`, { headers: { hash_name: hashtag } })
       .then(res => {
-        console.log(res.data)
         setArticles(res.data)
         setArticlesCopy(res.data)
       })

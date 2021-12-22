@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import API_URL from '../API_URL';
 import axios from 'axios'
-import { Iarticle, IarticleBody, Ifollowed, Iliked } from '../models/models';
+import { Iarticle, Ifollowed, Iliked } from '../models/models';
 import { user, jwt } from '../models/const-variables';
-import { Link, Route, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Article from '../components/Article/Article';
 import Navbar from '../components/Navbar';
 import Sidemenu from '../components/Sidemenu';
