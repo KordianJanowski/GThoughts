@@ -30,7 +30,6 @@ const Home: React.FC = () => {
 
       await axios.get(`${API_URL}/articles`)
       .then(res => {
-        console.log(res)
         setArticles(res.data)
         setArticlesCopy(res.data)
       })

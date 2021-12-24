@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import API_URL from '../API_URL'
 import axios from 'axios'
 import { useHistory } from "react-router-dom";
-import { InewHashtag } from '../models/models'
+import { IarticleBody, InewHashtag } from '../models/models'
 import {user, jwt, authorization} from '../models/const-variables'
 import Resizer from 'react-image-file-resizer'
 import ArticleBodyCreator from '../components/ArticleBodyCreator'
@@ -10,11 +10,10 @@ import ArticleBodyCreator from '../components/ArticleBodyCreator'
 const CreateArticle: React.FC = () => {
   const history: any = useHistory();
   const [step, setStep] = useState<number>(1);
-  
   const [title, setTitle] = useState<string>('');
   const [tags, setTags] = useState<string[]>(['']);
   const [tagsAsString, setTagsAsString] = useState<string>('');
-  const [body, setBody] = useState<object[]>([]);
+  const [body, setBody] = useState<IarticleBody>();
   const [image, setImage] = useState<any>('');
   const [imageURL, setImageURL] = useState<string>('')
 
@@ -36,7 +35,6 @@ const CreateArticle: React.FC = () => {
       hashtags: tags,
     }
 
-    console.log(article)
     await axios.post(`${API_URL}/articles`, article, authorization)
     .then( async articleResponse => {
       await axios.get(`${API_URL}/users/${user.id}`)

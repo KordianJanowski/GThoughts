@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import API_URL from '../../API_URL'
 import { Iarticle, Iliked } from '../../models/models'
-import { authorization, user, jwt } from '../../models/const-variables'
+import { authorization, user } from '../../models/const-variables'
 import { Link } from 'react-router-dom'
 
 type Props = {

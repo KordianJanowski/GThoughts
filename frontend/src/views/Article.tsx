@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
+import API_URL from '../API_URL';
 import { useParams } from 'react-router-dom';
-
+import { Iarticle } from '../models/models'
+import { authorization, user} from '../models/const-variables'
 import AddComment from '../components/Article/Comments/AddComment';
 import AddFeedback from '../components/Article/Feedbacks/AddFeedback';
-
-import API_URL from '../API_URL';
-import { Iarticle, IarticleBody } from '../models/models'
-import { authorization, user} from '../models/const-variables'
 
 interface Props {
   id: string;
@@ -16,11 +14,11 @@ interface Props {
 const Article:React.FC = () =>{
   const id: string = useParams<Props>().id;
 
-  const[article, setArticle] = useState<Iarticle>();
-  const[isArticleExist, setIsArticleExist] = useState<boolean>(false);
+  const [article, setArticle] = useState<Iarticle>();
+  const [isArticleExist, setIsArticleExist] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchArticle = async () =>{
+    const fetchArticles = async () =>{
       await axios.get(`${API_URL}/articles/${id}`)
       .then(res => {
         setArticle(res.data);
@@ -28,7 +26,7 @@ const Article:React.FC = () =>{
       })
       .catch(err => console.log(err))
     }
-    fetchArticle()
+    fetchArticles()
   }, [])
 
   useEffect(() => {
@@ -68,25 +66,15 @@ const Article:React.FC = () =>{
 
   return(
     <div>
-      { id }
-      { isArticleExist ?
-      <div>
-        <h1>
-          { article?.title }
-        </h1>
-        <div>
-          { 
-            article?.body.map((block: IarticleBody) => {
-              return (
-                <p>{block.text}</p>
-              )
-            }) 
-          }
-        </div>
-
-        <div>{article?.author_name}</div>
-      </div> :
-      <div>article not exist</div> }
+      { 
+        isArticleExist ?
+          <div>
+            <h1>{ article?.title }</h1>
+            <div dangerouslySetInnerHTML={{__html: article?.body.html!}}></div>
+          </div> 
+        :
+          <div>article not found</div> 
+      }
 
       <div >
         <h1 className="text-4xl">
@@ -100,7 +88,6 @@ const Article:React.FC = () =>{
         </h1>
         <AddFeedback id={id} />
       </div>
-
     </div>
   )
 }

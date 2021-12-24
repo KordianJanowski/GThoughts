@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { IarticleBody } from '../models/models'
 import { Editor } from 'react-draft-wysiwyg';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-import { convertFromRaw, convertToRaw } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
-
+import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
 
 interface Props {
-  setBody: React.Dispatch<React.SetStateAction<object[]>>
+  setBody: React.Dispatch<React.SetStateAction<IarticleBody | undefined>>
 }
 
 const ArticleBodyCreator: React.FC<Props> = ({ setBody }) => {
@@ -21,9 +19,18 @@ const ArticleBodyCreator: React.FC<Props> = ({ setBody }) => {
 
   useEffect(() => {
     if(editorState !== undefined) {
-      let content = convertToRaw(editorState.getCurrentContent())
-      setBody(content.blocks)
-      console.log(content.blocks)
+
+      let blocks:string[] = []
+      convertToRaw(editorState.getCurrentContent()).blocks.forEach(block => {
+        blocks.push(block.text)
+      })
+
+      let data:IarticleBody = {
+        html: draftToHtml(convertToRaw(editorState.getCurrentContent())),
+        blocks: blocks
+      }
+
+      setBody(data)
     }
   }, [editorState])
 
@@ -34,6 +41,16 @@ const ArticleBodyCreator: React.FC<Props> = ({ setBody }) => {
         onEditorStateChange={editorStateChange}
         toolbar={{options: ['inline', 'fontSize', 'fontFamily', 'list', 'textAlign', 'link', 'emoji', 'image', 'history']}}
       />
+      {
+        editorState ?
+          <textarea
+            disabled
+            value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+            className='w-full bg-red-300'
+          />
+        : 
+          <p>zara bedzie</p>
+      }
     </div>
   )
 }

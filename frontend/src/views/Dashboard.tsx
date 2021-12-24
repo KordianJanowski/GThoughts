@@ -1,31 +1,24 @@
-
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import React, {useEffect, useState} from 'react'
 import Cookies from 'universal-cookie';
-import { Link, useHistory } from 'react-router-dom';
-
+import { useHistory } from 'react-router-dom';
 import API_URL from '../API_URL';
-
-import ApproveLayer from '../components/ApproveLayer'
-
-import { Iuser, Iarticle } from '../models/models'
-import {user, jwt, authorization} from '../models/const-variables'
+import { Iarticle } from '../models/models';
+import { user, jwt, authorization } from '../models/const-variables';
 import Article from '../components/Article/Article';
-
-
+import ApproveLayer from '../components/ApproveLayer';
 
 const Dashboard:React.FC = () =>{
   const cookies: Cookies = new Cookies();
   const history: any = useHistory();
 
+  const[articles, setArticles] = useState<Iarticle[]>([]);
   const[selectedArticleID, setSelectedArticleID] = useState<string>('');
   const[isDeleteLayerShow, setIsDeleteLayerShow] = useState<boolean>(false);
   const[isEditLayerShow, setIsEditLayerShow] = useState<boolean>(false);
 
-  const[articles, setArticles] = useState<Iarticle[]>([])
-
-  useEffect(() =>{
-    if(!jwt) return history.push('/login')
+  useEffect(() => {
+    if(!jwt) return history.push('/login');
 
     const fetchArticles = async () =>{
       await axios.get(`${API_URL}/users/${user.id}`)

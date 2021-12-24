@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
-
 import API_URL from '../../API_URL';
 import { user, jwt } from '../../models/const-variables';
 import { Iarticle, Iliked, Ifollowed, Iuser } from '../../models/models';
@@ -33,8 +32,6 @@ const Article: React.FC<Props> = ({
       .then(res => setAuthor(res.data))
     }
     fetchAuthorAvatar()
-
-    console.log(article.author_id)
   }, [])
 
   return(
@@ -87,7 +84,7 @@ const Article: React.FC<Props> = ({
               {article.title}
             </div>
             <div>
-              {article.body[0].text.substring(0,65) + '...'}
+              {article.body.blocks[0]}
             </div>
           </div>
 
@@ -99,7 +96,7 @@ const Article: React.FC<Props> = ({
             />
           :
             <img
-              className=' max-w-full lg:max-w-min md:w-52 lg:w-72 lg:ml-8 border-2 border-gray-600 mt-2 lg:mt-0'
+              className='max-w-full lg:max-w-min md:w-52 lg:w-72 lg:ml-8 border-2 border-gray-600 mt-2 lg:mt-0'
               src="https://archive.org/download/no-photo-available/no-photo-available.png"
               alt=""
             />

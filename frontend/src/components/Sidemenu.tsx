@@ -161,30 +161,3 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
 }
 
 export default Sidemenu;
-
-
-// <nav className='w-60'>
-//   <div className='fixed flex flex-col justify-between text-white h-screen pt-16 py-10'>
-//     <div>
-//       <ArticleSearching articles={articles} setArticles={setArticles} />
-//       <ArticlesSorting articles={articles} setArticles={setArticles} />
-//       <div className='mt-5'>
-//         <h2 className='text-2xl font-semibold'>Ostatnie hashtagi</h2>
-//         <ul className='m-1 text-blue-400'>
-
-//         </ul>
-//       </div>
-//       <div className='mt-2'>
-//         <h2 className='text-2xl font-semibold'>Popularne hashtagi</h2>
-//         <ul className='m-1 text-blue-400'>
-//           {
-//             popularHashtags.length > 0 ?
-//               popularHashtagsMap
-//             :
-//               <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
-//           }
-//         </ul>
-//       </div>
-//     </div>
-//   </div>
-// </nav>

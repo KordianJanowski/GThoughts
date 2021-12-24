@@ -7,7 +7,7 @@ export interface Iuser{
 
 export interface Iarticle {
   title: string;
-  body: IarticleBody[];
+  body: IarticleBody;
   main_image: string;
   author_id: string;
   author_name: string;
@@ -22,13 +22,8 @@ export interface Iarticle {
 }
 
 export interface IarticleBody {
-  key: string;
-  text: string;
-  type: string;
-  depth: number;
-  inlineStyleRanges: any[];
-  entityRanges: any[];
-  data: {};
+  blocks: string[];
+  html: string;
 }
 
 export interface Icomment{

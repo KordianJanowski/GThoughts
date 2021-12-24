@@ -11,12 +11,13 @@ const ArticlesSearching: React.FC<Props> = ({ articles, setArticles, openSidemen
   const [searchingValue, setSearchingValue] = useState<string>('')
 
   const searchArticles = ():void => {
-    console.log('dwad')
     const filteredArticles = articles.filter((article) => {
-      let keySearchingWords = article.title
-      keySearchingWords += article.body
-      let inputItem = searchingValue.toLowerCase().split(' ')
-      return inputItem.every(searchingWord => keySearchingWords.toLowerCase().includes(searchingWord));
+      let keySearchingWords = article.title;
+      article.body.blocks.forEach(block => {
+        keySearchingWords += block
+      })
+      let inputPhrase = searchingValue.toLowerCase().split(' ');
+      return inputPhrase.every(searchingWord => keySearchingWords.toLowerCase().includes(searchingWord));
     })
     openSidemenu()
     setArticles(filteredArticles)
