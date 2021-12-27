@@ -7,11 +7,11 @@ body {
 }
 
 .wrapper {
-  @apply relative flex flex-row container justify-between px-28;
+  @apply relative w-screen flex flex-row justify-between xl:px-28;
 }
 
 .main {
-  @apply min-h-screen flex flex-col items-center px-10 bg-second;
+  @apply min-h-screen flex flex-col items-center px-10 bg-second w-9/12 xl:w-auto border-l border-r border-gray-600;
 }
 
 .main-header {
@@ -23,7 +23,11 @@ body {
 }
 
 .main-content {
-  @apply flex flex-col;
+  @apply flex flex-col w-full;
+}
+
+.like-follow-button{
+  @apply py-2 px-3 border-2 border-gray-600 bg-main rounded-full hover:bg-gray-600 hover:text-white duration-100
 }
 
 .login-register-input {

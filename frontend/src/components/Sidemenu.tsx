@@ -7,6 +7,7 @@ import Cookies from 'universal-cookie';
 import { Iuser, Iarticle } from '../models/models';
 import ArticleSearching from './ArticlesSearching';
 import ArticlesSorting from '../components/ArticlesSorting';
+import { jwt } from '../models/const-variables';
 
 type Props = {
   articles: Iarticle[];
@@ -21,7 +22,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
   const[isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(false);
   const[isSideMenuAnimateUsed, setIsSideMenuAnimateUsed] = useState<boolean | null>(null);
 
-  const openSidemenu = () =>{
+  const toggleSidemenu = () =>{
     if(isSideMenuOpen === true){
       setIsSideMenuAnimateUsed(false);
       setTimeout(() =>{
@@ -35,20 +36,21 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
 
   useEffect(() => {
     const fetchPopularHashtags = async() => {
-      axios.get(`${API_URL}/hashtags`).then(res => {
+      await axios.get(`${API_URL}/hashtags`).then(res => {
         const hashtagsCopy:Ihashtag[] = res.data
         setPopularHashtags(hashtagsCopy.sort((a, b) => b.counter - a.counter ))
       })
-    }  
-    const fetchRecentHashtags = () => {
-      axios.get(`${API_URL}/users/${user.id}`).then(res => {
-        setRecentHashtags(res.data.recent_hashtags)
-      })
+    }
+    const fetchRecentHashtags = async () => {
+      if(jwt){
+        await axios.get(`${API_URL}/users/${user.id}`).then(res => {
+          setRecentHashtags(res.data.recent_hashtags)
+        })
+      }
     }
 
     fetchPopularHashtags()
-    fetchRecentHashtags()
-
+    fetchRecentHashtags()// eslint-disable-next-line
   }, []);
 
   // mapping only 3 first elements of popular hashtags array
@@ -74,7 +76,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
       <nav className='xl:w-80 hidden xl:block'>
         <div className='fixed w-full flex xl:justify-between text-white h-screen mt-20 2xl:ml-10 xl:p-2'>
           <div>
-            <ArticleSearching articles={articles} setArticles={setArticles} openSidemenu={openSidemenu}/>
+            <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu}/>
             <ArticlesSorting articles={articles} setArticles={setArticles} />
             <div className='mt-5 border-2 border-gray-600 rounded-xl p-3 bg-second'>
               <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
@@ -91,7 +93,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
               <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
               <ul className='m-1 text-red-400'>
                 {
-                  popularHashtags.length > 0 
+                  popularHashtags.length > 0
                   ?
                     popularHashtagsMap
                   :
@@ -102,11 +104,11 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
           </div>
         </div>
       </nav>
-      <nav className='w-1/12 xl:w-60 block xl:hidden'>
+      <nav className='w-1/12 block xl:hidden'>
         <div className='fixed w-full flex xl:justify-between text-white h-screen mt-20 2xl:ml-10 xl:p-2'>
           <div className=' w-full md:ml-1 -mt-2'>
             <svg xmlns="http://www.w3.org/2000/svg"
-              onClick={openSidemenu}
+              onClick={toggleSidemenu}
               className="h-10 w-10 text-red-400 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
             </svg>
@@ -119,13 +121,13 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
             <div className='mt-20 px-4'>
               <div className=' w-full md:ml-1 -mt-2'>
                 <svg xmlns="http://www.w3.org/2000/svg"
-                  onClick={openSidemenu}
+                  onClick={toggleSidemenu}
                   className="h-10 w-10 text-red-400 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                 </svg>
               </div>
               <div className='mt-4'>
-                <ArticleSearching articles={articles} setArticles={setArticles} openSidemenu={openSidemenu} />
+                <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu} />
                 <ArticlesSorting articles={articles} setArticles={setArticles} />
                 <div className='mt-5 border-2 border-gray-600 rounded-xl p-3 bg-second'>
                   <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
@@ -142,7 +144,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
                   <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
                   <ul className='m-1 text-red-400'>
                     {
-                      popularHashtags.length > 0 
+                      popularHashtags.length > 0
                       ?
                         popularHashtagsMap
                       :

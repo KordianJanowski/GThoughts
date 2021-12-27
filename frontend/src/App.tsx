@@ -9,6 +9,7 @@ import Register from './views/Register'
 import Dashboard from './views/Dashboard'
 import ProfilesUsers from './views/ProfilesUsers'
 import Saved from './views/Saved';
+import Followeds from './views/Followeds';
 import NotFound from './components/NotFound';
 
 const App: React.FC = () =>{
@@ -42,6 +43,9 @@ const App: React.FC = () =>{
           </Route>
           <Route path="/saved">
             <Saved />
+          </Route>
+          <Route path="/followeds">
+            <Followeds />
           </Route>
           <Route>
             <NotFound />

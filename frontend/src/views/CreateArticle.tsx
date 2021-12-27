@@ -17,12 +17,12 @@ const CreateArticle: React.FC = () => {
   const [image, setImage] = useState<any>('');
   const [imageURL, setImageURL] = useState<string>('')
 
-  useEffect(() => { 
-    if(!jwt) return history.push('/login') 
+  useEffect(() => {
+    if(!jwt) return history.push('/login')// eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    createImageURL()
+    createImageURL()// eslint-disable-next-line
   }, [image])
 
   const postArticle = async () => {
@@ -71,14 +71,14 @@ const CreateArticle: React.FC = () => {
   const createImageURL = async () => {
     if(image !== '') {
       const imageResized: any = await resizeFile(image)
-  
+
       const data = new FormData()
       data.append('file', imageResized)
       data.append("api_key", '732376169492789');
       data.append("api_secret", 'A-dhHrnEZqJYnhAGqLAGcWSDI1M');
       data.append("cloud_name", 'digj3w8rk');
       data.append("upload_preset", "bb7forio");
-  
+
       await axios.post(
         `	https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`,
         data
@@ -89,30 +89,30 @@ const CreateArticle: React.FC = () => {
       .catch(err => console.log(err))
     }
   }
-  
+
   const resizeFile = (file: Blob) => new Promise(resolve => {
-    Resizer.imageFileResizer(file, 400, 400, 'JPEG/PNG/JPG', 100, 0,
+    Resizer.imageFileResizer(file, 600, 600, 'JPEG', 100, 0,
     (uri) => {
       resolve(uri);
     }, 'base64' );
   });
-  
+
   const titleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value)
   }
-  
+
   const tagsValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTagsAsString(event.target.value)
-    
+
     let tagsAsString = event.target.value.replaceAll(/\s/g,'')
     let tags = tagsAsString.split(',')
     tags = tags.filter(function(str) {
       return /\S/.test(str);
     });
-    
+
     setTags(tags)
   }
-  
+
   return(
     <div className='text-2xl text-black'>
       {
@@ -148,13 +148,13 @@ const CreateArticle: React.FC = () => {
             : null}
           </div>
         :
-        step === 2 ? 
+        step === 2 ?
           <ArticleBodyCreator
             setBody={setBody}
           />
         :
         step === 3 ?
-          <button 
+          <button
             onClick={postArticle}
             className="cursor-pointer w-72 h-20 mt-5 bg-red-500 text-black rounded-md"
           >
@@ -165,7 +165,7 @@ const CreateArticle: React.FC = () => {
       }
       {
         step !== 3 ?
-        <button 
+        <button
           className='w-full py-6 bg-red-500 rounded-md mt-20 mb-5 text-black flex justify-center items-center'
           onClick={() => setStep(step+1)}>
           Dalej

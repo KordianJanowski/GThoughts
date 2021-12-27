@@ -4,10 +4,10 @@ import { Iarticle } from '../models/models';
 type Props = {
   articles: Iarticle[]
   setArticles: React.Dispatch<React.SetStateAction<Iarticle[]>>
-  openSidemenu: () => void
+  toggleSidemenu: () => void
 }
 
-const ArticlesSearching: React.FC<Props> = ({ articles, setArticles, openSidemenu}) => {
+const ArticlesSearching: React.FC<Props> = ({ articles, setArticles, toggleSidemenu}) => {
   const [searchingValue, setSearchingValue] = useState<string>('')
 
   const searchArticles = ():void => {
@@ -19,7 +19,7 @@ const ArticlesSearching: React.FC<Props> = ({ articles, setArticles, openSidemen
       let inputPhrase = searchingValue.toLowerCase().split(' ');
       return inputPhrase.every(searchingWord => keySearchingWords.toLowerCase().includes(searchingWord));
     })
-    openSidemenu()
+    toggleSidemenu()
     setArticles(filteredArticles)
   }
 

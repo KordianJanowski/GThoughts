@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import API_URL from '../../API_URL'
 import { Iarticle, Ifollowed } from '../../models/models'
-import { authorization, user, jwt } from '../../models/const-variables'
+import { authorization, user } from '../../models/const-variables'
 import { Link } from 'react-router-dom'
 
 type Props = {
@@ -30,7 +30,7 @@ const Following: React.FC<Props> = ({ route, article, followeds, fetchFolloweds 
   }
 
   useEffect(() =>{
-    checkFolloweds()
+    checkFolloweds()// eslint-disable-next-line
   }, [followeds])
 
   const follow = async () =>{
@@ -58,17 +58,29 @@ const Following: React.FC<Props> = ({ route, article, followeds, fetchFolloweds 
 
   return(
     <div>
-      { isFollowed ?
+      { !isFollowed ?
         <Link to={route}>
-          <svg onClick={unFollow} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-          </svg>
+          <div
+            onClick={follow}
+            className='like-follow-button ml-4 mt-1 xl:mt-0'
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+            </svg>
+            {/* <span className='ml-1'>Zaobserwuj użytkownika</span> */}
+          </div>
         </Link>
         :
         <Link to={route}>
-          <svg onClick={follow} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-          </svg>
+          <div
+            onClick={unFollow}
+            className='like-follow-button ml-4 mt-1 xl:mt-0'
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline mb-1" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+            </svg>
+            {/* <span className="ml-1">Przestań obserwować</span> */}
+          </div>
         </Link>
       }
     </div>

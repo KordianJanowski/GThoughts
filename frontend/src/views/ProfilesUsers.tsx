@@ -58,6 +58,7 @@ const ProfilesUsers: React.FC = () =>{
         likeds={likeds}
         followeds={followeds}
         fetchFolloweds={fetchFolloweds}
+        key={article.id}
       />
     )
   })

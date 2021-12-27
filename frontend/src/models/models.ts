@@ -61,6 +61,7 @@ export interface Ifollowed{
 export interface Ilink {
   name: string;
   url: string;
+  jwt: boolean;
   icon: string;
 }
 

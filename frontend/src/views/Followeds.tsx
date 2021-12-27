@@ -27,18 +27,38 @@ const Saved: React.FC = () =>{
     if(!jwt) return history.push('/login')
 
     const fetchArticlesData = async () =>{
+      await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+      .then(res => setLikeds(res.data))
+      .catch(err => console.log(err))
+
       fetchFolloweds()
 
-      await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+      await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
       .then(async res => {
-        setLikeds(res.data);
-        await res.data.forEach(async (liked: Iliked) =>{
-          await axios.get(`${API_URL}/articles/${liked.article_id}`)
-          .then(async articleRes => {
-            setArticles(prevArticles => [...prevArticles, articleRes.data]);
-            setArticlesCopy(prevArticles => [...prevArticles, articleRes.data]);
+        let followedsArticlesIds: string[][] = [];
+        let isForEachEnded: boolean = false;
+
+        await res.data.forEach(async (followed: Ifollowed) =>{
+          await axios.get(`${API_URL}/users/${followed.author_id}`)
+          .then(responseUser =>{
+            followedsArticlesIds.push(responseUser.data.articles_ids);
+            if(followedsArticlesIds.length === res.data.length) isForEachEnded = true
           })
           .catch(err => console.log(err))
+
+          if(isForEachEnded){
+            followedsArticlesIds.forEach((followedArticlesIds: string[]) =>{
+              if(followedArticlesIds.length === 0) return
+              followedArticlesIds.forEach(async (article_id: string) =>{
+                await axios.get(`${API_URL}/articles/${article_id}`)
+                .then(res => {
+                  setArticles(prev => [...prev, res.data]);
+                  setArticlesCopy(prev => [...prev, res.data]);
+                })
+                .catch(err => console.log(err))
+              })
+            })
+          }
         })
       })
       .catch(err => console.log(err))
@@ -50,7 +70,7 @@ const Saved: React.FC = () =>{
     return (
       <Article
         article={article}
-        route='/saved'
+        route='/followeds'
         toggleDeleteArticleLayer={() =>{}}
         likeds={likeds}
         followeds={followeds}

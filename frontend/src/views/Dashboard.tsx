@@ -15,7 +15,7 @@ const Dashboard:React.FC = () =>{
   const[articles, setArticles] = useState<Iarticle[]>([]);
   const[selectedArticleID, setSelectedArticleID] = useState<string>('');
   const[isDeleteLayerShow, setIsDeleteLayerShow] = useState<boolean>(false);
-  const[isEditLayerShow, setIsEditLayerShow] = useState<boolean>(false);
+  // const[isEditLayerShow, setIsEditLayerShow] = useState<boolean>(false);
 
   useEffect(() => {
     if(!jwt) return history.push('/login');
@@ -38,7 +38,7 @@ const Dashboard:React.FC = () =>{
         })
       })
     }
-    fetchArticles()
+    fetchArticles()// eslint-disable-next-line
   }, [])
 
   const logout = () =>{
@@ -77,9 +77,9 @@ const Dashboard:React.FC = () =>{
     .catch(err => console.log(err))
   }
 
-  const toggleEditArticleLayer = (id:string) =>{
+  // const toggleEditArticleLayer = (id:string) =>{
 
-  }
+  // }
 
 
   const articlesMap = articles.map((article: Iarticle) =>{
@@ -91,6 +91,7 @@ const Dashboard:React.FC = () =>{
         likeds={[]}
         followeds={[]}
         fetchFolloweds={() => {}}
+        key={article.id}
       />
     )
   })

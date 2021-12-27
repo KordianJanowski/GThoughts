@@ -2,13 +2,12 @@ import React, {useEffect, useState} from 'react'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from "react-router-dom";
-import Cookies from 'universal-cookie';
 import Resizer from 'react-image-file-resizer'
 
 import API_URL from '../API_URL';
 import axios from 'axios';
 
-import {user, jwt} from '../models/const-variables'
+import { jwt} from '../models/const-variables'
 
 interface RegisterInputsValue {
   username: string;
@@ -18,13 +17,12 @@ interface RegisterInputsValue {
 
 const Register:React.FC = () =>{
   const history: any = useHistory();
-  const cookies: Cookies = new Cookies();
 
   const[isValidation, setIsValidation] = useState<boolean>(false);
   const[validationText, setValidationText] = useState<string>('');
 
-  const[image, setImage] = useState<any>();
-
+  const[image, setImage] = useState<any>('');
+  // eslint-disable-next-line
   useEffect(() => { if(jwt) return history.push('/dashboard') }, []);
 
   const resizeFile = (file: Blob) => new Promise(resolve => {
@@ -45,7 +43,7 @@ const Register:React.FC = () =>{
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .max(20, 'username must be shorted than 15')
+        .max(20, 'username must be shorted than 20')
         .min(4, 'username must be longer than 6 characters')
         .required('Required'),
       email: Yup.string()
@@ -67,24 +65,31 @@ const Register:React.FC = () =>{
       const register = async () =>{
         let isPostedImages: boolean = false;
         let imageURL: string = ''
-        const imageResized: any = await resizeFile(image)
 
-        const data = new FormData()
-        data.append('file', imageResized)
-        data.append("api_key", '732376169492789');
-        data.append("api_secret", 'A-dhHrnEZqJYnhAGqLAGcWSDI1M');
-        data.append("cloud_name", 'digj3w8rk');
-        data.append("upload_preset", "bb7forio");
+        if(image !== ''){
+          const imageResized: any = await resizeFile(image)
 
-        await axios.post(
-          `	https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`,
-          data
-        )
-        .then(async res => {
-          imageURL = res.data.secure_url;
+          const data = new FormData()
+          data.append('file', imageResized)
+          data.append("api_key", '732376169492789');
+          data.append("api_secret", 'A-dhHrnEZqJYnhAGqLAGcWSDI1M');
+          data.append("cloud_name", 'digj3w8rk');
+          data.append("upload_preset", "bb7forio");
+
+          await axios.post(
+            `	https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`,
+            data
+          )
+          .then(async res => {
+            imageURL = res.data.secure_url;
+            isPostedImages = true;
+          })
+          .catch(err => console.log(err))
+        } else{
           isPostedImages = true;
-        })
-        .catch(err => console.log(err))
+          imageURL = 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg'
+        }
+
 
         if(isPostedImages){
           const user = {

@@ -31,16 +31,16 @@ const Article: React.FC<Props> = ({
       await axios.get(`${API_URL}/users/${article.author_id}`)
       .then(res => setAuthor(res.data))
     }
-    fetchAuthorAvatar()
+    fetchAuthorAvatar()// eslint-disable-next-line
   }, [])
 
   return(
     <div>
       <Link to={`/articles/${article.id}`} key={article.id}>
-        <div className='flex flex-col md:flex-row items-start justify-start lg:justify-between px-2 mb-4 py-2'>
+        <div className='flex flex-col lg:flex-row items-start justify-start lg:justify-between px-2 mb-4 py-2'>
           <div className='flex flex-col items-start justify-start w-full'>
             <div className='flex flex-row justify-between'>
-              <div className='flex flex-row items-center'>
+              <div className='flex flex-row items-center profile'>
                 <img
                   className='w-8 h-8 rounded-full mr-2'
                   src={author.avatar}
@@ -50,10 +50,18 @@ const Article: React.FC<Props> = ({
                   <span className='font-semibold'>{ article.author_name }</span>
                   <span className='text-xs text-gray-400'>{ article.createdAt.substr(0,10) }</span>
                 </div>
-              </div>
-              <div>
-                { jwt && article.author_id !== user.id ?
+                { route === '/dashboard' ?
                   <div>
+                    <Link to='/dashboard' onClick={() => toggleDeleteArticleLayer(article.id)} className=' text-red-500'>
+                      delete
+                    </Link>
+                    <button className= ' text-blue-500'>
+                      edit
+                    </button>
+                  </div>
+                : null}
+                { jwt && article.author_id !== user.id ?
+                  <div className='hidden xl:flex flex-row'>
                     <Liking
                       route={route}
                       article={article}
@@ -67,30 +75,40 @@ const Article: React.FC<Props> = ({
                     />
                   </div>
                 : null}
-
-                { route === '/dashboard' ?
-                  <div>
-                    <Link to='/dashboard' onClick={() => toggleDeleteArticleLayer(article.id)} className=' text-red-500'>
-                      delete
-                    </Link>
-                    <button className= ' text-blue-500'>
-                      edit
-                    </button>
-                  </div>
-                : null}
               </div>
             </div>
+            { jwt && article.author_id !== user.id ?
+              <div className='flex xl:hidden flex-row'>
+                <Liking
+                  route={route}
+                  article={article}
+                  likeds={likeds}
+                />
+                <Following
+                  route={route}
+                  article={article}
+                  followeds={followeds}
+                  fetchFolloweds={fetchFolloweds}
+                />
+              </div>
+            : null}
             <div className='w-full bg-transparent font-bold h-auto text-xl md:text-2xl my-2'>
               {article.title}
             </div>
-            <div>
-              {article.body.blocks[0]}
-            </div>
+            { article.body.blocks[0].length > 65 ?
+              <div>
+                {article.body.blocks[0].substring(0,65) + '...'}
+              </div>
+            :
+              <div>
+                {article.body.blocks[0].substring(0,65)}
+              </div>
+            }
           </div>
 
           {article.main_image ?
             <img
-              className='max-w-full md:w-52 lg:w-80 lg:ml-8 border-2 border-gray-600 lg:block mt-2 lg:mt-0'
+              className='max-w-full lg:max-h-64 lg:w-64 2xl:w-auto lg:ml-8 border-2 border-gray-600 lg:block mt-2 lg:mt-0'
               src={article.main_image}
               alt=""
             />

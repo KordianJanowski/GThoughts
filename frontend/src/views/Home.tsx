@@ -13,7 +13,7 @@ const Home: React.FC = () => {
 
   const[likeds, setLikeds] = useState<Iliked[]>([])
   const[followeds, setFolloweds] = useState<Ifollowed[]>([])
-  
+
   const fetchFolloweds= async () =>{
     await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
     .then(res => setFolloweds(res.data))
@@ -22,11 +22,13 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchArticlesData = async () =>{
-      axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
-      .then(res => setLikeds(res.data))
-      .catch(err => console.log(err))
+      if(jwt){
+        await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+        .then(res => setLikeds(res.data))
+        .catch(err => console.log(err))
 
-      fetchFolloweds()
+        fetchFolloweds()
+      }
 
       await axios.get(`${API_URL}/articles`)
       .then(res => {
