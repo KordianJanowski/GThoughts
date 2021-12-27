@@ -6,6 +6,8 @@ import { Iarticle } from '../models/models'
 import { authorization, user} from '../models/const-variables'
 import AddComment from '../components/Article/Comments/AddComment';
 import AddFeedback from '../components/Article/Feedbacks/AddFeedback';
+import Navbar from '../components/Navbar';
+import SidemenuArticle from '../components/SidemenuArticle';
 
 interface Props {
   id: string;
@@ -13,7 +15,6 @@ interface Props {
 
 const Article:React.FC = () =>{
   const id: string = useParams<Props>().id;
-
   const [article, setArticle] = useState<Iarticle>();
   const [isArticleExist, setIsArticleExist] = useState<boolean>(false);
 
@@ -32,7 +33,7 @@ const Article:React.FC = () =>{
   useEffect(() => {
     if(isArticleExist) {
       let userRecentHashtags:string[] = []
-  
+
       const fetchUserRecentHashtags = async () => {
         await axios.get(`${API_URL}/users/${user.id}`)
         .then(res => {
@@ -41,7 +42,7 @@ const Article:React.FC = () =>{
         })
         .catch(err => console.log(err))
       }
-  
+
       const updateUserRecentHashtags = async () => {
         article?.hashtags.forEach((hashtag: string) => {
           if(!userRecentHashtags.includes(hashtag)) {
@@ -55,39 +56,33 @@ const Article:React.FC = () =>{
             userRecentHashtags.unshift(hashtag)
           }
         })
-   
+
         await axios.put(`${API_URL}/users/${user.id}`, {recent_hashtags: userRecentHashtags}, authorization)
         .catch(err => console.log(err))
       }
-  
+
       fetchUserRecentHashtags()
     }
   }, [isArticleExist])
 
   return(
-    <div>
-      { 
-        isArticleExist ?
-          <div>
-            <h1>{ article?.title }</h1>
-            <div dangerouslySetInnerHTML={{__html: article?.body.html!}}></div>
-          </div> 
-        :
-          <div>article not found</div> 
-      }
-
-      <div >
-        <h1 className="text-4xl">
-          COMMENTS
-        </h1>
-        <AddComment id={id} />
+    <div className='wrapper'>
+      <Navbar />
+      <div className='main'>
+        <div className='w-full mb-5 border-b border-red-400 py-10 flex items-center'>
+          <h2 className='main-header-text font-bold'>{ article?.title }</h2>
+          <img
+            className='w-160 ml-2'
+            src={article?.main_image}
+            alt=''
+          />
+        </div>
+        <div
+          dangerouslySetInnerHTML={{__html: article?.body.html!}}
+          className='main-content text-2xl'>
+        </div>
       </div>
-      <div >
-        <h1 className="text-4xl">
-          FEEDBACK
-        </h1>
-        <AddFeedback id={id} />
-      </div>
+      <SidemenuArticle article={article!} />
     </div>
   )
 }

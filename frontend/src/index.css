@@ -11,7 +11,7 @@ body {
 }
 
 .main {
-  @apply min-h-screen flex flex-col items-center px-10 bg-second w-9/12 xl:w-auto border-l border-r border-gray-600;
+  @apply min-h-screen flex flex-col items-center px-10 bg-second w-9/12 xl:w-240 border-l border-r border-gray-600;
 }
 
 .main-header {
@@ -61,7 +61,6 @@ body {
 .side-menu{
   animation: 0.5s side-menu-animation 1;
 }
-
 
 @keyframes side-menu-animation1{
   0%{

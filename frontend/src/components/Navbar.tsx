@@ -71,7 +71,7 @@ const Navbar: React.FC = () =>{
             className='button-animation mb-20 rounded-full xl:px-5 xl:py-3 xl:bg-second'
           >
             <img
-              className='w-10 h-10 rounded-full xl:mr-4 inline'
+              className='w-10 h-10 rounded-full xl:mr-3 inline'
               src={user?.avatar}
               alt=""
             />

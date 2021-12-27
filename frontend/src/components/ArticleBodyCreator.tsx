@@ -12,7 +12,7 @@ interface Props {
 
 const ArticleBodyCreator: React.FC<Props> = ({ setBody }) => {
   const [editorState, setEditorState] = useState<any>()
-  
+
   const editorStateChange = (editorState: any) => {
     setEditorState(editorState)
   }
@@ -20,14 +20,17 @@ const ArticleBodyCreator: React.FC<Props> = ({ setBody }) => {
   useEffect(() => {
     if(editorState !== undefined) {
 
-      let blocks:string[] = []
+      let blocksArray:string[] = []
       convertToRaw(editorState.getCurrentContent()).blocks.forEach(block => {
-        blocks.push(block.text)
+        blocksArray.push(block.text)
       })
 
+      let htmlString = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+      htmlString = htmlString.replace(/\n/ig, '<br>')
+
       let data:IarticleBody = {
-        html: draftToHtml(convertToRaw(editorState.getCurrentContent())),
-        blocks: blocks
+        html: htmlString,
+        blocks: blocksArray
       }
 
       setBody(data)
@@ -41,16 +44,6 @@ const ArticleBodyCreator: React.FC<Props> = ({ setBody }) => {
         onEditorStateChange={editorStateChange}
         toolbar={{options: ['inline', 'fontSize', 'fontFamily', 'list', 'textAlign', 'link', 'emoji', 'image', 'history']}}
       />
-      {
-        editorState ?
-          <textarea
-            disabled
-            value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
-            className='w-full bg-red-300'
-          />
-        : 
-          <p>zara bedzie</p>
-      }
     </div>
   )
 }
