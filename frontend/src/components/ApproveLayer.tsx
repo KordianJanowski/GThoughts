@@ -14,20 +14,20 @@ const ApproveLayer:React.FC<Props> = ({
 
   return(
     <div className="h-screen flex flex-col justify-center items-center">
-      <div className="p-20 bg-gray-100">
-        <div className="text-3xl">Are you sure you want to delete this article?</div>
-        <div className="flex flex-row justify-around mt-8">
+      <div>
+        <div className="text-3xl">Jesteś pewny, że chcesz usunąć ten artykuł ?</div>
+        <div className="flex flex-row flex-wrap justify-around mt-8">
           <div
-            className="w-32 bg-black text-white p-5 text-center text-2xl font-bold rounded-xl hover:opacity-80 duration-150 cursor-pointer"
+            className="w-32 xl:w-1/3 mt-2 p-5 text-center bg-red-500 text-2xl font-bold rounded-xl hover:opacity-80 duration-150 cursor-pointer"
             onClick={approve}
           >
-            Yes
+            Tak
           </div>
           <div
-            className="w-32 bg-white text-black p-5 text-center text-2xl font-bold rounded-xl hover:opacity-80 duration-150 cursor-pointer"
+            className="w-32 xl:w-1/3 mt-2 p-5 text-center text-2xl bg-main font-bold rounded-xl hover:opacity-80 duration-150 cursor-pointer"
             onClick={() => toggleLayer('')}
           >
-            No
+            Nie
           </div>
         </div>
       </div>

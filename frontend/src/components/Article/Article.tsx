@@ -24,7 +24,7 @@ const Article: React.FC<Props> = ({
   followeds,
   fetchFolloweds,
 }) =>{
-  const[author, setAuthor] = useState<Iuser>({id: '', username: '', email: '', avatar: '' });
+  const[author, setAuthor] = useState<Iuser>({id: '', username: '', email: '', avatar: '', createdAt: '' });
 
   useEffect(() => {
     const fetchAuthorAvatar = async () => {
@@ -41,23 +41,33 @@ const Article: React.FC<Props> = ({
           <div className='flex flex-col items-start justify-start w-full'>
             <div className='flex flex-row justify-between'>
               <div className='flex flex-row items-center profile'>
-                <img
-                  className='w-8 h-8 rounded-full mr-2'
-                  src={author.avatar}
-                  alt=""
-                />
+                <Link to={`/profiles-users/${article.author_id}`}>
+                  <img
+                    className='w-8 h-8 rounded-full mr-2'
+                    src={author.avatar}
+                    alt=""
+                  />
+                </Link>
                 <div className='flex flex-col text-gray-300'>
-                  <span className='font-semibold'>{ article.author_name }</span>
+                  <Link to={`/profiles-users/${article.author_id}`} className='font-semibold'>{ article.author_name }</Link>
                   <span className='text-xs text-gray-400'>{ article.createdAt.substr(0,10) }</span>
                 </div>
                 { route === '/dashboard' ?
-                  <div>
-                    <Link to='/dashboard' onClick={() => toggleDeleteArticleLayer(article.id)} className=' text-red-500'>
-                      delete
+                  <div className='ml-4 hidden xl:flex flex-row'>
+                    <Link to='/dashboard' className='' onClick={() => toggleDeleteArticleLayer(article.id)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="trash-edit-button hover:border-red-500 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
                     </Link>
-                    <button className= ' text-blue-500'>
-                      edit
-                    </button>
+                    <Link to='/dashboard' className='ml-2'>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="trash-edit-button hover:border-blue-500 hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </Link>
                   </div>
                 : null}
                 { jwt && article.author_id !== user.id ?
@@ -92,6 +102,25 @@ const Article: React.FC<Props> = ({
                 />
               </div>
             : null}
+            { route === '/dashboard' ?
+              <div className='xl:ml-4 mt-2 flex xl:hidden flex-row'>
+                <Link to='/dashboard' className='' onClick={() => toggleDeleteArticleLayer(article.id)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="trash-edit-button hover:border-red-500 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </Link>
+                <Link to='/dashboard' className='ml-2'>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="trash-edit-button hover:border-blue-500 hover:text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </Link>
+              </div>
+            : null}
+
             <div className='w-full bg-transparent font-bold h-auto text-xl md:text-2xl my-2'>
               {article.title}
             </div>
@@ -108,13 +137,13 @@ const Article: React.FC<Props> = ({
 
           {article.main_image ?
             <img
-              className='max-w-full lg:max-h-64 lg:w-64 2xl:w-auto lg:ml-8 border-2 border-gray-600 lg:block mt-2 lg:mt-0'
+              className='max-w-full lg:max-h-64 lg:w-64 2xl:w-auto lg:ml-8 border border-gray-600 lg:block mt-2 lg:mt-0'
               src={article.main_image}
               alt=""
             />
           :
             <img
-              className='max-w-full lg:max-w-min md:w-52 lg:w-72 lg:ml-8 border-2 border-gray-600 mt-2 lg:mt-0'
+              className='max-w-full lg:max-w-min md:w-52 lg:w-72 lg:ml-8 border border-gray-600 mt-2 lg:mt-0'
               src="https://archive.org/download/no-photo-available/no-photo-available.png"
               alt=""
             />

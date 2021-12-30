@@ -7,7 +7,8 @@ import { authorization, user} from '../models/const-variables'
 import AddComment from '../components/Article/Comments/AddComment';
 import AddFeedback from '../components/Article/Feedbacks/AddFeedback';
 import Navbar from '../components/Navbar';
-import SidemenuArticle from '../components/SidemenuArticle';
+import SidemenuArticle from '../components/Sidemenus/SidemenuArticle';
+import SidemenuArticleLoading from '../components/Sidemenus/SidemenuArticleLoading';
 
 interface Props {
   id: string;
@@ -69,17 +70,19 @@ const Article:React.FC = () =>{
     <div className='wrapper'>
       <Navbar />
       <div className='main'>
-        <div className='w-full mb-5 border-b border-red-400 py-10 flex items-center'>
-          <h2 className='main-header-text font-bold'>{ article?.title }</h2>
-          <img
-            className='w-160 ml-2'
-            src={article?.main_image}
-            alt=''
-          />
-        </div>
-        <div
-          dangerouslySetInnerHTML={{__html: article?.body.html!}}
-          className='main-content text-2xl'>
+        <div>
+          <div className='w-full mb-5 border-b border-red-400 py-10 flex items-center'>
+            <h2 className='main-header-text font-bold'>{ article?.title }</h2>
+            <img
+              className='w-160 ml-2'
+              src={article?.main_image}
+              alt=''
+            />
+          </div>
+          <div
+            dangerouslySetInnerHTML={{__html: article?.body.html!}}
+            className='main-content text-2xl'>
+          </div>
         </div>
       </div>
       <SidemenuArticle article={article!} />

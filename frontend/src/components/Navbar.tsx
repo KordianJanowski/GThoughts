@@ -85,9 +85,9 @@ const Navbar: React.FC = () =>{
         :
           <Link
             to="/login"
-            className='button-animation mb-20 bg-second text-white text-center p-2 text-xs  sm:px-2 sm:text-sm lg:px-8 lg:text-base xl:p-4 xl:px-16 xl:text-lg  font-medium  rounded-full border-2 border-gray-600'
+            className='button-animation mb-20 bg-second text-white text-center p-2 text-xs sm:px-2 sm:text-sm lg:px-8 lg:text-base xl:p-4 xl:px-12 xl:text-lg  font-medium  rounded-full border-2 border-gray-600'
           >
-            Zaloguj
+            Zaloguj się
           </Link>
         }
       </div>

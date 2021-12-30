@@ -4,9 +4,10 @@ import axios from 'axios'
 import { Iarticle, Iliked, Ifollowed } from '../models/models';
 import { user, jwt } from '../models/const-variables';
 import Navbar from '../components/Navbar';
-import Sidemenu from '../components/Sidemenu';
+import Sidemenu from '../components/Sidemenus/Sidemenu';
 import Article from '../components/Article/Article';
 import { useParams } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 interface Props {
   hashtag:string;
@@ -17,6 +18,8 @@ const Home: React.FC = () => {
 
   const [articles, setArticles] = useState<Iarticle[]>([])
   const [articlesCopy, setArticlesCopy] = useState<Iarticle[]>([])
+
+  const[articleResponse, setArticleResponse] = useState<boolean>(false);
 
   const[likeds, setLikeds] = useState<Iliked[]>([])
   const[followeds, setFolloweds] = useState<Ifollowed[]>([])
@@ -37,8 +40,9 @@ const Home: React.FC = () => {
 
       await axios.get(`${API_URL}/articles`, { headers: { hash_name: hashtag } })
       .then(res => {
-        setArticles(res.data)
-        setArticlesCopy(res.data)
+        setArticles(res.data);
+        setArticlesCopy(res.data);
+        setArticleResponse(true);
       })
       .catch( err => console.log(err))
     }
@@ -68,11 +72,17 @@ const Home: React.FC = () => {
           <h2 className='main-header-text'>Hashtag: <span className='text-red-400 font-bold'>{hashtag}</span></h2>
         </div>
         <div className='main-content'>
-          {
-            articles.length !== 0 ?
-              articlesMap
-            :
-              <p>Nie znaleziono żadnych artykułów</p>
+          { articleResponse ?
+            <div>
+              {
+                articles.length !== 0 ?
+                  articlesMap
+                :
+                  <p>Nie znaleziono żadnych artykułów</p>
+              }
+            </div>
+          :
+            <Loading />
           }
         </div>
       </div>

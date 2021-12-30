@@ -6,13 +6,16 @@ import { user, jwt } from '../models/const-variables';
 import { useHistory } from 'react-router-dom'
 import Article from '../components/Article/Article';
 import Navbar from '../components/Navbar';
-import Sidemenu from '../components/Sidemenu';
+import Sidemenu from '../components/Sidemenus/Sidemenu';
+import Loading from '../components/Loading';
 
 const Saved: React.FC = () =>{
   const history: any = useHistory();
 
   const [articles, setArticles] = useState<Iarticle[]>([])
   const [articlesCopy, setArticlesCopy] = useState<Iarticle[]>([])
+
+  const[articleResponse, setArticleResponse] = useState<boolean>(false);
 
   const [likeds, setLikeds] = useState<Iliked[]>([])
   const [followeds, setFolloweds] = useState<Ifollowed[]>([])
@@ -38,6 +41,10 @@ const Saved: React.FC = () =>{
         let followedsArticlesIds: string[][] = [];
         let isForEachEnded: boolean = false;
 
+        if(res.data.length === 0){
+          setArticleResponse(true)
+        }
+
         await res.data.forEach(async (followed: Ifollowed) =>{
           await axios.get(`${API_URL}/users/${followed.author_id}`)
           .then(responseUser =>{
@@ -47,6 +54,8 @@ const Saved: React.FC = () =>{
           .catch(err => console.log(err))
 
           if(isForEachEnded){
+            let responseCounter: number = 0;
+
             followedsArticlesIds.forEach((followedArticlesIds: string[]) =>{
               if(followedArticlesIds.length === 0) return
               followedArticlesIds.forEach(async (article_id: string) =>{
@@ -54,6 +63,10 @@ const Saved: React.FC = () =>{
                 .then(res => {
                   setArticles(prev => [...prev, res.data]);
                   setArticlesCopy(prev => [...prev, res.data]);
+                  responseCounter++;
+                  if(responseCounter === followedsArticlesIds.length){
+                    setArticleResponse(true)
+                  }
                 })
                 .catch(err => console.log(err))
               })
@@ -85,14 +98,20 @@ const Saved: React.FC = () =>{
       <Navbar />
       <div className='main'>
         <div className='main-header'>
-          <h2 className='main-header-text'>Zapisane</h2>
+          <h2 className='main-header-text'>Obserwowani użytkownicy</h2>
         </div>
         <div className='main-content'>
-          {
-            articles.length !== 0 ?
-              articlesMap
-            :
-              <p>Nie znaleziono żadnych artykułów</p>
+          { articleResponse ?
+            <div>
+              {
+                articles.length !== 0 ?
+                  articlesMap
+                :
+                  <p>Nie masz żadnych obserwowanych użytkowników</p>
+              }
+            </div>
+          :
+            <Loading />
           }
         </div>
       </div>

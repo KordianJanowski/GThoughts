@@ -1,21 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 import { useHistory } from 'react-router-dom';
 import API_URL from '../API_URL';
 import { Iarticle } from '../models/models';
 import { user, jwt, authorization } from '../models/const-variables';
 import Article from '../components/Article/Article';
 import ApproveLayer from '../components/ApproveLayer';
+import Navbar from '../components/Navbar';
+import Loading from '../components/Loading';
+import SidemenuDashboard from '../components/Sidemenus/SidemenuDashboard';
 
 const Dashboard:React.FC = () =>{
-  const cookies: Cookies = new Cookies();
   const history: any = useHistory();
 
   const[articles, setArticles] = useState<Iarticle[]>([]);
   const[selectedArticleID, setSelectedArticleID] = useState<string>('');
   const[isDeleteLayerShow, setIsDeleteLayerShow] = useState<boolean>(false);
   // const[isEditLayerShow, setIsEditLayerShow] = useState<boolean>(false);
+  const[articleResponse, setArticleResponse] = useState<boolean>(false);
 
   useEffect(() => {
     if(!jwt) return history.push('/login');
@@ -28,10 +30,10 @@ const Dashboard:React.FC = () =>{
         res.data.articles_ids.forEach(async (article_id: string, index: number) =>{
           await axios.get(`${API_URL}/articles/${article_id}`)
           .then(async response =>{
-            console.log(response.data)
             newArticles.push(response.data)
             if(newArticles.length === res.data.articles_ids.length){
               setArticles([...newArticles])
+              setArticleResponse(true)
             }
           })
           .catch(err => console.log(err))
@@ -40,13 +42,6 @@ const Dashboard:React.FC = () =>{
     }
     fetchArticles()// eslint-disable-next-line
   }, [])
-
-  const logout = () =>{
-    cookies.remove('jwt')
-    cookies.remove('user')
-    history.push('/')
-    history.go(0)
-  }
 
   const toggleDeleteArticleLayer = (id:string) =>{
     setSelectedArticleID(id)
@@ -97,23 +92,39 @@ const Dashboard:React.FC = () =>{
   })
 
   return(
-    <div className='min-h-screen flex flex-col items-center px-10 bg-second mx-60'>
+    <div>
       { isDeleteLayerShow ?
         <ApproveLayer
           id={selectedArticleID}
           toggleLayer={toggleDeleteArticleLayer}
           approve={deleteArticle}
         />
-        :
-        <div>
-          {articlesMap}
+      :
+        <div className='wrapper'>
+          <Navbar />
+            <div className='main'>
+              <div className='main-header'>
+                <h2 className='main-header-text'>Panel użytkownika</h2>
+              </div>
+              <div className='main-content'>
+
+                { articleResponse ?
+                  <div>
+                    {
+                      articles.length !== 0 ?
+                        articlesMap
+                      :
+                        <p>Nie znaleziono żadnych artykułów</p>
+                    }
+                  </div>
+                :
+                  <Loading />
+                }
+              </div>
+            </div>
+            <SidemenuDashboard />
         </div>
       }
-
-      <button onClick={logout}>logout</button>
-
-      {user?.username}
-      {user?.id}
     </div>
   )
 }

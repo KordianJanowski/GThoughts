@@ -10,7 +10,7 @@ import Dashboard from './views/Dashboard'
 import ProfilesUsers from './views/ProfilesUsers'
 import Saved from './views/Saved';
 import Followeds from './views/Followeds';
-import NotFound from './components/NotFound';
+import NotFound from './views/NotFound';
 
 const App: React.FC = () =>{
   return (
@@ -20,14 +20,8 @@ const App: React.FC = () =>{
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/hashtags/:hashtag">
-            <SingleHashtag />
-          </Route>
           <Route path="/create-article">
             <CreateArticle />
-          </Route>
-          <Route path="/articles/:id">
-            <Article />
           </Route>
           <Route path="/login">
             <Login />
@@ -38,14 +32,20 @@ const App: React.FC = () =>{
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/user/:id">
-            <ProfilesUsers />
-          </Route>
           <Route path="/saved">
             <Saved />
           </Route>
           <Route path="/followeds">
             <Followeds />
+          </Route>
+          <Route path="/articles/:id">
+            <Article />
+          </Route>
+          <Route path="/profiles-users/:id">
+            <ProfilesUsers />
+          </Route>
+          <Route path="/hashtags/:hashtag">
+            <SingleHashtag />
           </Route>
           <Route>
             <NotFound />

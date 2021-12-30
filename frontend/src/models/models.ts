@@ -3,6 +3,7 @@ export interface Iuser{
   username: string;
   email: string;
   avatar: string;
+  createdAt: string;
 }
 
 export interface Iarticle {
