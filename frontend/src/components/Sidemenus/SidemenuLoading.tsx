@@ -13,20 +13,17 @@ const SidemenuLoading: React.FC = () =>{
               />
             </div>
 
-            <div
-              className=' w-3/5 bg-main my-2 px-2 py-1 text-main border border-gray-600 rounded-md animate-pulse'
-            >t
-            </div>
+            <div className=' w-3/5 bg-main my-2 px-2 py-1 text-main border border-gray-600 rounded-md animate-pulse'>t</div>
 
             <div className=' mt-7 border border-gray-600 rounded-xl p-3 bg-second animate-pulse'>
               <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
               <ul className='m-1'>
-                <li>#Programming</li>
+                <li>t</li>
                 <li>t</li>
                 <li>t</li>
               </ul>
             </div>
-            <div className='mt-5 border border-gray-600 rounded-2xl p-3 bg-second animate-pulse'>
+            <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second animate-pulse'>
               <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
               <ul className='m-1'>
                 <li>t</li>

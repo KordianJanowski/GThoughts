@@ -11,9 +11,7 @@ import Loading from '../components/Loading'
 const Home: React.FC = () => {
   const [articles, setArticles] = useState<Iarticle[]>([])
   const [articlesCopy, setArticlesCopy] = useState<Iarticle[]>([])
-
   const[articleResponse, setArticleResponse] = useState<boolean>(false);
-
   const[likeds, setLikeds] = useState<Iliked[]>([])
   const[followeds, setFolloweds] = useState<Ifollowed[]>([])
 

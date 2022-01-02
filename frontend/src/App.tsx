@@ -8,7 +8,7 @@ import Login from './views/Login'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
 import ProfilesUsers from './views/ProfilesUsers'
-import Saved from './views/Saved';
+import Liked from './views/Liked';
 import Followeds from './views/Followeds';
 import NotFound from './views/NotFound';
 
@@ -32,8 +32,8 @@ const App: React.FC = () =>{
           <Route path="/dashboard">
             <Dashboard />
           </Route>
-          <Route path="/saved">
-            <Saved />
+          <Route path="/liked">
+            <Liked />
           </Route>
           <Route path="/followeds">
             <Followeds />

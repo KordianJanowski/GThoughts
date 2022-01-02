@@ -49,8 +49,6 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
           setRecentHashtags(res.data.recent_hashtags);
           setHashtagResponse(true);
         })
-      } else{
-
       }
     }
 
@@ -78,7 +76,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
 
   return(
     <>
-      { hashtagResponse === false ?
+      { !hashtagResponse ?
         <SidemenuLoading />
       :
         <>
@@ -105,7 +103,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
 
                   </ul>
                 </div>
-                <div className='mt-5 border border-gray-600 rounded-2xl p-3 bg-second'>
+                <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second'>
                   <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
                   <ul className='m-1 text-red-400'>
                     {

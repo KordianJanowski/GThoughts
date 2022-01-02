@@ -58,35 +58,39 @@ const Following: React.FC<Props> = ({ route, article, followeds, fetchFolloweds 
 
   return(
     <div>
-      { !isFollowed ?
-        <Link to={route}>
-          <div
-            onClick={follow}
-            className='like-follow-button ml-4 mt-1 xl:mt-0'
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-            </svg>
-            <div className="like-follow-button-sub-comment">
-              Obserwuj użytkownika
-            </div>
-          </div>
-        </Link>
-        :
-        <Link to={route}>
-          <div
-            onClick={unFollow}
-            className='like-follow-button ml-4 mt-1 xl:mt-0'
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-            </svg>
-            <div className="like-follow-button-sub-comment">
-              Przestań obserwować użytkownika
-            </div>
-          </div>
-        </Link>
-      }
+      <Link to={route}>
+        <div
+          onClick={isFollowed ? unFollow : follow}
+          className={route.includes('/article') ? 'like-follow-button-article' : 'like-follow-button'}
+        >
+          {
+            isFollowed ?
+              route.includes('/article') ?
+              <p>Przestań obserwować</p>
+              :
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                </svg>
+                <div className="like-follow-button-sub-comment">
+                  Przestań obserwować użytkownika
+                </div>
+              </>
+            :
+              route.includes('/article') ?
+              <p>Obserwuj użytkownika</p>
+              :
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                </svg>
+                <div className="like-follow-button-sub-comment">
+                  Obserwuj użytkownika
+                </div>
+              </>
+          }
+        </div>
+      </Link>
     </div>
   )
 }

@@ -3,12 +3,11 @@ import axios from 'axios'
 import API_URL from '../API_URL';
 import { useParams } from 'react-router-dom';
 import { Iarticle } from '../models/models'
-import { authorization, user} from '../models/const-variables'
+import { authorization, user } from '../models/const-variables'
 import AddComment from '../components/Article/Comments/AddComment';
 import AddFeedback from '../components/Article/Feedbacks/AddFeedback';
 import Navbar from '../components/Navbar';
 import SidemenuArticle from '../components/Sidemenus/SidemenuArticle';
-import SidemenuArticleLoading from '../components/Sidemenus/SidemenuArticleLoading';
 
 interface Props {
   id: string;
@@ -71,7 +70,7 @@ const Article:React.FC = () =>{
       <Navbar />
       <div className='main'>
         <div>
-          <div className='w-full mb-5 border-b border-red-400 py-10 flex items-center'>
+          <div className='w-full mb-5 border-b border-red-400 py-10 flex flex-row items-center justify-between'>
             <h2 className='main-header-text font-bold'>{ article?.title }</h2>
             <img
               className='w-160 ml-2'

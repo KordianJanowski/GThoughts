@@ -76,7 +76,11 @@ body {
 /* buttons next to username */
 
 .like-follow-button{
-  @apply py-3 px-3 border-2 border-gray-600 bg-main rounded-full hover:bg-gray-600 hover:text-white duration-100 flex flex-col justify-center items-center
+  @apply py-3 px-3 border-2 border-gray-600 bg-main rounded-full hover:bg-gray-600 hover:text-white duration-100 flex flex-col justify-center items-center ml-4 mt-1 xl:mt-0;
+}
+
+.like-follow-button-article{
+  @apply flex justify-center items-center bg-red-500 py-2 px-6 text-base button-animation w-full mt-5;
 }
 
 .like-follow-button:hover > .like-follow-button-sub-comment{

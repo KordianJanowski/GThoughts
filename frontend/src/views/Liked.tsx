@@ -63,7 +63,7 @@ const Saved: React.FC = () =>{
     return (
       <Article
         article={article}
-        route='/saved'
+        route='/liked'
         toggleDeleteArticleLayer={() =>{}}
         likeds={likeds}
         followeds={followeds}
@@ -78,7 +78,7 @@ const Saved: React.FC = () =>{
       <Navbar />
       <div className='main'>
         <div className='main-header'>
-          <h2 className='main-header-text'>Zapisane</h2>
+          <h2 className='main-header-text'>Polubione</h2>
         </div>
         <div className='main-content'>
           { articleResponse ?

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import API_URL from '../../API_URL'
+import { user, jwt } from '../../models/const-variables'
 import { Link } from 'react-router-dom'
-import { Iuser, Iarticle } from '../../models/models';
+import { Iuser, Iarticle, Iliked, Ifollowed } from '../../models/models';
 import SidemenuArticleLoading from './SidemenuArticleLoading';
-
+import Liking from '../Article/Liking'
+import Following from '../Article/Following'
 
 type Props = {
   article: Iarticle;
@@ -15,6 +17,8 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
   const[isSideMenuAnimateUsed, setIsSideMenuAnimateUsed] = useState<boolean | null>(null);
   const[author, setAuthor] = useState<Iuser>({id: '', username: '', email: '', avatar: '', createdAt: '' });
   const[isAuthorLoaded, setIsAuthorLoaded] = useState<boolean>(false);
+  const[likeds, setLikeds] = useState<Iliked[]>([]);
+  const[followeds, setFolloweds] = useState<Ifollowed[]>([]);
 
   const toggleSidemenu = () =>{
     if(isSideMenuOpen === true){
@@ -41,6 +45,24 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
     }
   }, [article])
 
+  const fetchFolloweds= async () =>{
+    await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+    .then(res => setFolloweds(res.data))
+    .catch(err => console.log(err))
+  }
+  useEffect(() => {
+    const fetchArticlesData = async () =>{
+      if(jwt){
+        await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+        .then(res => setLikeds(res.data))
+        .catch(err => console.log(err))
+      }
+    }
+    fetchArticlesData();
+    fetchFolloweds()
+
+  }, [])
+
   return(
     <>
     { isAuthorLoaded ?
@@ -57,9 +79,21 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
                 <p className='text-xl font-bold mt-2'>
                   {author.username}
                 </p>
-                <button className='flex justify-center items-center bg-red-500 py-2 px-6 text-base button-animation w-full mt-5'>
-                  Obserwuj
-                </button>
+                { jwt && article.author_id !== user.id ?
+                  <div className='hidden xl:flex flex-col items-center'>
+                    <Following
+                      route={`/articles/${article.id}`}
+                      article={article}
+                      followeds={followeds}
+                      fetchFolloweds={fetchFolloweds}
+                    />
+                    <Liking
+                      route={`/articles/${article.id}`}
+                      article={article}
+                      likeds={likeds}
+                    />
+                  </div>
+                : null}
               </div>
             </div>
             <hr className='my-4 border-gray-700' />

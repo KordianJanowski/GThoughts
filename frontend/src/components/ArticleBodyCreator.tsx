@@ -42,7 +42,7 @@ const ArticleBodyCreator: React.FC<Props> = ({ setBody }) => {
       <Editor
         editorState={editorState}
         onEditorStateChange={editorStateChange}
-        toolbar={{options: ['inline', 'fontSize', 'fontFamily', 'list', 'textAlign', 'link', 'emoji', 'image', 'history']}}
+        toolbar={{options: ['inline', 'fontSize', 'fontFamily', 'list', 'textAlign', 'link', 'emoji', 'colorPicker', 'image', 'history']}}
       />
     </div>
   )
