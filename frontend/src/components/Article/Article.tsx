@@ -49,7 +49,7 @@ const Article: React.FC<Props> = ({
                   />
                 </Link>
                 <div className='flex flex-col text-gray-300'>
-                  <Link to={`/profiles-users/${article.author_id}`} className='font-semibold'>{ article.author_name }</Link>
+                  <Link to={`/profiles-users/${article.author_id}`} className='font-semibold'>{ author.username }</Link>
                   <span className='text-xs text-gray-400'>{ article.createdAt.substr(0,10) }</span>
                 </div>
                 { route === '/dashboard' ?

@@ -23,11 +23,11 @@ const Dashboard:React.FC = () =>{
     if(!jwt) return history.push('/login');
 
     const fetchArticles = async () =>{
-      await axios.get(`${API_URL}/users/${user.id}`)
+      await axios.get(`${API_URL}/users/me`)
       .then(res => {
-        if(!res.data.articles_ids) return
+        if(res.data.articles_ids.length === 0) return setArticleResponse(true)
         const newArticles: Iarticle[] = []
-        res.data.articles_ids.forEach(async (article_id: string, index: number) =>{
+        res.data.articles_ids.forEach(async (article_id: string) =>{
           await axios.get(`${API_URL}/articles/${article_id}`)
           .then(async response =>{
             newArticles.push(response.data)
@@ -49,16 +49,16 @@ const Dashboard:React.FC = () =>{
   }
 
   const deleteArticle = async () =>{
-    await axios.delete(`${API_URL}/articles/${selectedArticleID}`,authorization)
+    await axios.delete(`${API_URL}/articles/${selectedArticleID}`, authorization)
     .then(() => console.log('deleted'))
 
-    await axios.get(`${API_URL}/users/${user.id}`)
+    await axios.get(`${API_URL}/users/me`, authorization)
     .then(async res =>{
       const index = res.data.articles_ids.findIndex((article_id: string) => article_id === selectedArticleID);
       const newArticles_ids: string[] = res.data.articles_ids;
       newArticles_ids.splice(index,1)
 
-      await axios.put(`${API_URL}/users/${user.id}`, { articles_ids: newArticles_ids }, authorization)
+      await axios.put(`${API_URL}/users/me`, { articles_ids: newArticles_ids }, authorization)
       .then(() =>{
         const index = articles.findIndex((article: Iarticle) => article.id === selectedArticleID);
         const newArticles: Iarticle[] = articles;
@@ -107,14 +107,13 @@ const Dashboard:React.FC = () =>{
                 <h2 className='main-header-text'>Panel użytkownika</h2>
               </div>
               <div className='main-content'>
-
                 { articleResponse ?
                   <div>
                     {
-                      articles.length !== 0 ?
+                      articles.length > 0 ?
                         articlesMap
                       :
-                        <p>Nie znaleziono żadnych artykułów</p>
+                        <p>Nie posiadasz żadnych artykułów</p>
                     }
                   </div>
                 :

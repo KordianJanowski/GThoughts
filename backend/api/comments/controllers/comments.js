@@ -10,13 +10,20 @@ module.exports = {
   async find(ctx) {
     const entity = await strapi.services.comments.find();
     const comments = [];
+    const isArticleExist = strapi.services.article.find()
+
     entity.forEach(comment =>{
       if(comment.article_id === ctx.request.header.article_id){
         comments.push(comment);
       }
+
+
+      // if(){
+
+      // }
     })
 
-    return sanitizeEntity(comments, { model: strapi.models.comments });
+    return sanitizeEntity(isArticleExist, { model: strapi.models.comments });
   },
 
   async update(ctx) {

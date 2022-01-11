@@ -80,8 +80,8 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
         <SidemenuLoading />
       :
         <>
-          <nav className='xl:w-80 hidden xl:block'>
-            <div className='fixed w-full flex text-white h-screen mt-20 2xl:ml-10 xl:p-2'>
+          <nav className='xl:w-1/4 hidden xl:block'>
+            <div className='fixed w-full flex text-white h-screen mt-20 overflow-hidden 2xl:ml-10 xl:p-2'>
               <div>
                 <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu}/>
                 <ArticlesSorting articles={articles} setArticles={setArticles} />

@@ -213,6 +213,11 @@ const Register:React.FC = () =>{
         <div className="login-register-input-box">
           <input
             type="file"
+            className='block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-violet-50 file:text-violet-700
+            hover:file:bg-violet-100'
             accept="image/png, image/jpeg"
             onChange={(e: any) => setImage(e.currentTarget.files[0])}
           />
@@ -221,7 +226,7 @@ const Register:React.FC = () =>{
           : null}
         </div>
         <input
-          className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-main to-second text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"
+          className="login-register-input-submit"
           type="submit"
           value="Register"
         />

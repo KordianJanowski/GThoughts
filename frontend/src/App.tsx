@@ -1,15 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 import Home from './views/Home'
-import SingleHashtag from './views/SingleHashtag'
-import CreateArticle from './views/CreateArticle'
-import Article from './views/Article'
 import Login from './views/Login'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
-import ProfilesUsers from './views/ProfilesUsers'
+import ChangeUserData from './views/ChangeUserData'
+import CreateArticle from './views/CreateArticle'
 import Liked from './views/Liked';
 import Followeds from './views/Followeds';
+import Article from './views/Article'
+import ProfilesUsers from './views/ProfilesUsers'
+import SingleHashtag from './views/SingleHashtag'
 import NotFound from './views/NotFound';
 
 const App: React.FC = () =>{
@@ -20,9 +22,6 @@ const App: React.FC = () =>{
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/create-article">
-            <CreateArticle />
-          </Route>
           <Route path="/login">
             <Login />
           </Route>
@@ -31,6 +30,12 @@ const App: React.FC = () =>{
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/change-user-data">
+            <ChangeUserData />
+          </Route>
+          <Route path="/create-article">
+            <CreateArticle />
           </Route>
           <Route path="/liked">
             <Liked />

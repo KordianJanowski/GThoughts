@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+body::-webkit-scrollbar {
+  width: 0.7em;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+  @apply bg-red-900
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
 body {
   @apply bg-main text-white;
 }
@@ -35,8 +51,16 @@ body {
   @apply mb-4 text-xs text-gray-500 font-bold relative;
 }
 
+.login-register-input-submit{
+  @apply cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-main to-second text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95
+}
+
 .login-register-input-icon {
   @apply absolute border-r border-gray-200 left-2 bottom-4 py-1 pl-1 pr-2 text-second;
+}
+
+.change-user-data-input-submit{
+  @apply cursor-pointer w-full xl:w-1/2 border border-gray-600 flex justify-center items-center bg-gradient-to-r from-main to-second text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95
 }
 
 .button-animation {

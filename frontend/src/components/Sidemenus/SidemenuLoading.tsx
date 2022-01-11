@@ -3,7 +3,7 @@ import React from 'react'
 const SidemenuLoading: React.FC = () =>{
   return(
     <>
-      <nav className='xl:w-80 hidden xl:block text-second'>
+      <nav className='xl:w-1/4 hidden xl:block text-second'>
         <div className='fixed w-full flex h-screen mt-20 2xl:ml-10 xl:p-2'>
           <div>
             <div className="relative">

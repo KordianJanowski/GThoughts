@@ -4,6 +4,12 @@ export interface Iuser{
   email: string;
   avatar: string;
   createdAt: string;
+  password?: string;
+}
+
+export interface IcookieArguments {
+  time: string;
+  path: string;
 }
 
 export interface Iarticle {

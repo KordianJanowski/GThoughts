@@ -29,7 +29,7 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
     <>
     { user ?
       <>
-        <nav className='xl:w-80 hidden xl:block'>
+        <nav className='xl:w-1/4 hidden xl:block'>
           <div className='fixed w-64 flex flex-col text-white h-screen mt-20 2xl:ml-8 xl:p-2'>
             <div className='flex flex-col mb-5'>
               <div className='flex flex-col items-center'>

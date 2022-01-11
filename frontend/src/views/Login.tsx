@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useFormik} from 'formik'
 import axios from 'axios'
 import Cookies from 'universal-cookie';
@@ -6,20 +6,15 @@ import { Link, useHistory } from "react-router-dom";
 import API_URL from '../API_URL';
 import { jwt } from '../models/const-variables';
 
-interface CookieArguments {
-  time: string;
-  path: string;
-}
+import { IcookieArguments } from '../models/models';
 
 const Login:React.FC = () =>{
   const history = useHistory();
   const cookies = new Cookies();
 
   const[isValidate, setIsValidate] = useState<boolean>(false);
-
-  useLayoutEffect(() => {
-    if(jwt) return history.push('/dashboard')
-  }, []);
+  // eslint-disable-next-line
+  useEffect(() => { if(jwt) return history.push('/dashboard') }, []);
 
   const {handleSubmit, handleChange, values, handleBlur} = useFormik({
     initialValues: {
@@ -32,7 +27,7 @@ const Login:React.FC = () =>{
         password: password
       })
       .then(res =>{
-        const cookieArguments: CookieArguments = {
+        const cookieArguments: IcookieArguments = {
           time: '7d', path: '/'
         }
 
@@ -90,7 +85,7 @@ const Login:React.FC = () =>{
             />
           </div>
           <input
-            className="cursor-pointer w-full h-11 flex justify-center items-center bg-gradient-to-r from-main to-second text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95"
+            className="login-register-input-submit"
             type="submit"
             value="login"
           />

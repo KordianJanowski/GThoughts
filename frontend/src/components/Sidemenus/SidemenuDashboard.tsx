@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { user } from '../../models/const-variables';
 import Cookies from 'universal-cookie';
 import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+
+import { user } from '../../models/const-variables';
 
 const SidemenuDashboard: React.FC = () =>{
   const cookies: Cookies = new Cookies();
@@ -31,7 +33,7 @@ const SidemenuDashboard: React.FC = () =>{
 
   return(
     <>
-      <nav className='xl:w-80 hidden xl:block '>
+      <nav className='xl:w-1/4 hidden xl:block '>
         <div className='fixed w-60 flex flex-col text-white h-screen mt-20 2xl:ml-8 xl:p-2 '>
           <div className='flex flex-col mb-5'>
             <div className='flex flex-col items-center'>
@@ -48,9 +50,9 @@ const SidemenuDashboard: React.FC = () =>{
               <button onClick={logout} className='flex justify-center items-center bg-red-500 border border-red-500 rounded-full py-2 px-6 text-lg font-light button-animation w-full mt-4'>
                 Wyloguj się
               </button>
-              <button className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full mt-5'>
+              <Link to="/change-user-data" className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full mt-5'>
                 Informacje o koncie
-              </button>
+              </Link>
             </div>
           </div>
         </div>
