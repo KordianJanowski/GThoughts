@@ -6,7 +6,7 @@ import { Ihashtag } from '../../models/models';
 import { Iarticle } from '../../models/models';
 import ArticleSearching from '.././ArticlesSearching';
 import ArticlesSorting from '../../components/ArticlesSorting';
-import { jwt, user } from '../../models/const-variables';
+import { authorization, jwt } from '../../models/const-variables';
 import SidemenuLoading from './SidemenuLoading';
 
 type Props = {
@@ -34,7 +34,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
   }
 
   useEffect(() => {
-    const fetchPopularHashtags = async() => {
+    const fetchPopularHashtags = async () => {
       await axios.get(`${API_URL}/hashtags`).then(res => {
         const hashtagsCopy:Ihashtag[] = res.data
         setPopularHashtags(hashtagsCopy.sort((a, b) => b.counter - a.counter ))
@@ -45,7 +45,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
     }
     const fetchRecentHashtags = async () => {
       if(jwt){
-        await axios.get(`${API_URL}/users/${user.id}`).then(res => {
+        await axios.get(`${API_URL}/users/me`, authorization).then(res => {
           setRecentHashtags(res.data.recent_hashtags);
           setHashtagResponse(true);
         })
@@ -100,15 +100,13 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
                     :
                       <div className='text-gray-500 w-40'><Link to='login' className='font-bold'>Zaloguj się</Link>, <br /> aby widzieć <br /> ostatnie hashtagi</div>
                     }
-
                   </ul>
                 </div>
                 <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second'>
                   <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
                   <ul className='m-1 text-red-400'>
                     {
-                      popularHashtags.length > 0
-                      ?
+                      popularHashtags.length > 0 ?
                         popularHashtagsMap
                       :
                         <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>

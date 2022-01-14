@@ -46,9 +46,11 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
   }, [article])
 
   const fetchFolloweds= async () =>{
-    await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
-    .then(res => setFolloweds(res.data))
-    .catch(err => console.log(err))
+    if(jwt) {
+      await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+      .then(res => setFolloweds(res.data))
+      .catch(err => console.log(err))
+    }
   }
   useEffect(() => {
     const fetchArticlesData = async () =>{
@@ -80,7 +82,7 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
                   {author.username}
                 </p>
                 { jwt && article.author_id !== user.id ?
-                  <div className='hidden xl:flex flex-col items-center'>
+                  <div className='hidden xl:flex flex-col items-center mt-5'>
                     <Following
                       route={`/articles/${article.id}`}
                       article={article}

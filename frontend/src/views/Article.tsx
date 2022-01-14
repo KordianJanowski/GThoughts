@@ -3,11 +3,11 @@ import axios from 'axios'
 import API_URL from '../API_URL';
 import { useParams } from 'react-router-dom';
 import { Iarticle } from '../models/models'
-import { authorization, user } from '../models/const-variables'
-import AddComment from '../components/Article/Comments/AddComment';
+import { jwt, authorization, user } from '../models/const-variables'
 import AddFeedback from '../components/Article/Feedbacks/AddFeedback';
 import Navbar from '../components/Navbar';
 import SidemenuArticle from '../components/Sidemenus/SidemenuArticle';
+import Comments from '../components/Article/Comments/Comments';
 
 interface Props {
   id: string;
@@ -19,7 +19,7 @@ const Article:React.FC = () =>{
   const [isArticleExist, setIsArticleExist] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetchArticles = async () =>{
+    const fetchArticle = async () =>{
       await axios.get(`${API_URL}/articles/${id}`)
       .then(res => {
         setArticle(res.data);
@@ -27,7 +27,7 @@ const Article:React.FC = () =>{
       })
       .catch(err => console.log(err))
     }
-    fetchArticles()
+    fetchArticle()
   }, [])
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Article:React.FC = () =>{
         .catch(err => console.log(err))
       }
 
-      fetchUserRecentHashtags()
+      if(jwt) fetchUserRecentHashtags()
     }
   }, [isArticleExist])
 
@@ -69,20 +69,19 @@ const Article:React.FC = () =>{
     <div className='wrapper'>
       <Navbar />
       <div className='main'>
-        <div>
-          <div className='w-full mb-5 border-b border-red-400 py-10 flex flex-row items-center justify-between'>
-            <h2 className='main-header-text font-bold'>{ article?.title }</h2>
-            <img
-              className='w-160 ml-2'
-              src={article?.main_image}
-              alt=''
-            />
-          </div>
-          <div
-            dangerouslySetInnerHTML={{__html: article?.body.html!}}
-            className='main-content text-2xl'>
-          </div>
+        <div className='mt-10 flex flex-col xl:flex-row items-center justify-between'>
+          <h2 className='main-header-text font-bold'>{ article?.title }</h2>
+          <img
+            className='w-160 ml-2'
+            src={article?.main_image}
+            alt=''
+          />
         </div>
+        <div
+          dangerouslySetInnerHTML={{__html: article?.body.html!}}
+          className='main-content text-xl xl:text-2xl pt-8 mt-10 mb-8'>
+        </div>
+        <Comments id={id} />
       </div>
       <SidemenuArticle article={article!} />
     </div>

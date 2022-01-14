@@ -23,8 +23,9 @@ const Dashboard:React.FC = () =>{
     if(!jwt) return history.push('/login');
 
     const fetchArticles = async () =>{
-      await axios.get(`${API_URL}/users/me`)
+      await axios.get(`${API_URL}/users/me`, authorization)
       .then(res => {
+        console.log(res.data)
         if(res.data.articles_ids.length === 0) return setArticleResponse(true)
         const newArticles: Iarticle[] = []
         res.data.articles_ids.forEach(async (article_id: string) =>{
@@ -72,11 +73,6 @@ const Dashboard:React.FC = () =>{
     .catch(err => console.log(err))
   }
 
-  // const toggleEditArticleLayer = (id:string) =>{
-
-  // }
-
-
   const articlesMap = articles.map((article: Iarticle) =>{
     return (
       <Article
@@ -93,36 +89,41 @@ const Dashboard:React.FC = () =>{
 
   return(
     <div>
-      { isDeleteLayerShow ?
-        <ApproveLayer
-          id={selectedArticleID}
-          toggleLayer={toggleDeleteArticleLayer}
-          approve={deleteArticle}
-        />
-      :
-        <div className='wrapper'>
-          <Navbar />
-            <div className='main'>
-              <div className='main-header'>
-                <h2 className='main-header-text'>Panel użytkownika</h2>
-              </div>
-              <div className='main-content'>
-                { articleResponse ?
-                  <div>
-                    {
-                      articles.length > 0 ?
-                        articlesMap
-                      :
-                        <p>Nie posiadasz żadnych artykułów</p>
+      {
+        jwt ?
+          isDeleteLayerShow ?
+            <ApproveLayer
+              id={selectedArticleID}
+              toggleLayer={toggleDeleteArticleLayer}
+              approve={deleteArticle}
+            />
+          :
+            <div className='wrapper'>
+              <Navbar />
+                <div className='main'>
+                  <div className='main-header'>
+                    <h2 className='main-header-text'>Panel użytkownika</h2>
+                  </div>
+                  <div className='main-content'>
+
+                    { articleResponse ?
+                      <div>
+                        {
+                          articles.length !== 0 ?
+                            articlesMap
+                          :
+                            <p>Nie znaleziono żadnych artykułów</p>
+                        }
+                      </div>
+                    :
+                      <Loading />
                     }
                   </div>
-                :
-                  <Loading />
-                }
-              </div>
+                </div>
+                <SidemenuDashboard />
             </div>
-            <SidemenuDashboard />
-        </div>
+        :
+          null
       }
     </div>
   )

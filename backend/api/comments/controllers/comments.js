@@ -16,14 +16,9 @@ module.exports = {
       if(comment.article_id === ctx.request.header.article_id){
         comments.push(comment);
       }
-
-
-      // if(){
-
-      // }
     })
 
-    return sanitizeEntity(isArticleExist, { model: strapi.models.comments });
+    return sanitizeEntity(comments, { model: strapi.models.comments });
   },
 
   async update(ctx) {

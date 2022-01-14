@@ -63,8 +63,14 @@ const AddComment: React.FC<Props> = ({ id }) =>{
   return(
     <div>
       {jwt ?
-        <form onSubmit={handleSubmit}>
-          <textarea name="body" onChange={handleChange} value={values.body}></textarea>
+        <form onSubmit={handleSubmit} className='ml-5'>
+          <input
+            placeholder='Napisz opinię zwrotną'
+            className='w-full py-2 px-4 border rounded-md bg-transparent text-gray-300 border-gray-600 focus:border-red-400 focus:outline-none'
+            name="body"
+            onChange={handleChange}
+            value={values.body}
+          />
           <input
             className="cursor-pointer flex p-2 bg-gray-800 text-white"
             type="submit"

@@ -61,7 +61,7 @@ const Following: React.FC<Props> = ({ route, article, followeds, fetchFolloweds 
       <Link to={route}>
         <div
           onClick={isFollowed ? unFollow : follow}
-          className={route.includes('/article') ? 'like-follow-button-article' : 'like-follow-button'}
+          className={route.includes('/article') ? 'article-button' : 'like-follow-button'}
         >
           {
             isFollowed ?

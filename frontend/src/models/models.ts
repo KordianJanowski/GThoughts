@@ -35,12 +35,11 @@ export interface IarticleBody {
 
 export interface Icomment{
   body: string;
-  username: string;
-  user_avatar: string;
-  user_id: string
+  author_id: string
   article_id: string;
   id_: number;
   id?: string;
+  createdAt?: string;
 }
 
 export interface Ifeedback{

@@ -48,7 +48,7 @@ const Liking: React.FC<Props> = ({ route, article, likeds }) =>{
       <Link to={route}>
         <div
           onClick={isLiked ? unLike : like}
-          className={route.includes('/article') ? 'like-follow-button-article' : 'like-follow-button'}
+          className={route.includes('/article') ? 'article-button' : 'like-follow-button'}
         >
           {
             isLiked ?

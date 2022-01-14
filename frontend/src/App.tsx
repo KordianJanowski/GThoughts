@@ -2,14 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Home from './views/Home'
+import Article from './views/Article'
+import CreateArticle from './views/CreateArticle'
+import EditArticle from './views/EditArticle'
 import Login from './views/Login'
 import Register from './views/Register'
 import Dashboard from './views/Dashboard'
 import ChangeUserData from './views/ChangeUserData'
-import CreateArticle from './views/CreateArticle'
 import Liked from './views/Liked';
 import Followeds from './views/Followeds';
-import Article from './views/Article'
 import ProfilesUsers from './views/ProfilesUsers'
 import SingleHashtag from './views/SingleHashtag'
 import NotFound from './views/NotFound';
@@ -21,6 +22,15 @@ const App: React.FC = () =>{
         <Switch>
           <Route exact path="/">
             <Home />
+          </Route>
+          <Route path="/articles/:id">
+            <Article />
+          </Route>
+          <Route path="/create-article">
+            <CreateArticle />
+          </Route>
+          <Route path="/edit-article/:id">
+            <EditArticle />
           </Route>
           <Route path="/login">
             <Login />
@@ -43,8 +53,8 @@ const App: React.FC = () =>{
           <Route path="/followeds">
             <Followeds />
           </Route>
-          <Route path="/articles/:id">
-            <Article />
+          <Route path="/dashboard">
+            <Dashboard />
           </Route>
           <Route path="/profiles-users/:id">
             <ProfilesUsers />

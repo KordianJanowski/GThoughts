@@ -1,80 +1,66 @@
-import React, { useState, useEffect } from 'react'
-import { useFormik  } from 'formik'
-import * as Yup from 'yup'
+import React, {useState} from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
-
 import API_URL from '../../../API_URL'
 import { Icomment } from '../../../models/models';
 import {user, jwt, authorization} from '../../../models/const-variables';
-import Comment from './Comment'
 
 type Props = {
   id: string;
+  comments: Icomment[];
+  setComments: React.Dispatch<React.SetStateAction<Icomment[]>>;
 }
 
+const AddComment: React.FC<Props> = ({ id, comments, setComments }) =>{
 
-const AddComment: React.FC<Props> = ({ id }) =>{
+  const [commentBody, setCommentBody] = useState('')
 
-  const[comments, setComments] = useState<Icomment[]>([])
+  const postComment = async (e: React.FormEvent<HTMLFormElement>) =>{
+    e.preventDefault();
 
-  useEffect(() => {
-    const fetchComments = async () =>{
-      await axios.get(`${API_URL}/comments`, { headers: { article_id: id } })
-      .then(res => setComments(res.data))
-      .catch(err => console.log(err))
+    const comment: Icomment = {
+      body: commentBody,
+      author_id: user.id,
+      article_id: id,
+      id_: Math.random()
     }
-    fetchComments();
-  }, [])
 
-  const {handleSubmit, handleChange, values, touched, errors, handleBlur} = useFormik({
-    initialValues: {
-      body: '',
-    },
-    validationSchema: Yup.object({
-      body: Yup.string()
-        .max(1000, 'title must be shortet than 50 chars').required(),
-    }),
-    onSubmit: ({body}) =>{
-      const postComment = async () =>{
-        const comment: Icomment = {
-          body,
-          user_id: user.id,
-          username: user.username,
-          user_avatar: user.avatar,
-          article_id: id,
-          id_: Math.random()
-        }
-
-        await axios.post(`${API_URL}/comments`, comment, authorization)
-        .then(res => setComments([...comments, res.data]))
-        .catch(err => console.log(err))
-      }
-      postComment();
-    }
-  })
-
-  const commentsMap = comments.map((comment: Icomment) =>{
-    return <Comment comment={comment} />
-  })
+    await axios.post(`${API_URL}/comments`, comment, authorization)
+    .then(res => {
+      setCommentBody('')
+      setComments([...comments, res.data])
+    })
+    .catch(err => console.log(err))
+  }
 
   return(
     <div>
-      {jwt ?
-        <form onSubmit={handleSubmit}>
-          <textarea name="body" onChange={handleChange} value={values.body}></textarea>
-          <input
-            className="cursor-pointer flex p-2 bg-gray-800 text-white"
-            type="submit"
-            value="add comment"
-          />
-          {values.body}
-        </form>
-      : <h1>aby dodac komentarz, musisz sie <Link to="/login" className=' font-bold'>zalogowac</Link></h1>}
-
-      { commentsMap }
+      {
+        jwt ?
+          <form onSubmit={postComment} className="w-10/12 shadow-lg">
+            <div className="flex flex-row items-center">
+              <img src={user.avatar} alt="" className="rounded-full mr-3 w-10 h-10" />
+              <h1 className="font-semibold text-lg">{ user.username }</h1>
+            </div>
+            <textarea
+              rows={2}
+              placeholder="Treść komentarza..."
+              className="border border-gray-800 text-gray-300 p-2 rounded w-full mt-3 mb-2 bg-transparent resize-none"
+              value={commentBody}
+              onChange={(e) => setCommentBody(e.target.value)}
+            ></textarea>
+            <input
+              type="submit"
+              value="Skomentuj"
+              className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
+            />
+          </form>
+        :
+        <h1 className='text-lg -mb-4'><Link to="/login" className='font-bold text-red-400'>Zaloguj się</Link>, aby móc dodać komentarz</h1>
+      }
     </div>
   )
 }
 
 export default AddComment;
+

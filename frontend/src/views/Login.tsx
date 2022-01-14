@@ -48,10 +48,10 @@ const Login:React.FC = () =>{
   return(
     <div className="w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-b from-main to-second">
       <div className="flex flex-col items-center bg-white w-96 md:w-108 h-auto rounded-lg">
-        <h2 className="text-2xl font-normal mt-10 text-second">Login to your account</h2>
+        <h2 className="text-2xl font-normal mt-10 text-second">Zaloguj się na konto</h2>
         <form onSubmit={handleSubmit} className="p-10 w-full">
           <div className="login-register-input-box">
-            <label htmlFor="">e-mail</label>
+            <label htmlFor="">Adres email</label>
             <div className="login-register-input-icon">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
@@ -59,7 +59,7 @@ const Login:React.FC = () =>{
             </div>
             <input
               className="login-register-input"
-              placeholder="e-mail"
+              placeholder="Adres email"
               onChange={handleChange}
               onBlur={handleBlur}
               type="email"
@@ -68,7 +68,7 @@ const Login:React.FC = () =>{
             />
           </div>
           <div className="login-register-input-box">
-            <label htmlFor="">password</label>
+            <label htmlFor="">Hasło</label>
             <div className="login-register-input-icon">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
@@ -76,7 +76,7 @@ const Login:React.FC = () =>{
             </div>
             <input
               className="login-register-input"
-              placeholder="password"
+              placeholder="Hasło"
               onChange={handleChange}
               onBlur={handleBlur}
               type="password"
@@ -87,14 +87,14 @@ const Login:React.FC = () =>{
           <input
             className="login-register-input-submit"
             type="submit"
-            value="login"
+            value="Zaloguj"
           />
         </form>
         <Link
           to="/register"
           className="w-full flex justify-center items-center pb-6 p-5 bg-gray-100 text-gray-600 text-lg border-t border-gray-300 rounded-b-lg"
         >
-          New on the page ? <span className="text-second ml-2"> Register</span>
+          Nowy na stronie? <span className="text-second ml-2"> Zarejestuj się</span>
         </Link>
       </div>
       <div className="top-3/4 absolute">

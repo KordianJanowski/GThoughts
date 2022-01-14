@@ -1,72 +1,79 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom';
 import API_URL from '../API_URL'
 import axios from 'axios'
 import { useHistory } from "react-router-dom";
-import { IarticleBody, InewHashtag } from '../models/models'
+import { Iarticle, IarticleBody, InewHashtag } from '../models/models'
 import {user, jwt, authorization} from '../models/const-variables'
 import Resizer from 'react-image-file-resizer'
 import ArticleBodyCreator from '../components/ArticleBodyCreator'
 
-const CreateArticle: React.FC = () => {
+interface Props {
+  id: string;
+}
+
+const EditArticle: React.FC = () => {
+  const id: string = useParams<Props>().id;
   const history: any = useHistory();
+  const [article, setArticle] = useState<Iarticle>()
   const [title, setTitle] = useState<string>('');
-  const [tags, setTags] = useState<string[]>(['']);
+  const [tags, setTags] = useState<string[]>([]);
   const [tagsAsString, setTagsAsString] = useState<string>('');
   const [body, setBody] = useState<IarticleBody>();
   const [image, setImage] = useState<any>('');
+  const [imageLocalURL, setImageLocalURL] = useState<string>()
 
   useEffect(() => {
     if(!jwt) return history.push('/login')// eslint-disable-next-line
+
+    const fetchArticle = async () =>{
+      await axios.get(`${API_URL}/articles/${id}`)
+      .then(res => {
+        if(res.data.author_id !== user.id) return history.push('/')
+
+        setArticle(res.data)
+        setTitle(res.data.title)
+        setTagsAsString(res.data.hashtags.join(','))
+        setBody(res.data.body)
+      })
+      .catch(err => {
+        history.push('/')
+      })
+    }
+    fetchArticle()
   }, [])
 
-  const postArticle = async () => {
+  useEffect(() => {
+    if(tagsAsString) {
+      let tagsString = tagsAsString.replaceAll(/\s/g,'')
+      let tags = tagsString.split(',')
+      tags = tags.filter(function(str) {
+        return /\S/.test(str);
+      });
+      setTags(tags)
+    }
+  }, [tagsAsString])
+
+  const editArticle = async () => {
     let imageURL = await postImage()
 
-    const article = {
+    if(!imageURL) imageURL = article?.main_image
+
+    const data = {
       title,
       body,
       main_image: imageURL,
-      author_id: user.id,
-      author_name: user.username,
-      hashtags: tags,
+      hashtags: tags
     }
 
-    await axios.post(`${API_URL}/articles`, article, authorization)
-    .then( async articleResponse => {
-      await axios.get(`${API_URL}/users/me`, authorization)
-      .then(async res =>{
-        const newArticles: string[] = res.data.articles_ids;
-        newArticles.push(articleResponse.data.id)
-
-        await axios.put(`${API_URL}/users/me`, { articles_ids: newArticles }, authorization)
-        .then(() => history.push('/dashboard'))
-        .catch(err => console.log(err))
-      })
-      .catch(err => console.log(err))
-    })
+    await axios.put(`${API_URL}/articles/${article?.id}`, data, authorization)
+    .then(res => history.push(`/articles/${article?.id}`))
     .catch(err => console.log(err))
-
-    postHashtags()
-  }
-
-  const postHashtags = async () => {
-    tags.forEach(async tag => {
-      const newHashtag:InewHashtag = {
-        name: tag
-      }
-      await axios.post(`${API_URL}/hashtags`, newHashtag, authorization)
-      .then(res => {
-        console.log(res)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    })
   }
 
   const postImage = async () => {
     if(image !== '') {
-      const imageResized: any = await resizeFile(image)
+      const imageResized:any = await resizeFile(image)
 
       const data = new FormData()
       data.append('file', imageResized)
@@ -93,14 +100,6 @@ const CreateArticle: React.FC = () => {
 
   const tagsValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTagsAsString(event.target.value)
-
-    let tagsAsString = event.target.value.replaceAll(/\s/g,'')
-    let tags = tagsAsString.split(',')
-    tags = tags.filter(function(str) {
-      return /\S/.test(str);
-    });
-
-    setTags(tags)
   }
 
   return(
@@ -112,7 +111,7 @@ const CreateArticle: React.FC = () => {
         name="title"
         type="text"
         maxLength={50}
-        className="mb-2"
+        className="mb-2 w-full"
         value={title}
       />
       <input
@@ -121,7 +120,7 @@ const CreateArticle: React.FC = () => {
         name="tags"
         type="text"
         maxLength={50}
-        className="mb-2"
+        className="mb-2 w-full"
         value={tagsAsString}
       />
       <input
@@ -129,22 +128,26 @@ const CreateArticle: React.FC = () => {
         className='mb-2'
         accept="image/png, image/jpeg"
         value=''
-        onChange={(e: any) => setImage(e.currentTarget.files[0])}
+        onChange={(e: any) => {
+          setImageLocalURL(URL.createObjectURL(e.currentTarget.files[0]))
+          setImage(e.currentTarget.files[0])
+        }}
       />
-      {image ?
-        <img src={URL.createObjectURL(image)}  className="w-96" alt="" />
+      <img src={image ? imageLocalURL : article?.main_image} className="w-96" alt="" />
+      {body ?
+        <ArticleBodyCreator
+          setBody={setBody}
+          body={body}
+        />
       : null}
-      <ArticleBodyCreator
-        setBody={setBody}
-      />
       <button
-        onClick={postArticle}
+        onClick={editArticle}
         className="cursor-pointer w-60 h-14 mt-5 bg-white text-black rounded-md"
       >
-        Stwórz artykuł
+        Zapisz zmiany
       </button>
     </div>
   )
 }
 
-export default CreateArticle;
+export default EditArticle;
