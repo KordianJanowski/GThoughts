@@ -12,7 +12,6 @@ type Props = {
 }
 
 const AddComment: React.FC<Props> = ({ id, comments, setComments }) =>{
-
   const [commentBody, setCommentBody] = useState('')
 
   const postComment = async (e: React.FormEvent<HTMLFormElement>) =>{
@@ -37,7 +36,7 @@ const AddComment: React.FC<Props> = ({ id, comments, setComments }) =>{
     <div>
       {
         jwt ?
-          <form onSubmit={postComment} className="w-10/12 shadow-lg">
+          <form onSubmit={postComment} className="w-full flex flex-col">
             <div className="flex flex-row items-center">
               <img src={user.avatar} alt="" className="rounded-full mr-3 w-10 h-10" />
               <h1 className="font-semibold text-lg">{ user.username }</h1>
@@ -45,14 +44,14 @@ const AddComment: React.FC<Props> = ({ id, comments, setComments }) =>{
             <textarea
               rows={2}
               placeholder="Treść komentarza..."
-              className="border border-gray-800 text-gray-300 p-2 rounded w-full mt-3 mb-2 bg-transparent resize-none"
+              className="border border-gray-800 text-gray-300 p-2 rounded w-full md:w-4/5 mt-3 mb-2 bg-transparent resize-none"
               value={commentBody}
               onChange={(e) => setCommentBody(e.target.value)}
             ></textarea>
             <input
               type="submit"
               value="Skomentuj"
-              className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
+              className="rounded-button w-32 md:w-40"
             />
           </form>
         :

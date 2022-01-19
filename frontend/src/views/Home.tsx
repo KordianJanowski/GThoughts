@@ -65,19 +65,19 @@ const Home: React.FC = () => {
           <h2 className='main-header-text'>Główna</h2>
         </div>
         <div className='main-content'>
-          { articleResponse ?
-            <div>
-              {
-                articles.length !== 0 ?
-                  articlesMap
-                :
-                  <p>Nie znaleziono żadnych artykułów</p>
-              }
-            </div>
-          :
-            <Loading />
+          {
+            articleResponse ?
+              <div>
+                {
+                  articles.length !== 0 ?
+                    articlesMap
+                  :
+                    <p>Nie znaleziono żadnych artykułów</p>
+                }
+              </div>
+            :
+              <Loading />
           }
-
         </div>
       </div>
       <Sidemenu articles={articlesCopy} setArticles={setArticles} />

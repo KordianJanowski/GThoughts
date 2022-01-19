@@ -131,15 +131,15 @@ const ChangeUserData:React.FC = () =>{
             </div>
 
             <div className='flex flex-col items-center w-full'>
-              <div className="login-register-input-box w-full xl:w-1/2">
+              <div className="default-input-box w-full xl:w-1/2">
                 <label htmlFor="" className='text-xl font-normal'>Username</label>
-                <div className="login-register-input-icon">
+                <div className="default-input-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <input
-                  className="login-register-input"
+                  className="icon-input"
                   placeholder="username"
                   type="text"
                   name="username"
@@ -154,16 +154,16 @@ const ChangeUserData:React.FC = () =>{
                 value="Zmień nazwe użytkownika"
                 onClick={() => changeUserData('username', user.username , values.username)}
               />
-              <div className="login-register-input-box w-full xl:w-1/2 mt-10">
+              <div className="default-input-box w-full xl:w-1/2 mt-10">
                 <label htmlFor="" className='text-xl font-normal'>E-mail</label>
-                <div className="login-register-input-icon">
+                <div className="default-input-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
                 </div>
                 <input
-                  className="login-register-input"
+                  className="icon-input"
                   placeholder="email"
                   type="email"
                   name="email"
@@ -178,15 +178,15 @@ const ChangeUserData:React.FC = () =>{
                 value="Zmień nazwe e-mail"
                 onClick={() => changeUserData('email', user.email , values.email)}
               />
-              <div className="login-register-input-box w-full xl:w-1/2 mt-10">
+              <div className="default-input-box w-full xl:w-1/2 mt-10">
                 <label htmlFor="" className='text-xl font-normal'>Password</label>
-                <div className="login-register-input-icon">
+                <div className="default-input-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <input
-                  className="login-register-input"
+                  className="icon-input"
                   placeholder="Password"
                   type="password"
                   name="password"
@@ -195,15 +195,15 @@ const ChangeUserData:React.FC = () =>{
                   onBlur={handleBlur}
                 />
               </div>
-              <div className="login-register-input-box w-full xl:w-1/2">
+              <div className="default-input-box w-full xl:w-1/2">
                 <label htmlFor="" className='text-xl font-normal'>Repeat password</label>
-                <div className="login-register-input-icon">
+                <div className="default-input-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <input
-                  className="login-register-input"
+                  className="icon-input"
                   placeholder="Repeat password"
                   type="password"
                   name="repeatPassword"
@@ -218,7 +218,7 @@ const ChangeUserData:React.FC = () =>{
                 value="Zmień hasło"
                 onClick={() => changeUserData('password', user.password , values.password)}
               />
-              <div className="login-register-input-box w-full xl:w-1/2 mt-10">
+              <div className="default-input-box w-full xl:w-1/2 mt-10">
                 <input
                   type="file"
                   className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4

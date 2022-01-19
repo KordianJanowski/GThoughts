@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import API_URL from '../API_URL';
 import { Iarticle } from '../models/models';
-import { user, jwt, authorization } from '../models/const-variables';
+import { jwt, authorization } from '../models/const-variables';
 import Article from '../components/Article/Article';
 import ApproveLayer from '../components/ApproveLayer';
 import Navbar from '../components/Navbar';
@@ -88,7 +88,7 @@ const Dashboard:React.FC = () =>{
   })
 
   return(
-    <div>
+    <>
       {
         jwt ?
           isDeleteLayerShow ?
@@ -97,35 +97,34 @@ const Dashboard:React.FC = () =>{
               toggleLayer={toggleDeleteArticleLayer}
               approve={deleteArticle}
             />
-          :
+            :
             <div className='wrapper'>
               <Navbar />
-                <div className='main'>
-                  <div className='main-header'>
-                    <h2 className='main-header-text'>Panel użytkownika</h2>
-                  </div>
-                  <div className='main-content'>
-
-                    { articleResponse ?
-                      <div>
-                        {
-                          articles.length !== 0 ?
-                            articlesMap
-                          :
-                            <p>Nie znaleziono żadnych artykułów</p>
-                        }
-                      </div>
-                    :
-                      <Loading />
-                    }
-                  </div>
+              <div className='main'>
+                <div className='main-header'>
+                  <h2 className='main-header-text'>Panel użytkownika</h2>
                 </div>
-                <SidemenuDashboard />
+                <div className='main-content'>
+                  { articleResponse ?
+                    <div>
+                      {
+                        articles.length !== 0 ?
+                          articlesMap
+                        :
+                          <p>Nie znaleziono żadnych artykułów</p>
+                      }
+                    </div>
+                  :
+                    <Loading />
+                  }
+                </div>
+              </div>
+              <SidemenuDashboard />
             </div>
         :
           null
       }
-    </div>
+    </>
   )
 }
 

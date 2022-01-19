@@ -33,28 +33,23 @@ const SidemenuDashboard: React.FC = () =>{
 
   return(
     <>
-      <nav className='xl:w-1/4 hidden xl:block '>
-        <div className='fixed w-60 flex flex-col text-white h-screen mt-20 2xl:ml-8 xl:p-2 '>
-          <div className='flex flex-col mb-5'>
-            <div className='flex flex-col items-center'>
-              <img
-                className='w-40 h-40 rounded-full'
-                src={user.avatar}
-                alt=""
-              />
-              <p className='text-xl font-bold mt-2'>
-                {user.username}
-              </p>
-              <hr className='my-4 mt-6 border-t border-gray-700 w-full' />
-
-              <button onClick={logout} className='flex justify-center items-center bg-red-500 border border-red-500 rounded-full py-2 px-6 text-lg font-light button-animation w-full mt-4'>
-                Wyloguj się
-              </button>
-              <Link to="/change-user-data" className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full mt-5'>
-                Informacje o koncie
-              </Link>
-            </div>
-          </div>
+      <nav className='sidemenu-wrapper'>
+        <div className='sidemenu-main'>
+          <img
+            className='w-40 h-40 rounded-full'
+            src={user.avatar}
+            alt=""
+          />
+          <p className='text-xl font-bold mt-2'>
+            {user.username}
+          </p>
+          <hr className='sidemenu-hr' />
+          <button onClick={logout} className='rounded-button w-full'>
+            Wyloguj się
+          </button>
+          <Link to="/change-user-data" className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full mt-2'>
+            Informacje o koncie
+          </Link>
         </div>
       </nav>
       <nav className='w-1/12 xl:w-60 block xl:hidden'>
@@ -85,13 +80,13 @@ const SidemenuDashboard: React.FC = () =>{
                   src={user.avatar}
                   alt=""
                 />
-                <p className='text-xl font-bold mt-2'>
+                <p className='text-xl font-bold mt-2 mb-5'>
                   {user.username}
                 </p>
-                <button onClick={logout} className='flex justify-center items-center bg-red-500 border border-red-500 rounded-full py-2 px-6 text-lg font-light button-animation w-full md:w-1/2 lg:w-1/3 mt-5'>
+                <button onClick={logout} className='rounded-button w-full sm:w-1/2 lg:w-1/3'>
                   Wyloguj się
                 </button>
-                <button className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full md:w-1/2 lg:w-1/3 mt-5'>
+                <button className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full sm:w-1/2 lg:w-1/3 mt-2'>
                   Informacje o koncie
                 </button>
               </div>

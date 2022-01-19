@@ -38,6 +38,7 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
         await axios.get(`${API_URL}/users/${article.author_id}`)
         .then(res => {
           setAuthor(res.data);
+          console.log('dwad')
           setIsAuthorLoaded(true);
         })
       }
@@ -52,6 +53,7 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
       .catch(err => console.log(err))
     }
   }
+
   useEffect(() => {
     const fetchArticlesData = async () =>{
       if(jwt){
@@ -69,37 +71,33 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
     <>
     { isAuthorLoaded ?
       <>
-        <nav className='xl:w-1/4 hidden xl:block'>
-          <div className='fixed w-60 flex flex-col text-white h-screen mt-20 2xl:ml-8 xl:p-2'>
-            <div className='flex flex-col mb-5'>
-              <div className='flex flex-col items-center'>
-                <img
-                  className='w-40 h-40 rounded-full'
-                  src={author.avatar}
-                  alt=""
+        <nav className='sidemenu-wrapper'>
+          <div className='sidemenu-main'>
+            <img
+              className='w-40 h-40 rounded-full'
+              src={author.avatar}
+              alt=""
+            />
+            <p className='text-xl font-bold mt-2'>
+              {author.username}
+            </p>
+            { jwt && article.author_id !== user.id ?
+              <div className='w-full hidden xl:flex flex-col items-center mt-5'>
+                <Following
+                  route={`/articles/${article.id}`}
+                  article={article}
+                  followeds={followeds}
+                  fetchFolloweds={fetchFolloweds}
                 />
-                <p className='text-xl font-bold mt-2'>
-                  {author.username}
-                </p>
-                { jwt && article.author_id !== user.id ?
-                  <div className='hidden xl:flex flex-col items-center mt-5'>
-                    <Following
-                      route={`/articles/${article.id}`}
-                      article={article}
-                      followeds={followeds}
-                      fetchFolloweds={fetchFolloweds}
-                    />
-                    <Liking
-                      route={`/articles/${article.id}`}
-                      article={article}
-                      likeds={likeds}
-                    />
-                  </div>
-                : null}
+                <Liking
+                  route={`/articles/${article.id}`}
+                  article={article}
+                  likeds={likeds}
+                />
               </div>
-            </div>
-            <hr className='my-4 border-gray-700' />
-            <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second'>
+            : null}
+            <hr className='sidemenu-hr' />
+            <div className='sidemenu-hash-box'>
               <h2 className='text-lg font-semibold'>Hashtagi artykułu</h2>
               <ul className='m-1 text-red-400'>
                 {
@@ -140,24 +138,22 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                   </svg>
                 </div>
-                <div className='mt-4'>
-                  <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second'>
-                    <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
-                    <ul className='m-1 text-red-400'>
-                      {
-                        article ?
-                          article.hashtags.map(hash => {
-                            return(
-                              <li key={hash}>
-                                <Link className='hover:underline' to={`/hashtags/${hash}`}>#{hash}</Link>
-                              </li>
-                            )
-                          })
-                        :
-                          null
-                      }
-                    </ul>
-                  </div>
+                <div className='sidemenu-hash-box mt-4'>
+                  <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
+                  <ul className='m-1 text-red-400'>
+                    {
+                      article ?
+                        article.hashtags.map(hash => {
+                          return(
+                            <li key={hash}>
+                              <Link className='hover:underline' to={`/hashtags/${hash}`}>#{hash}</Link>
+                            </li>
+                          )
+                        })
+                      :
+                        null
+                    }
+                  </ul>
                 </div>
               </div>
             </div>

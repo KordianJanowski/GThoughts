@@ -54,7 +54,7 @@ const Comments: React.FC<Props> = ({ comment }) =>{
       }
       {
         !isDeleted ?
-        <div className="xl:w-1/2 rounded shadow-lg">
+        <div className="xl:w-1/2 rounded">
           <div className="flex flex-row items-center">
             <img src={author?.avatar} alt="" className="rounded-full mr-2 w-10 h-10" />
             <div className='flex flex-col text-gray-300'>
@@ -62,13 +62,9 @@ const Comments: React.FC<Props> = ({ comment }) =>{
               <span className='text-xs text-gray-400 -mt-1'>{ comment.createdAt!.substr(0,10) }</span>
             </div>
           </div>
-          <textarea
-            rows={3}
-            placeholder="Treść komentarza..."
-            className="text-gray-100 rounded w-full mt-2 mb-2 bg-transparent resize-none"
-            value={comment.body}
-            disabled
-          ></textarea>
+          <div className="text-gray-100 rounded w-full mt-2 mb-10 bg-transparent resize-none">
+            {comment.body}
+          </div>
         </div>
         : null
       }

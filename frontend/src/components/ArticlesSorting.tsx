@@ -26,7 +26,7 @@ const ArticlesSorting: React.FC<IProps> = ({ articles, setArticles }) => {
     <select
       value={sortingValue}
       onChange={sortingChange}
-      className='text-gray-300 bg-main my-2 px-2 py-1 border border-gray-600 rounded-md focus:border-red-400 focus:outline-none'
+      className='text-gray-300 bg-main my-2 px-2 py-1 border border-gray-600 rounded-lg focus:border-red-400 focus:outline-none'
     >
       <option value="" disabled hidden>Sortowanie</option>
       <option value="date-newest">Data: najnowsze</option>

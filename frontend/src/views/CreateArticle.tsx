@@ -6,6 +6,7 @@ import { IarticleBody, InewHashtag } from '../models/models'
 import {user, jwt, authorization} from '../models/const-variables'
 import Resizer from 'react-image-file-resizer'
 import ArticleBodyCreator from '../components/ArticleBodyCreator'
+import Navbar from '../components/Navbar'
 
 const CreateArticle: React.FC = () => {
   const history: any = useHistory();
@@ -104,45 +105,58 @@ const CreateArticle: React.FC = () => {
   }
 
   return(
-    <div className='flex flex-col items-start text-2xl text-black'>
-      <h1 className='text-white text-4xl mb-5'>Kreator artykułu</h1>
-      <input
-        placeholder="title"
-        onChange={titleValueChange}
-        name="title"
-        type="text"
-        maxLength={50}
-        className="mb-2"
-        value={title}
-      />
-      <input
-        placeholder="tags"
-        onChange={tagsValueChange}
-        name="tags"
-        type="text"
-        maxLength={50}
-        className="mb-2"
-        value={tagsAsString}
-      />
-      <input
-        type="file"
-        className='mb-2'
-        accept="image/png, image/jpeg"
-        value=''
-        onChange={(e: any) => setImage(e.currentTarget.files[0])}
-      />
-      {image ?
-        <img src={URL.createObjectURL(image)}  className="w-96" alt="" />
-      : null}
-      <ArticleBodyCreator
-        setBody={setBody}
-      />
-      <button
-        onClick={postArticle}
-        className="cursor-pointer w-60 h-14 mt-5 bg-white text-black rounded-md"
-      >
-        Stwórz artykuł
-      </button>
+    <div className='wrapper'>
+      <Navbar />
+      <div className='main'>
+        <div className='main-header'>
+          <h2 className='main-header-text'>Kreator artykułu</h2>
+        </div>
+        <div className='main-content'>
+          <div className='default-input-box'>
+            <label>Tytuł</label>
+            <input
+              type="text"
+              value={title}
+              onChange={titleValueChange}
+              placeholder='Np. Dlaczego programowanie jest korzystne dla naszego mózgu?'
+              className="w-full px-3 py-2 text-lg rounded-lg bg-transparent text-gray-300 border border-gray-600"
+            />
+          </div>
+          <div className='default-input-box'>
+            <label>Tagi (po przecinku)</label>
+            <input
+              type="text"
+              value={tagsAsString}
+              onChange={tagsValueChange}
+              placeholder="Programowanie, Mózg"
+              className="w-full px-3 py-2 text-lg rounded-lg bg-transparent text-gray-300 border border-gray-600"
+            />
+          </div>
+          <div className="default-input-box">
+            <label>Zdjęcia</label>
+            <div className="min-h-12 w-full md:w-72 text-sm sm:text-base flex flex-col items-start text-white bg-second border border-gray-600 px-3 py-2 rounded-lg">
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={(e: any) => setImage(e.currentTarget.files[0])}
+                className={image ? 'mb-2' : ''}
+              />
+              {image ?
+                <img src={URL.createObjectURL(image)}  className="w-96" alt="" />
+              : null}
+            </div>
+          </div>
+          <ArticleBodyCreator
+            setBody={setBody}
+          />
+          <button
+            onClick={postArticle}
+            className="w-8 xl:w-80 h-12 flex flex-row justify-center items-center bg-red-500 text-lg mt-5 py-2 xl:py-4 px-6 xl:px-8 rounded-3xl button-animation"
+          >
+            Stwórz artykuł
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

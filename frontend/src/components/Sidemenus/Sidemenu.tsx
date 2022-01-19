@@ -80,42 +80,41 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
         <SidemenuLoading />
       :
         <>
-          <nav className='xl:w-1/4 hidden xl:block'>
-            <div className='fixed w-full flex text-white h-screen mt-20 overflow-hidden 2xl:ml-10 xl:p-2'>
-              <div>
-                <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu}/>
-                <ArticlesSorting articles={articles} setArticles={setArticles} />
-                <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second'>
-                  <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
-                  <ul className='m-1 text-red-400'>
-                    { jwt ?
-                      <>
-                        {
-                          recentHashtags.length > 0 ?
-                            recentHashtagsMap
-                          :
-                            <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
-                        }
-                      </>
+          <nav className='sidemenu-wrapper'>
+            <div className='sidemenu-main md:items-start'>
+              <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu}/>
+              <ArticlesSorting articles={articles} setArticles={setArticles} />
+              <div className='w-full bg-second border border-gray-600 rounded-xl mt-5 p-3'>
+                <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
+                <ul className='m-1 text-red-400'>
+                  {
+                    popularHashtags.length > 0 ?
+                      popularHashtagsMap
                     :
-                      <div className='text-gray-500 w-40'><Link to='login' className='font-bold'>Zaloguj się</Link>, <br /> aby widzieć <br /> ostatnie hashtagi</div>
-                    }
-                  </ul>
-                </div>
-                <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second'>
-                  <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
-                  <ul className='m-1 text-red-400'>
-                    {
-                      popularHashtags.length > 0 ?
-                        popularHashtagsMap
-                      :
-                        <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
-                    }
-                  </ul>
-                </div>
+                      <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+                  }
+                </ul>
+              </div>
+              <div className='w-full bg-second border border-gray-600 rounded-xl mt-5 p-3'>
+                <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
+                <ul className='m-1 text-red-400'>
+                  { jwt ?
+                    <>
+                      {
+                        recentHashtags.length > 0 ?
+                          recentHashtagsMap
+                        :
+                          <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+                      }
+                    </>
+                  :
+                    <div className='text-gray-500 w-40'><Link to='login' className='font-bold hover:text-red-400 transform duration-50'>Zaloguj się</Link>, <br /> aby widzieć <br /> ostatnie hashtagi</div>
+                  }
+                </ul>
               </div>
             </div>
           </nav>
+          {/* -------------------------------------------------- mobile */}
           <nav className='w-1/12 block xl:hidden'>
             <div className='fixed w-full flex xl:justify-between text-white h-screen mt-20 2xl:ml-10 xl:p-2'>
               <div className=' w-full md:ml-1 -mt-2'>

@@ -29,30 +29,26 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
     <>
     { user ?
       <>
-        <nav className='xl:w-1/4 hidden xl:block'>
-          <div className='fixed w-64 flex flex-col text-white h-screen mt-20 2xl:ml-8 xl:p-2'>
-            <div className='flex flex-col mb-5'>
-              <div className='flex flex-col items-center'>
-                <img
-                  className='w-40 h-40 rounded-full'
-                  src={user.avatar}
-                  alt=""
-                />
-                <p className='text-xl font-bold mt-2'>
-                  {user.username}
-                </p>
-                <button className='flex justify-center items-center bg-red-500 py-2 px-6 text-base button-animation w-full mt-5'>
-                  Obserwuj
-                </button>
-                <hr className='mt-6 border-t w-full border-gray-700 ' />
-                <div className='mt-6 w-full border rounded-xl border-gray-600  p-3 bg-second'>
-                  <h2 className='font-bold'>Opis</h2>
-                  <p className='font-light'>Opissss :O</p>
+        <nav className='sidemenu-wrapper'>
+          <div className='sidemenu-main'>
+            <img
+              className='w-40 h-40 rounded-full'
+              src={user.avatar}
+              alt=""
+            />
+            <p className='text-xl font-bold mt-2 mb-5'>
+              {user.username}
+            </p>
+            <button className='rounded-button w-full'>
+              Obserwuj
+            </button>
+            <hr className='sidemenu-hr' />
+            <div className='sidemenu-hash-box'>
+              <h2 className='font-bold'>Opis</h2>
+              <p className='font-light'>Opissss :O</p>
 
-                  <h2 className='font-bold mt-2'>Data dołączenia</h2>
-                  <p className='font-light'> { user.createdAt.substring(0,10) }</p>
-                </div>
-              </div>
+              <h2 className='font-bold mt-2'>Data dołączenia</h2>
+              <p className='font-light'> { user.createdAt.substring(0,10) }</p>
             </div>
           </div>
         </nav>
@@ -86,10 +82,10 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
                     <p className='text-xl font-bold mt-2'>
                       {user.username}
                     </p>
-                    <button className='flex justify-center items-center bg-red-500 py-2 px-6 text-base button-animation w-1/3 mt-5'>
+                    <button className='rounded-button w-full'>
                       Obserwuj
                     </button>
-                    <hr className='my-4 border w-full border-gray-700 ' />
+                    <hr className='sidemenu-hr' />
                     <div className='mt-5 w-full lg:w-1/2 border-2 border-gray-600 rounded-xl p-3 bg-second'>
                       <h2 className='font-bold'>Opis</h2>
                       <p className='font-light'>Opissss :O</p>
@@ -107,7 +103,6 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
     :
       <SidemenuProfilesUsersLoading />
     }
-
     </>
   )
 }
