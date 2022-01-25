@@ -5,6 +5,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { convertToRaw, ContentState, EditorState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
+import { LOCALES } from '../i18n';
 
 interface Props {
   setBody?: React.Dispatch<React.SetStateAction<IarticleBody | undefined>>
@@ -20,6 +21,7 @@ const defaultProps: Props = {
 
 const ArticleBodyCreator: React.FC<Props> = ({ body, setBody }) => {
   const [editorState, setEditorState] = useState<any>()
+  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
 
   useEffect(() => {
     if(editorState !== undefined) {
@@ -37,7 +39,7 @@ const ArticleBodyCreator: React.FC<Props> = ({ body, setBody }) => {
       }
 
       setBody!(data)
-    }
+    }// eslint-disable-next-line
   }, [editorState])
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const ArticleBodyCreator: React.FC<Props> = ({ body, setBody }) => {
       const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
       const editorState = EditorState.createWithContent(contentState);
       setEditorState(editorState)
-    }
+    }// eslint-disable-next-line
   }, [])
 
   const editorStateChange = (editorState: any) => {
@@ -64,7 +66,7 @@ const ArticleBodyCreator: React.FC<Props> = ({ body, setBody }) => {
         localization={{
           locale: 'pl',
         }}
-        placeholder='Tutaj napisz swój artykuł'
+        placeholder={`${isI18NisEnglish ? 'Write your article here' : 'Tutaj napisz swój artykuł'}`}
       />
     </div>
   )

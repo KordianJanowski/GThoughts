@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/followeds-articles",
+      "handler": "followed.findFollowedsArticles",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/followeds/count",
       "handler": "followed.count",
       "config": {

@@ -8,6 +8,7 @@ import ArticleSearching from '.././ArticlesSearching';
 import ArticlesSorting from '../../components/ArticlesSorting';
 import { authorization, jwt } from '../../models/const-variables';
 import SidemenuLoading from './SidemenuLoading';
+import { FormattedMessage } from 'react-intl';
 
 type Props = {
   articles: Iarticle[];
@@ -85,18 +86,18 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
               <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu}/>
               <ArticlesSorting articles={articles} setArticles={setArticles} />
               <div className='w-full bg-second border border-gray-600 rounded-xl mt-5 p-3'>
-                <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
+                <h2 className='text-lg font-semibold'><FormattedMessage id='popularHashtags'/></h2>
                 <ul className='m-1 text-red-400'>
                   {
                     popularHashtags.length > 0 ?
                       popularHashtagsMap
                     :
-                      <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+                      <span className='text-gray-500'><FormattedMessage id='noHashtags'/></span>
                   }
                 </ul>
               </div>
               <div className='w-full bg-second border border-gray-600 rounded-xl mt-5 p-3'>
-                <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
+                <h2 className='text-lg font-semibold'><FormattedMessage id='recentHashtags'/></h2>
                 <ul className='m-1 text-red-400'>
                   { jwt ?
                     <>
@@ -104,11 +105,16 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
                         recentHashtags.length > 0 ?
                           recentHashtagsMap
                         :
-                          <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+                          <span className='text-gray-500'><FormattedMessage id='noHashtags'/></span>
                       }
                     </>
                   :
-                    <div className='text-gray-500 w-40'><Link to='login' className='font-bold hover:text-red-400 transform duration-50'>Zaloguj się</Link>, <br /> aby widzieć <br /> ostatnie hashtagi</div>
+                    <div className='text-gray-500 w-40'>
+                      <Link to='login' className='font-bold hover:text-red-400 transform duration-50'>
+                        <FormattedMessage id='loginButton'/>
+                      </Link>
+                      <FormattedMessage id='toSeeRecentHashtags'/>
+                    </div>
                   }
                 </ul>
               </div>
@@ -141,25 +147,25 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
                     <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu} />
                     <ArticlesSorting articles={articles} setArticles={setArticles} />
                     <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second'>
-                      <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
+                      <h2 className='text-lg font-semibold'><FormattedMessage id='popularHashtags'/></h2>
                       <ul className='m-1 text-red-400'>
                         {
                           recentHashtags.length > 0 ?
                             recentHashtagsMap
                           :
-                            <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+                            <span className='text-gray-500'><FormattedMessage id='noHashtags'/></span>
                         }
                       </ul>
                     </div>
                     <div className='mt-5 border border-gray-600 rounded-2xl p-3 bg-second'>
-                      <h2 className='text-lg font-semibold'>Popularne hashtagi</h2>
+                      <h2 className='text-lg font-semibold'><FormattedMessage id='popularHashtags'/></h2>
                       <ul className='m-1 text-red-400'>
                         {
                           popularHashtags.length > 0
                           ?
                             popularHashtagsMap
                           :
-                            <span className='text-gray-500'>Brak hashtagów do wyświetlenia</span>
+                            <span className='text-gray-500'><FormattedMessage id='noHashtags'/></span>
                         }
                       </ul>
                     </div>

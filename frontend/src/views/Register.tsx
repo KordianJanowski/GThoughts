@@ -8,6 +8,9 @@ import API_URL from '../API_URL';
 import axios from 'axios';
 
 import { jwt} from '../models/const-variables'
+import GoToHome from '../components/GoToHome';
+import { FormattedMessage } from 'react-intl';
+import { LOCALES } from '../i18n';
 
 interface RegisterInputsValue {
   username: string;
@@ -17,6 +20,7 @@ interface RegisterInputsValue {
 
 const Register:React.FC = () =>{
   const history: any = useHistory();
+  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
 
   const[isValidation, setIsValidation] = useState<boolean>(false);
   const[validationText, setValidationText] = useState<string>('');
@@ -43,106 +47,107 @@ const Register:React.FC = () =>{
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .max(20, 'username must be shorted than 20')
-        .min(4, 'username must be longer than 6 characters')
-        .required('Required'),
+        .max(20, `${ isI18NisEnglish ? 'Username must be shorter than 20 characters' : 'Nazwa użytkownika musi być krótsza niż 20 znaków' }`)
+        .min(4, `${ isI18NisEnglish ? 'Username must be longer than 4 characters' : 'Nazwa użytkownika musi być dłuższa niż 4 znaki' }`)
+        .required(`${ isI18NisEnglish ? 'Required' : 'Pole wymagane' }`),
       email: Yup.string()
-        .max(20, 'email must be shortet than 20 char')
-        .min(4, 'email must be longer than 6 characters')
-        .email('It must be email')
-        .required('Required'),
+        .max(40, `${ isI18NisEnglish ? 'Email must be shorter than 20 characters' : 'Email musi być krótszy niż 20 znaków' }`)
+        .min(4, `${ isI18NisEnglish ? 'Email must be longer than 4 characters' : 'Email musi być dłuższy niż 4 znaków' }`)
+        .email(`${ isI18NisEnglish ? 'It must be email' : 'To musi być email' }`)
+        .required(`${ isI18NisEnglish ? 'Required' : 'Pole wymagane' }`),
       password: Yup.string()
-        .max(20, 'Passwsord must be shortet than 20 char')
-        .min(4, 'Password should be longer tan 6 characters')
-        .required('Required'),
+        .max(30, `${ isI18NisEnglish ? 'Password must be shorter than 30 characters' : 'Hasło musi być krótsze niż 30 znaków'}`)
+        .min(4, `${ isI18NisEnglish ? 'Password must be longer than 4 characters' : 'Hasło musi być dłuższe niż 4 znaków'}`)
+        .required(`${ isI18NisEnglish ? 'Required' : 'Pole wymagane' }`),
       repeatPassword: Yup.string()
-        .max(20, 'Password must be shortet than 20 char')
-        .min(4, 'Password should be longer tan 6 characters')
-        .oneOf([Yup.ref('password'), null], 'Passwords must match')
-        .required('Required')
+        .max(30, `${ isI18NisEnglish ? 'Repeat password must be shorter than 30 characters' : 'Powtórzone Hasło musi być krótsze niż 30 znaków'}`)
+        .min(4, `${ isI18NisEnglish ? 'Repeat password must be longer than 4 characters' : 'Powtórzone hasło musi być dłuższe niż 4 znaków'}`)
+        .oneOf([Yup.ref('password'), null], `${isI18NisEnglish ? 'Password must match' : 'Hasło musi być zgodne z powtórzonym hasłem'}`)
+        .required(`${ isI18NisEnglish ? 'Required' : 'Pole wymagane' }`)
     }),
     onSubmit: async ({username, email, password}: RegisterInputsValue) =>{
-      const register = async () =>{
-        let isPostedImages: boolean = false;
-        let imageURL: string = ''
+      let isPostedImages: boolean = false;
+      let imageURL: string = ''
 
-        if(image !== ''){
-          const imageResized: any = await resizeFile(image)
+      if(image !== ''){
+        const imageResized: any = await resizeFile(image)
 
-          const data = new FormData()
-          data.append('file', imageResized)
-          data.append("api_key", '732376169492789');
-          data.append("api_secret", 'A-dhHrnEZqJYnhAGqLAGcWSDI1M');
-          data.append("cloud_name", 'digj3w8rk');
-          data.append("upload_preset", "bb7forio");
+        const data = new FormData()
+        data.append('file', imageResized)
+        data.append("api_key", '732376169492789');
+        data.append("api_secret", 'A-dhHrnEZqJYnhAGqLAGcWSDI1M');
+        data.append("cloud_name", 'digj3w8rk');
+        data.append("upload_preset", "bb7forio");
 
-          await axios.post(
-            `	https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`,
-            data
-          )
-          .then(async res => {
-            imageURL = res.data.secure_url;
-            isPostedImages = true;
-          })
-          .catch(err => console.log(err))
-        } else{
+        await axios.post(
+          `	https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`,
+          data
+        )
+        .then(async res => {
+          imageURL = res.data.secure_url;
           isPostedImages = true;
-          imageURL = 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg'
+        })
+        .catch(err => console.log(err))
+      } else{
+        isPostedImages = true;
+        imageURL = 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg'
+      }
+
+
+      if(isPostedImages){
+        const user = {
+          username: username,
+          email: email,
+          password: password,
+          avatar: imageURL,
+          recent_hashtags: []
         }
 
+        const registerResponse = await fetch(`${API_URL}/auth/local/register`, {
+          method: "POST",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(user)
+        })
 
-        if(isPostedImages){
-          const user = {
-            username: username,
-            email: email,
-            password: password,
-            articles_ids: [],
-            avatar: imageURL,
-            recent_hashtags: []
+        const registerResponseJSON = await registerResponse.json();
+        console.log(registerResponseJSON.message[0].messages[0].message)
+        try{
+          if(registerResponseJSON.message[0].messages[0].message === "Email already taken"){
+            setTimeout(() =>{
+              setIsValidation(false);
+            }, 4000)
+            setValidationText('usernameAlreadyTaken');
+            return setIsValidation(true);
           }
-
-          const registerResponse = await fetch(`${API_URL}/auth/local/register`, {
-            method: "POST",
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-          })
-
-          const registerResponseJSON = await registerResponse.json();
-
-          try{
-            if(registerResponseJSON.message[0].messages[0].message === "Email already taken"){
-              setTimeout(() =>{
-                setIsValidation(false);
-              }, 4000)
-              setIsValidation(true);
-              return setValidationText('Username already taken')
-            }
-            else{
-              setTimeout(() =>{
-                setIsValidation(false);
-              }, 4000)
-              setIsValidation(true);
-              return setValidationText('Email already taken')
-            }
-          } catch(err) {
-            return history.push('/login')
+          else{
+            setTimeout(() =>{
+              setIsValidation(false);
+            }, 4000)
+            setValidationText('emailAlreadyTaken');
+            return setIsValidation(true); 
           }
+        } catch(err) {
+          return history.push('/login')
         }
       }
-      register()
     }
   })
 
   return(
   <div className="w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-b from-main to-second">
+    <GoToHome />
     <div className="flex flex-col items-center bg-white w-96 md:w-108 h-auto rounded-lg">
-      <h2 className="text-2xl font-normal mt-10 text-main">Utwórz konto</h2>
+      <h2 className="text-2xl font-normal mt-10 text-main">
+        <FormattedMessage id='createAccount'/>
+      </h2>
       <form className="p-10 w-full" onSubmit={handleSubmit}>
         <div className="default-input-box">
-          <label htmlFor="">Nazwa użytkownika</label>
+          <label htmlFor="">
+            <FormattedMessage id='username'/>
+          </label>
           <div className="default-input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
@@ -150,7 +155,7 @@ const Register:React.FC = () =>{
           </div>
           <input
             className="icon-input"
-            placeholder="Nazwa użytkownika"
+            placeholder={`${isI18NisEnglish ? 'Username': 'Nazwa użytkownika'}`}
             type="text"
             name="username"
             value={values.username}
@@ -159,7 +164,9 @@ const Register:React.FC = () =>{
           />
         </div>
         <div className="default-input-box">
-          <label htmlFor="">Adres email</label>
+          <label htmlFor="">
+            <FormattedMessage id='email'/>
+          </label>
           <div className="default-input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
@@ -168,7 +175,7 @@ const Register:React.FC = () =>{
           </div>
           <input
             className="icon-input"
-            placeholder="Adres email"
+            placeholder='Email'
             type="email"
             name="email"
             value={values.email}
@@ -177,7 +184,9 @@ const Register:React.FC = () =>{
           />
         </div>
         <div className="default-input-box">
-          <label htmlFor="">Hasło</label>
+          <label htmlFor="">
+            <FormattedMessage id='password'/>
+          </label>
           <div className="default-input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
@@ -185,7 +194,7 @@ const Register:React.FC = () =>{
           </div>
           <input
             className="icon-input"
-            placeholder="Hasło"
+            placeholder={`${isI18NisEnglish ? 'Password': 'Hasło'}`}
             type="password"
             name="password"
             value={values.password}
@@ -194,7 +203,9 @@ const Register:React.FC = () =>{
           />
         </div>
         <div className="default-input-box">
-          <label htmlFor="">Powtórz hasło</label>
+          <label htmlFor="">
+          <FormattedMessage id='repeatPassword'/>
+          </label>
           <div className="default-input-icon">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
@@ -202,7 +213,7 @@ const Register:React.FC = () =>{
           </div>
           <input
             className="icon-input"
-            placeholder="Powtórz hasło"
+            placeholder={`${isI18NisEnglish ? 'Repeat password': 'Powtórz hasło'}`}
             type="password"
             name="repeatPassword"
             value={values.repeatPassword}
@@ -228,42 +239,43 @@ const Register:React.FC = () =>{
         <input
           className="default-input-submit"
           type="submit"
-          value="Zarejestuj"
+          value={`${isI18NisEnglish ? 'Sign in' : 'Zarejestruj  się'}`}
         />
       </form>
     </div>
-    <div className="grid grid-cols-2">
-        {touched.username && errors.username ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
-            <p className="font-bold">Username</p>
-            <p>{ errors.username }</p>
-          </div>
-        ): null}
-        {touched.email && errors.email ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
-            <p className="font-bold">Email</p>
-            <p>{ errors.email }</p>
-          </div>
-        ): null}
-        {touched.password && errors.password ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
-            <p className="font-bold">Password</p>
-            <p>{ errors.password }</p>
-          </div>
-        ): null}
-        {touched.repeatPassword && errors.repeatPassword ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
-            <p className="font-bold">Repeat Password</p>
-            <p>{ errors.repeatPassword }</p>
-          </div>
-        ): null}
-        {isValidation ? (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-48 mt-2 grid-cols-1" role="alert">
-            <p className="font-bold">Date base</p>
-            <p>{ validationText }</p>
-          </div>
-        ): null}
-      </div>
+    <div className="flex flex-col">
+      {touched.username && errors.username ? (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-96 mt-2 grid-cols-1" role="alert">
+          <p className="font-bold"><FormattedMessage id='username'/> </p>
+          <p><FormattedMessage id={ `${errors.username}` }/></p>
+        </div>
+      ): null}
+      {touched.email && errors.email ? (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-96 mt-2 grid-cols-1" role="alert">
+          <p className="font-bold"><FormattedMessage id='email'/></p>
+          <p><FormattedMessage id={`${errors.email}`}/></p>
+        </div>
+      ): null}
+      {touched.password && errors.password ? (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-96 mt-2 grid-cols-1" role="alert">
+          <p className="font-bold"><FormattedMessage id='password'/></p>
+          <p><FormattedMessage id={ `${errors.password}` }/></p>
+        </div>
+      ): null}
+      {touched.repeatPassword && errors.repeatPassword ? (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-96 mt-2 grid-cols-1" role="alert">
+          <p className="font-bold"><FormattedMessage id='repeatPassword'/></p>
+          <p><FormattedMessage id={ `${errors.repeatPassword}` }/></p>
+        </div>
+      ): null}
+      {isValidation ? (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-full mt-2 grid-cols-1" role="alert">
+          <p className="font-bold"><FormattedMessage id='dataBase'/></p>
+          <p><FormattedMessage id={ `${validationText}` }/></p>
+          {/* <p>{validationText}</p> */}
+        </div>
+      ): null}
+    </div>
   </div>
   )
 }

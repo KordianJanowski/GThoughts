@@ -10,7 +10,7 @@ const SidemenuLoading: React.FC = () =>{
             className="w-full py-2 pl-10 pr-4 border rounded-xl bg-transparent text-gray-300 border-gray-600 bg-second"
           />
           <div className='w-3/5 my-2 px-2 py-1 text-main border border-gray-600 rounded-xl bg-second'>{'\u00A0'}</div>
-          <div className='loading-hash-box'>
+          <div className='sidemenu-hash-box mt-5'>
             <h2 className='text-lg font-semibold'>{'\u00A0'}</h2>
             <ul className='m-1'>
               <li>{'\u00A0'}</li>
@@ -18,7 +18,7 @@ const SidemenuLoading: React.FC = () =>{
               <li>{'\u00A0'}</li>
             </ul>
           </div>
-          <div className='loading-hash-box'>
+          <div className='sidemenu-hash-box mt-5'>
             <h2 className='text-lg font-semibold'>{'\u00A0'}</h2>
             <ul className='m-1'>
               <li>{'\u00A0'}</li>

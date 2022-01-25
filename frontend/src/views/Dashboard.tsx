@@ -9,6 +9,8 @@ import ApproveLayer from '../components/ApproveLayer';
 import Navbar from '../components/Navbar';
 import Loading from '../components/Loading';
 import SidemenuDashboard from '../components/Sidemenus/SidemenuDashboard';
+import { FormattedMessage } from 'react-intl';
+import { user } from './../models/const-variables';
 
 const Dashboard:React.FC = () =>{
   const history: any = useHistory();
@@ -23,22 +25,10 @@ const Dashboard:React.FC = () =>{
     if(!jwt) return history.push('/login');
 
     const fetchArticles = async () =>{
-      await axios.get(`${API_URL}/users/me`, authorization)
-      .then(res => {
-        console.log(res.data)
-        if(res.data.articles_ids.length === 0) return setArticleResponse(true)
-        const newArticles: Iarticle[] = []
-        res.data.articles_ids.forEach(async (article_id: string) =>{
-          await axios.get(`${API_URL}/articles/${article_id}`)
-          .then(async response =>{
-            newArticles.push(response.data)
-            if(newArticles.length === res.data.articles_ids.length){
-              setArticles([...newArticles])
-              setArticleResponse(true)
-            }
-          })
-          .catch(err => console.log(err))
-        })
+      await axios.get(`${API_URL}/authors-articles/${user.id}`)
+      .then(res =>{
+        setArticles(res.data);
+        setArticleResponse(true);
       })
     }
     fetchArticles()// eslint-disable-next-line
@@ -51,25 +41,14 @@ const Dashboard:React.FC = () =>{
 
   const deleteArticle = async () =>{
     await axios.delete(`${API_URL}/articles/${selectedArticleID}`, authorization)
-    .then(() => console.log('deleted'))
+    .then(() => {
+      const index = articles.findIndex((article: Iarticle) => article.id === selectedArticleID);
+      const newArticles: Iarticle[] = articles;
+      newArticles.splice(index,1)
 
-    await axios.get(`${API_URL}/users/me`, authorization)
-    .then(async res =>{
-      const index = res.data.articles_ids.findIndex((article_id: string) => article_id === selectedArticleID);
-      const newArticles_ids: string[] = res.data.articles_ids;
-      newArticles_ids.splice(index,1)
-
-      await axios.put(`${API_URL}/users/me`, { articles_ids: newArticles_ids }, authorization)
-      .then(() =>{
-        const index = articles.findIndex((article: Iarticle) => article.id === selectedArticleID);
-        const newArticles: Iarticle[] = articles;
-        newArticles.splice(index,1)
-
-        setArticles(newArticles)
-        toggleDeleteArticleLayer('')
-      })
+      setArticles(newArticles)
+      toggleDeleteArticleLayer('')
     })
-
     .catch(err => console.log(err))
   }
 
@@ -102,7 +81,7 @@ const Dashboard:React.FC = () =>{
               <Navbar />
               <div className='main'>
                 <div className='main-header'>
-                  <h2 className='main-header-text'>Panel użytkownika</h2>
+                  <h2 className='main-header-text'><FormattedMessage id='panel'/></h2>
                 </div>
                 <div className='main-content'>
                   { articleResponse ?
@@ -111,7 +90,7 @@ const Dashboard:React.FC = () =>{
                         articles.length !== 0 ?
                           articlesMap
                         :
-                          <p>Nie znaleziono żadnych artykułów</p>
+                          <p><FormattedMessage id='noArticlesFound'/></p>
                       }
                     </div>
                   :

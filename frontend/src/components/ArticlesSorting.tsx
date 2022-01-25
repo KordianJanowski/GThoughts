@@ -1,4 +1,5 @@
 import React, { useState  } from 'react'
+import { LOCALES } from '../i18n';
 import { Iarticle } from '../models/models';
 
 interface IProps {
@@ -8,6 +9,7 @@ interface IProps {
 
 const ArticlesSorting: React.FC<IProps> = ({ articles, setArticles }) => {
   const [sortingValue, setSortingValue] = useState<string>('')
+  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
 
   const sortingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortingValue(e.target.value)
@@ -23,14 +25,15 @@ const ArticlesSorting: React.FC<IProps> = ({ articles, setArticles }) => {
   }
 
   return (
+
     <select
       value={sortingValue}
       onChange={sortingChange}
       className='text-gray-300 bg-main my-2 px-2 py-1 border border-gray-600 rounded-lg focus:border-red-400 focus:outline-none'
     >
-      <option value="" disabled hidden>Sortowanie</option>
-      <option value="date-newest">Data: najnowsze</option>
-      <option value="date-oldest">Data: najstarsze</option>
+      <option value="" disabled hidden>{isI18NisEnglish ? 'Sorting' : 'Sortowanie'}</option>
+      <option value="date-newest">{isI18NisEnglish ? 'Date: latest' : 'Data: najnowsze'}</option>
+      <option value="date-oldest">{isI18NisEnglish ? 'Date: oldest' : 'Data: najstarsze'}</option>
     </select>
   )
 }

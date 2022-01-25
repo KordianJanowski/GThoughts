@@ -8,6 +8,8 @@ import {user, jwt, authorization} from '../models/const-variables'
 import Resizer from 'react-image-file-resizer'
 import ArticleBodyCreator from '../components/ArticleBodyCreator'
 import Navbar from '../components/Navbar'
+import { FormattedMessage } from 'react-intl';
+import { LOCALES } from '../i18n';
 
 interface Props {
   id: string;
@@ -23,6 +25,7 @@ const EditArticle: React.FC = () => {
   const [body, setBody] = useState<IarticleBody>();
   const [image, setImage] = useState<any>('');
   const [imageLocalURL, setImageLocalURL] = useState<string>()
+  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
 
   useEffect(() => {
     if(!jwt) return history.push('/login')// eslint-disable-next-line
@@ -37,11 +40,11 @@ const EditArticle: React.FC = () => {
         setTagsAsString(res.data.hashtags.join(','))
         setBody(res.data.body)
       })
-      .catch(err => {
+      .catch(() => {
         history.push('/')
       })
     }
-    fetchArticle()
+    fetchArticle()// eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -68,7 +71,7 @@ const EditArticle: React.FC = () => {
     }
 
     await axios.put(`${API_URL}/articles/${article?.id}`, data, authorization)
-    .then(res => history.push(`/articles/${article?.id}`))
+    .then(() => history.push(`/articles/${article?.id}`))
     .catch(err => console.log(err))
   }
 
@@ -108,13 +111,15 @@ const EditArticle: React.FC = () => {
       <Navbar />
       <div className="main">
         <div className='main-header'>
-          <h2 className='main-header-text'>Edytowanie artykułu</h2>
+          <h2 className='main-header-text'><FormattedMessage id='editArticle'/></h2>
         </div>
         <div className='main-content'>
           <div className='default-input-box'>
-            <label>Tytuł</label>
+            <label>
+              <FormattedMessage id='title'/>
+            </label>
             <input
-              placeholder="title"
+              placeholder={`${ isI18NisEnglish ? 'Title' : 'Tytuł' }`}
               onChange={titleValueChange}
               name="title"
               type="text"
@@ -124,9 +129,11 @@ const EditArticle: React.FC = () => {
             />
           </div>
           <div className='default-input-box'>
-            <label>Tytuł</label>
+            <label>
+              <FormattedMessage id='hashtag'/>
+            </label>
             <input
-              placeholder="tags"
+              placeholder={`Hashtag${ isI18NisEnglish ? 's' : 'i' }`}
               onChange={tagsValueChange}
               name="tags"
               type="text"
@@ -136,7 +143,9 @@ const EditArticle: React.FC = () => {
             />
           </div>
           <div className="default-input-box">
-            <label>Zdjęcia</label>
+            <label>
+              <FormattedMessage id='mainImage'/>
+            </label>
             <div className="min-h-12 w-full md:w-72 text-sm sm:text-base flex flex-col items-start text-white bg-second border border-gray-600 px-3 py-2 rounded-lg">
               <input
                 type="file"
@@ -163,7 +172,7 @@ const EditArticle: React.FC = () => {
             onClick={editArticle}
             className="w-8 xl:w-80 h-12 flex flex-row justify-center items-center bg-red-500 text-lg mt-5 py-2 xl:py-4 px-6 xl:px-8 rounded-3xl button-animation"
           >
-            Zapisz zmiany
+            <FormattedMessage id='saveChanges'/>
           </button>
         </div>
 

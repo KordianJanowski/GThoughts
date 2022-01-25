@@ -4,7 +4,6 @@ import API_URL from '../API_URL';
 import { useParams } from 'react-router-dom';
 import { Iarticle } from '../models/models'
 import { jwt, authorization, user } from '../models/const-variables'
-import AddFeedback from '../components/Article/Feedbacks/AddFeedback';
 import Navbar from '../components/Navbar';
 import SidemenuArticle from '../components/Sidemenus/SidemenuArticle';
 import Comments from '../components/Article/Comments/Comments';
@@ -27,7 +26,7 @@ const Article:React.FC = () =>{
       })
       .catch(err => console.log(err))
     }
-    fetchArticle()
+    fetchArticle()// eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -62,7 +61,7 @@ const Article:React.FC = () =>{
       }
 
       if(jwt) fetchUserRecentHashtags()
-    }
+    }// eslint-disable-next-line
   }, [isArticleExist])
 
   return(

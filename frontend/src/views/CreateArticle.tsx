@@ -7,6 +7,8 @@ import {user, jwt, authorization} from '../models/const-variables'
 import Resizer from 'react-image-file-resizer'
 import ArticleBodyCreator from '../components/ArticleBodyCreator'
 import Navbar from '../components/Navbar'
+import { FormattedMessage } from 'react-intl';
+import { LOCALES } from './../i18n/locales';
 
 const CreateArticle: React.FC = () => {
   const history: any = useHistory();
@@ -15,6 +17,7 @@ const CreateArticle: React.FC = () => {
   const [tagsAsString, setTagsAsString] = useState<string>('');
   const [body, setBody] = useState<IarticleBody>();
   const [image, setImage] = useState<any>('');
+  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
 
   useEffect(() => {
     if(!jwt) return history.push('/login')// eslint-disable-next-line
@@ -109,31 +112,31 @@ const CreateArticle: React.FC = () => {
       <Navbar />
       <div className='main'>
         <div className='main-header'>
-          <h2 className='main-header-text'>Kreator artykułu</h2>
+          <h2 className='main-header-text'><FormattedMessage id='creatorArticle'/></h2>
         </div>
         <div className='main-content'>
           <div className='default-input-box'>
-            <label>Tytuł</label>
+            <label><FormattedMessage id='title'/></label>
             <input
               type="text"
               value={title}
               onChange={titleValueChange}
-              placeholder='Np. Dlaczego programowanie jest korzystne dla naszego mózgu?'
+              placeholder={`${isI18NisEnglish ? 'Example. Why programming is good for our brains ?' : 'Np. Dlaczego programowanie jest korzystne dla naszego mózgu ?'}`}
               className="w-full px-3 py-2 text-lg rounded-lg bg-transparent text-gray-300 border border-gray-600"
             />
           </div>
           <div className='default-input-box'>
-            <label>Tagi (po przecinku)</label>
+            <label><FormattedMessage id='hashtag'/></label>
             <input
               type="text"
               value={tagsAsString}
               onChange={tagsValueChange}
-              placeholder="Programowanie, Mózg"
+              placeholder={`${isI18NisEnglish ? 'Programing, Brain' : 'Programowanie, Mózg'}`}
               className="w-full px-3 py-2 text-lg rounded-lg bg-transparent text-gray-300 border border-gray-600"
             />
           </div>
           <div className="default-input-box">
-            <label>Zdjęcia</label>
+            <label><FormattedMessage id='mainImage'/></label>
             <div className="min-h-12 w-full md:w-72 text-sm sm:text-base flex flex-col items-start text-white bg-second border border-gray-600 px-3 py-2 rounded-lg">
               <input
                 type="file"
@@ -153,7 +156,7 @@ const CreateArticle: React.FC = () => {
             onClick={postArticle}
             className="w-8 xl:w-80 h-12 flex flex-row justify-center items-center bg-red-500 text-lg mt-5 py-2 xl:py-4 px-6 xl:px-8 rounded-3xl button-animation"
           >
-            Stwórz artykuł
+            <FormattedMessage id='createArticle'/>
           </button>
         </div>
       </div>

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import API_URL from '../../API_URL'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
 import { Iuser } from '../../models/models';
 import SidemenuProfilesUsersLoading from './SidemenuProfilesUsersLoading';
+import { FormattedMessage } from 'react-intl';
 
 type Props = {
   user: Iuser;
@@ -40,14 +38,12 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
               {user.username}
             </p>
             <button className='rounded-button w-full'>
-              Obserwuj
+              <FormattedMessage id='follow'/>
             </button>
             <hr className='sidemenu-hr' />
             <div className='sidemenu-hash-box'>
-              <h2 className='font-bold'>Opis</h2>
-              <p className='font-light'>Opissss :O</p>
-
-              <h2 className='font-bold mt-2'>Data dołączenia</h2>
+              {/* <h2 className='font-bold'><FormattedMessage id='description'/></h2> */}
+              <h2 className='font-bold'><FormattedMessage id='dataJoined'/></h2>
               <p className='font-light'> { user.createdAt.substring(0,10) }</p>
             </div>
           </div>
@@ -83,14 +79,14 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
                       {user.username}
                     </p>
                     <button className='rounded-button w-full'>
-                      Obserwuj
+                      <FormattedMessage id='follow'/>
                     </button>
                     <hr className='sidemenu-hr' />
                     <div className='mt-5 w-full lg:w-1/2 border-2 border-gray-600 rounded-xl p-3 bg-second'>
-                      <h2 className='font-bold'>Opis</h2>
-                      <p className='font-light'>Opissss :O</p>
+                      {/* <h2 className='font-bold'>Opis</h2>
+                      <p className='font-light'>Opissss :O</p> */}
 
-                      <h2 className='font-bold mt-2'>Data dołączenia</h2>
+                      <h2 className='font-bold'><FormattedMessage id='dataJoined'/></h2>
                       <p className='font-light'> { user.createdAt.substring(0,10) }</p>
                     </div>
                   </div>

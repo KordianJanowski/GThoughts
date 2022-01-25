@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 
 import { user } from '../../models/const-variables';
+import { FormattedMessage } from 'react-intl';
 
 const SidemenuDashboard: React.FC = () =>{
   const cookies: Cookies = new Cookies();
@@ -45,10 +46,10 @@ const SidemenuDashboard: React.FC = () =>{
           </p>
           <hr className='sidemenu-hr' />
           <button onClick={logout} className='rounded-button w-full'>
-            Wyloguj się
+            <FormattedMessage id='logout'/>
           </button>
           <Link to="/change-user-data" className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full mt-2'>
-            Informacje o koncie
+            <FormattedMessage id='accountInformation'/>
           </Link>
         </div>
       </nav>
@@ -84,11 +85,11 @@ const SidemenuDashboard: React.FC = () =>{
                   {user.username}
                 </p>
                 <button onClick={logout} className='rounded-button w-full sm:w-1/2 lg:w-1/3'>
-                  Wyloguj się
+                  <FormattedMessage id='logout'/>
                 </button>
-                <button className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full sm:w-1/2 lg:w-1/3 mt-2'>
-                  Informacje o koncie
-                </button>
+                <Link to='/change-user-data' className='flex justify-center items-center bg-second border border-gray-600 rounded-full py-2 px-6 font-light text-lg button-animation w-full sm:w-1/2 lg:w-1/3 mt-2'>
+                  <FormattedMessage id='accountInformation'/>
+                </Link>
               </div>
             </div>
           </div>

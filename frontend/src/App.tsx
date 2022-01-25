@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Home from './views/Home'
@@ -15,59 +15,64 @@ import ProfilesUsers from './views/ProfilesUsers'
 import SingleHashtag from './views/SingleHashtag'
 import NotFound from './views/NotFound';
 
+import { I18nProvider, LOCALES } from './i18n';
+
+
 const App: React.FC = () =>{
+  useEffect(() =>{
+    if(!localStorage.getItem('i18n')){
+      localStorage.setItem('i18n', LOCALES.POLISH)
+    }// eslint-disable-next-line
+  }, []) 
+
   return (
-    <div className='flex justify-center items-center'>
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/articles/:id">
-            <Article />
-          </Route>
-          <Route path="/create-article">
-            <CreateArticle />
-          </Route>
-          <Route path="/edit-article/:id">
-            <EditArticle />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/change-user-data">
-            <ChangeUserData />
-          </Route>
-          <Route path="/create-article">
-            <CreateArticle />
-          </Route>
-          <Route path="/liked">
-            <Liked />
-          </Route>
-          <Route path="/followeds">
-            <Followeds />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/profiles-users/:id">
-            <ProfilesUsers />
-          </Route>
-          <Route path="/hashtags/:hashtag">
-            <SingleHashtag />
-          </Route>
-          <Route>
-            <NotFound />
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+    <I18nProvider locale={localStorage.getItem('i18n')}>
+      <div className='flex justify-center items-center'>
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/articles/:id">
+              <Article />
+            </Route>
+            <Route path="/create-article">
+              <CreateArticle />
+            </Route>
+            <Route path="/edit-article/:id">
+              <EditArticle />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="/change-user-data">
+              <ChangeUserData />
+            </Route>
+            <Route path="/profiles-users/:id">
+              <ProfilesUsers />
+            </Route>
+            <Route path="/liked">
+              <Liked />
+            </Route>
+            <Route path="/followeds">
+              <Followeds />
+            </Route>
+            <Route path="/hashtags/:hashtag">
+              <SingleHashtag />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </I18nProvider>
   );
 }
 

@@ -8,15 +8,9 @@ const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
 
 module.exports = {
   async find(ctx) {
-    const entity = await strapi.services.feedbacks.find();
-    const feedbacks = [];
-    entity.forEach(feedback =>{
-      if(feedback.article_id === ctx.request.header.article_id){
-        feedbacks.push(feedback);
-      }
-    })
+    const entity = await strapi.services.feedbacks.find({ article_id: { $eq: ctx.request.header.article_id } });
 
-    return sanitizeEntity(feedbacks, { model: strapi.models.feedbacks });
+    return sanitizeEntity(entity, { model: strapi.models.feedbacks });
   },
 
   async update(ctx) {

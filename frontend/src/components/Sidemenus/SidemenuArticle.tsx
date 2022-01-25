@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import API_URL from '../../API_URL'
-import { user, jwt } from '../../models/const-variables'
+import { user, jwt, authorization_user_id } from '../../models/const-variables'
 import { Link } from 'react-router-dom'
 import { Iuser, Iarticle, Iliked, Ifollowed } from '../../models/models';
 import SidemenuArticleLoading from './SidemenuArticleLoading';
 import Liking from '../Article/Liking'
 import Following from '../Article/Following'
+import { FormattedMessage } from 'react-intl';
 
 type Props = {
   article: Iarticle;
@@ -48,7 +49,7 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
 
   const fetchFolloweds= async () =>{
     if(jwt) {
-      await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+      await axios.get(`${API_URL}/followeds`, authorization_user_id)
       .then(res => setFolloweds(res.data))
       .catch(err => console.log(err))
     }
@@ -57,7 +58,7 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
   useEffect(() => {
     const fetchArticlesData = async () =>{
       if(jwt){
-        await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+        await axios.get(`${API_URL}/likeds`, authorization_user_id)
         .then(res => setLikeds(res.data))
         .catch(err => console.log(err))
       }
@@ -98,7 +99,7 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
             : null}
             <hr className='sidemenu-hr' />
             <div className='sidemenu-hash-box'>
-              <h2 className='text-lg font-semibold'>Hashtagi artykułu</h2>
+              <h2 className='text-lg font-semibold'><FormattedMessage id='articleHashtags'/></h2>
               <ul className='m-1 text-red-400'>
                 {
                   article ?
@@ -139,7 +140,7 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
                   </svg>
                 </div>
                 <div className='sidemenu-hash-box mt-4'>
-                  <h2 className='text-lg font-semibold'>Ostatnie hashtagi</h2>
+                  <h2 className='text-lg font-semibold'><FormattedMessage id='recentHashtags'/></h2>
                   <ul className='m-1 text-red-400'>
                     {
                       article ?

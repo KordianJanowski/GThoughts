@@ -8,17 +8,26 @@ const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
 
 module.exports = {
   async find(ctx) {
-    const entity = await strapi.services.liked.find();
-    const likeds = [];
-    entity.forEach(liked =>{
-      if(liked.user_id === ctx.request.header.user_id){
-        likeds.push(liked);
-      }
-    })
+    const entity = await strapi.services.liked.find({ user_id: { $eq: ctx.request.header.user_id } });
 
-    return sanitizeEntity(likeds, { model: strapi.models.liked });
+    return sanitizeEntity(entity, { model: strapi.models.liked });
   },
+  async findLikedArticles(ctx){
+    const likeds = await strapi.services.liked.find({ 
+      user_id: { $eq: ctx.request.header.user_id } 
+    });
+    const likeds_id = [];
+    
+    likeds.forEach(el =>{
+      likeds_id.push(el.article_id)
+    })
+    
+    const articles = await strapi.services.article.find({ 
+      id: { $in: likeds_id } 
+    });
 
+    return sanitizeEntity(articles, { model: strapi.models.liked })
+  },
   async delete(ctx) {
     const { id } = ctx.params;
 

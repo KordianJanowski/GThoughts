@@ -1,13 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
+import { useParams } from 'react-router-dom';
 import API_URL from '../API_URL';
 import Article from '../components/Article/Article';
 import Loading from '../components/Loading';
 import Navbar from '../components/Navbar';
 import SidemenuProfilesUsers from '../components/Sidemenus/SidemenuProfilesUsers';
 import SidemenuProfilesUsersLoading from '../components/Sidemenus/SidemenuProfilesUsersLoading';
-import { jwt, user } from '../models/const-variables';
+import { authorization_user_id, jwt } from '../models/const-variables';
 import { Iarticle, Iuser, Iliked, Ifollowed } from '../models/models';
 
 
@@ -18,22 +19,21 @@ interface Props {
 const ProfilesUsers: React.FC = () =>{
   const id: string = useParams<Props>().id;
   const [profileUser, setProfileUser] = useState<Iuser>({id: '', username: '', email: '', avatar: '', createdAt: ''});
-  const [isUserLoaded, setIsUserLoaded] = useState<boolean>(false);
   const [articles, setArticles] = useState<Iarticle[]>([]);
+  const [articlesResponse, setArticlesResponse] = useState<boolean>(false);
 
-  const[articleResponse, setArticleResponse] = useState<boolean>(false);
 
   const [likeds, setLikeds] = useState<Iliked[]>([])
   const [followeds, setFolloweds] = useState<Ifollowed[]>([])
 
   const fetchFolloweds = async () =>{
-    await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+    await axios.get(`${API_URL}/followeds`, authorization_user_id)
     .then(res => setFolloweds(res.data))
     .catch(err => console.log(err))
   }
 
   const fetchLikeds = async () =>{
-    await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+    await axios.get(`${API_URL}/likeds`, authorization_user_id)
     .then(res => setLikeds(res.data))
     .catch(err => console.log(err))
   }
@@ -46,19 +46,13 @@ const ProfilesUsers: React.FC = () =>{
       }
 
       await axios.get(`${API_URL}/users/${id}`)
+      .then(res => setProfileUser(res.data))
+
+      await axios.get(`${API_URL}/authors-articles/${id}`)
       .then(res => {
-        setProfileUser(res.data);
-        setIsUserLoaded(true);
-        res.data.articles_ids.forEach(async (article_id: string) =>{
-          await axios.get(`${API_URL}/articles/${article_id}`)
-          .then(response => {
-            setArticles((prev: Iarticle[]) => [...prev, response.data]);
-            setArticleResponse(true);
-          })
-          .catch(err => console.log(err));
-        })
+        setArticles(res.data)
+        setArticlesResponse(true);
       })
-      .catch(err => console.log(err));
     }
     fetchUserData();// eslint-disable-next-line
   }, [])
@@ -82,16 +76,16 @@ const ProfilesUsers: React.FC = () =>{
       <Navbar />
       <div className='main'>
         <div className='main-header'>
-          <h2 className='main-header-text'>Profil użytkownika <span className='text-red-400 font-bold'>{profileUser.username}</span></h2>
+          <h2 className='main-header-text'><FormattedMessage id='profileUser'/> <span className='text-red-400 font-bold'>{profileUser.username}</span></h2>
         </div>
         <div className='main-content'>
-          { articleResponse ?
+          { articlesResponse ?
             <div>
               {
                 articles.length !== 0 ?
                   articlesMap
                 :
-                  <p>Nie znaleziono żadnych artykułów</p>
+                  <p><FormattedMessage id='noArticlesFound'/></p>
               }
             </div>
           :
@@ -99,7 +93,7 @@ const ProfilesUsers: React.FC = () =>{
           }
         </div>
       </div>
-      { isUserLoaded ?
+      { profileUser.username.length > 0 ?
         <SidemenuProfilesUsers user={profileUser!} />
       :
         <SidemenuProfilesUsersLoading />

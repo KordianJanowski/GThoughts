@@ -2,26 +2,26 @@ import React, { useState, useEffect } from 'react'
 import API_URL from '../API_URL';
 import axios from 'axios'
 import { Iarticle, Ifollowed, Iliked } from '../models/models';
-import { user, jwt } from '../models/const-variables';
+import { jwt, authorization_user_id } from '../models/const-variables';
 import { useHistory } from 'react-router-dom'
 import Article from '../components/Article/Article';
 import Navbar from '../components/Navbar';
 import Sidemenu from '../components/Sidemenus/Sidemenu';
 import Loading from '../components/Loading';
+import { FormattedMessage } from 'react-intl';
 
 const Saved: React.FC = () =>{
   const history: any = useHistory();
 
   const [articles, setArticles] = useState<Iarticle[]>([])
   const [articlesCopy, setArticlesCopy] = useState<Iarticle[]>([])
-
-  const[articleResponse, setArticleResponse] = useState<boolean>(false);
+  const [articlesResponse, setArticlesResponse] = useState<boolean>(false);
 
   const [likeds, setLikeds] = useState<Iliked[]>([])
   const [followeds, setFolloweds] = useState<Ifollowed[]>([])
 
   const fetchFolloweds = async () =>{
-    await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+    await axios.get(`${API_URL}/followeds`, authorization_user_id)
     .then(res => setFolloweds(res.data))
     .catch(err => console.log(err))
   }
@@ -30,51 +30,18 @@ const Saved: React.FC = () =>{
     if(!jwt) return history.push('/login')
 
     const fetchArticlesData = async () =>{
-      await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+      await axios.get(`${API_URL}/likeds`, authorization_user_id)
       .then(res => setLikeds(res.data))
       .catch(err => console.log(err))
 
       fetchFolloweds()
 
-      await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
-      .then(async res => {
-        let followedsArticlesIds: string[][] = [];
-        let isForEachEnded: boolean = false;
-
-        if(res.data.length === 0){
-          setArticleResponse(true)
-        }
-
-        await res.data.forEach(async (followed: Ifollowed) =>{
-          await axios.get(`${API_URL}/users/${followed.author_id}`)
-          .then(responseUser =>{
-            followedsArticlesIds.push(responseUser.data.articles_ids);
-            if(followedsArticlesIds.length === res.data.length) isForEachEnded = true
-          })
-          .catch(err => console.log(err))
-
-          if(isForEachEnded){
-            let responseCounter: number = 0;
-
-            followedsArticlesIds.forEach((followedArticlesIds: string[]) =>{
-              if(followedArticlesIds.length === 0) return
-              followedArticlesIds.forEach(async (article_id: string) =>{
-                await axios.get(`${API_URL}/articles/${article_id}`)
-                .then(res => {
-                  setArticles(prev => [...prev, res.data]);
-                  setArticlesCopy(prev => [...prev, res.data]);
-                  responseCounter++;
-                  if(responseCounter === followedsArticlesIds.length){
-                    setArticleResponse(true)
-                  }
-                })
-                .catch(err => console.log(err))
-              })
-            })
-          }
-        })
+      await axios.get(`${API_URL}/followeds-articles`, authorization_user_id)
+      .then(res =>{
+        setArticles(res.data);
+        setArticlesCopy(res.data);
+        setArticlesResponse(true);
       })
-      .catch(err => console.log(err))
     }
     fetchArticlesData();// eslint-disable-next-line
   }, [])
@@ -98,16 +65,16 @@ const Saved: React.FC = () =>{
       <Navbar />
       <div className='main'>
         <div className='main-header'>
-          <h2 className='main-header-text'>Obserwowani użytkownicy</h2>
+          <h2 className='main-header-text'><FormattedMessage id='followed'/></h2>
         </div>
         <div className='main-content'>
-          { articleResponse ?
+          { articlesResponse ?
             <div>
               {
                 articles.length !== 0 ?
                   articlesMap
                 :
-                  <p>Nie masz żadnych obserwowanych użytkowników</p>
+                  <p><FormattedMessage id='noFollowedFound'/></p>
               }
             </div>
           :

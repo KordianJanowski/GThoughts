@@ -8,17 +8,33 @@ const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
 
 module.exports = {
   async find(ctx) {
-    const entity = await strapi.services.followed.find();
-    const followeds = [];
-    entity.forEach(followed =>{
-      if(followed.user_id === ctx.request.header.user_id){
-        followeds.push(followed);
-      }
+    const entity = await strapi.services.followed.find({ user_id: { $eq: ctx.request.header.user_id } });
+
+    return sanitizeEntity(entity, { model: strapi.models.followed });
+  },
+  async findFollowedsArticles(ctx){
+    const followeds = await strapi.services.followed.find({ 
+      user_id: { $eq: ctx.request.header.user_id } 
+    });
+    const followeds_ids = [];
+    
+    followeds.forEach(el =>{
+      followeds_ids.push(el.author_id)
+    })
+    
+    const authors = await strapi.plugins['users-permissions'].services.user.fetchAll({
+      id: { $in: followeds_ids }
+    });
+    const authors_ids = [];
+
+    authors.forEach(el =>{
+      authors_ids.push(el.id)
     })
 
-    return sanitizeEntity(followeds, { model: strapi.models.followed });
-  },
+    const articles = await strapi.services.article.find({ author_id: { $in: authors_ids } });
 
+    return sanitizeEntity(articles, { model: strapi.models.followed })
+  },
   async delete(ctx) {
     const { id } = ctx.params;
 

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react'
 import API_URL from '../API_URL'
 import axios from 'axios'
 import { Iarticle, Iliked, Ifollowed } from '../models/models';
-import { user, jwt } from '../models/const-variables';
+import { jwt, authorization_user_id } from '../models/const-variables';
 import Navbar from '../components/Navbar';
 import Sidemenu from '../components/Sidemenus/Sidemenu';
 import Article from '../components/Article/Article';
 import Loading from '../components/Loading'
+import { FormattedMessage } from 'react-intl';
+
 
 const Home: React.FC = () => {
   const [articles, setArticles] = useState<Iarticle[]>([])
@@ -16,7 +18,7 @@ const Home: React.FC = () => {
   const[followeds, setFolloweds] = useState<Ifollowed[]>([])
 
   const fetchFolloweds= async () =>{
-    await axios.get(`${API_URL}/followeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+    await axios.get(`${API_URL}/followeds`, authorization_user_id)
     .then(res => setFolloweds(res.data))
     .catch(err => console.log(err))
   }
@@ -24,7 +26,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchArticlesData = async () =>{
       if(jwt){
-        await axios.get(`${API_URL}/likeds`, { headers: { user_id: user.id, Authorization: `Bearer ${jwt}` } })
+        await axios.get(`${API_URL}/likeds`, authorization_user_id)
         .then(res => setLikeds(res.data))
         .catch(err => console.log(err))
 
@@ -62,7 +64,7 @@ const Home: React.FC = () => {
       <Navbar />
       <div className='main'>
         <div className='main-header'>
-          <h2 className='main-header-text'>Główna</h2>
+          <h2 className='main-header-text'><FormattedMessage id='homepage'/></h2>
         </div>
         <div className='main-content'>
           {
@@ -72,7 +74,7 @@ const Home: React.FC = () => {
                   articles.length !== 0 ?
                     articlesMap
                   :
-                    <p>Nie znaleziono żadnych artykułów</p>
+                    <p><FormattedMessage id='noFollowedFound'/></p>
                 }
               </div>
             :

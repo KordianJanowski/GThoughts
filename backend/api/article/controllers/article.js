@@ -19,6 +19,12 @@ module.exports = {
     }
     return sanitizeEntity(entity, { model: strapi.models.article });
   },
+  async findAuthorsArticles(ctx){
+    const { id } = ctx.params;
+    const entity = await strapi.services.article.find({ author_id: id });
+
+    return sanitizeEntity(entity, { model: strapi.models.article });
+  },
   async update(ctx) {
     const { id } = ctx.params;
 

@@ -11,7 +11,6 @@ type Props = {
 }
 
 const Comments: React.FC<Props> = ({ comment }) =>{
-
   const[isDeleted, setIsDeleted] = useState(false);
   const[selectedCommentID, setSelectedCommentID] = useState<string | undefined>('');
   const[isDeleteLayerShow, setIsDeleteLayerShow] = useState<boolean>(false);
@@ -45,11 +44,11 @@ const Comments: React.FC<Props> = ({ comment }) =>{
     <div>
       {
         isDeleteLayerShow ?
-        <ApproveLayer
-          id={selectedCommentID}
-          toggleLayer={toggleDeleteCommentLayer}
-          approve={deleteComment}
-        />
+          <ApproveLayer
+            id={selectedCommentID}
+            toggleLayer={toggleDeleteCommentLayer}
+            approve={deleteComment}
+          />
         : null
       }
       {

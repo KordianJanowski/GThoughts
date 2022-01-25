@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { LOCALES } from '../i18n';
 import { Iarticle } from '../models/models';
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 
 const ArticlesSearching: React.FC<Props> = ({ articles, setArticles, toggleSidemenu}) => {
   const [searchingValue, setSearchingValue] = useState<string>('')
+  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
 
   const searchArticles = ():void => {
     const filteredArticles = articles.filter((article) => {
@@ -44,7 +46,7 @@ const ArticlesSearching: React.FC<Props> = ({ articles, setArticles, toggleSidem
       <input
         onChange={searchInputChange}
         onKeyDown={checkInputKey}
-        placeholder="Szukaj"
+        placeholder={`${isI18NisEnglish  ? 'Search' : 'Wyszukaj'}`}
         type="text"
         className="w-full py-2 pl-10 pr-4 rounded-lg bg-transparent text-gray-300 border border-gray-600"
       />

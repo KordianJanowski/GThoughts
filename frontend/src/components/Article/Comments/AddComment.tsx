@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import API_URL from '../../../API_URL'
 import { Icomment } from '../../../models/models';
 import {user, jwt, authorization} from '../../../models/const-variables';
+import { FormattedMessage } from 'react-intl';
 
 type Props = {
   id: string;
@@ -55,7 +56,12 @@ const AddComment: React.FC<Props> = ({ id, comments, setComments }) =>{
             />
           </form>
         :
-        <h1 className='text-lg -mb-4'><Link to="/login" className='font-bold text-red-400'>Zaloguj się</Link>, aby móc dodać komentarz</h1>
+        <h1 className='text-lg -mb-4'>
+          <Link to="/login" className='font-bold text-red-400'>
+            <FormattedMessage id='loginButton'/>
+          </Link>
+          <FormattedMessage id='toAddComment'/>
+        </h1>
       }
     </div>
   )
