@@ -74,6 +74,10 @@ input, textarea {
   @apply cursor-pointer w-full xl:w-1/2 border border-gray-600 flex justify-center items-center bg-gradient-to-r from-main to-second text-white text-lg font-medium py-2.5 px-4 rounded-md focus:outline-none hover:opacity-95
 }
 
+.login-register-alert{
+  @apply bg-yellow-100 border-l-4 border-yellow-500 text-xs sm:text-sm text-main p-3 w-80 sm:w-96 mt-2 h-16
+}
+
 .button-animation {
   @apply hover:opacity-80 duration-100;
 }

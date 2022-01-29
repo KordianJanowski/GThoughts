@@ -5,6 +5,7 @@ import API_URL from '../../../API_URL'
 import { Icomment } from '../../../models/models';
 import {user, jwt, authorization} from '../../../models/const-variables';
 import { FormattedMessage } from 'react-intl';
+import { LOCALES } from '../../../i18n';
 
 type Props = {
   id: string;
@@ -14,6 +15,7 @@ type Props = {
 
 const AddComment: React.FC<Props> = ({ id, comments, setComments }) =>{
   const [commentBody, setCommentBody] = useState('')
+  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
 
   const postComment = async (e: React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();
@@ -44,14 +46,14 @@ const AddComment: React.FC<Props> = ({ id, comments, setComments }) =>{
             </div>
             <textarea
               rows={2}
-              placeholder="Treść komentarza..."
+              placeholder={`${isI18NisEnglish ? 'Content' : 'Treść komentarza'}`}
               className="border border-gray-800 text-gray-300 p-2 rounded w-full md:w-4/5 mt-3 mb-2 bg-transparent resize-none"
               value={commentBody}
               onChange={(e) => setCommentBody(e.target.value)}
             ></textarea>
             <input
               type="submit"
-              value="Skomentuj"
+              value={`${isI18NisEnglish ? 'Add comment' : 'Dodaj komentarz'}`}
               className="rounded-button w-32 md:w-40"
             />
           </form>

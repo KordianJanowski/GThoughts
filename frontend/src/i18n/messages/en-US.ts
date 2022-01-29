@@ -51,7 +51,7 @@ export default {
     'createArticle': 'Create article',
 
     // dashboard
-    'panel': 'Panel użytkownika',
+    'panel': 'User panel',
 
     // change user info
     'userInfo': 'User information',
@@ -60,6 +60,16 @@ export default {
     // check password
     'enterPassword': 'Enter password',
     'passwordError': 'Password is incorrect',
+
+        // forgot password
+        'enterEmail': 'Enter email',
+        'emailErorr': 'The account with this email does not exist',
+        'emailSent': 'Email sent',
+        'emailSentInfo': 'A link to change your password has been sent to your e-mail address. Follow the link to change your password',
+    
+        // reset password
+        'resetPassword': 'Reset password',
+        'resetPasswordSuccess': 'Your password has been successfully changed',
 
     // Article Sorting
     'sorting': 'Sorting',

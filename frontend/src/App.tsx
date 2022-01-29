@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Home from './views/Home'
@@ -16,17 +16,19 @@ import SingleHashtag from './views/SingleHashtag'
 import NotFound from './views/NotFound';
 
 import { I18nProvider, LOCALES } from './i18n';
+import ForgotPassword from './views/ForgotPassword';
+import ResetPassword from './views/ResetPassword';
 
 
 const App: React.FC = () =>{
+  const [locale, setLocale] = useState<any>(localStorage.getItem('i18n') ? localStorage.getItem('i18n') : LOCALES.POLISH);
+
   useEffect(() =>{
-    if(!localStorage.getItem('i18n')){
-      localStorage.setItem('i18n', LOCALES.POLISH)
-    }// eslint-disable-next-line
-  }, []) 
+    setLocale(localStorage.getItem('i18n') ? localStorage.getItem('i18n') : LOCALES.POLISH)
+  }, [locale]) 
 
   return (
-    <I18nProvider locale={localStorage.getItem('i18n')}>
+    <I18nProvider locale={locale}>
       <div className='flex justify-center items-center'>
         <Router>
           <Switch>
@@ -47,6 +49,12 @@ const App: React.FC = () =>{
             </Route>
             <Route path="/register">
               <Register />
+            </Route>
+            <Route path="/forgot-password">
+              <ForgotPassword />
+            </Route>
+            <Route path="/reset-password">
+              <ResetPassword />
             </Route>
             <Route path="/dashboard">
               <Dashboard />

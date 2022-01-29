@@ -113,7 +113,7 @@ const Register:React.FC = () =>{
         })
 
         const registerResponseJSON = await registerResponse.json();
-        console.log(registerResponseJSON.message[0].messages[0].message)
+
         try{
           if(registerResponseJSON.message[0].messages[0].message === "Email already taken"){
             setTimeout(() =>{
@@ -127,7 +127,7 @@ const Register:React.FC = () =>{
               setIsValidation(false);
             }, 4000)
             setValidationText('emailAlreadyTaken');
-            return setIsValidation(true); 
+            return setIsValidation(true);
           }
         } catch(err) {
           return history.push('/login')
@@ -139,7 +139,7 @@ const Register:React.FC = () =>{
   return(
   <div className="w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-b from-main to-second">
     <GoToHome />
-    <div className="flex flex-col items-center bg-white w-96 md:w-108 h-auto rounded-lg">
+    <div className="flex flex-col items-center bg-white w-80 md:w-96 h-auto rounded-lg">
       <h2 className="text-2xl font-normal mt-10 text-main">
         <FormattedMessage id='createAccount'/>
       </h2>
@@ -243,38 +243,38 @@ const Register:React.FC = () =>{
         />
       </form>
     </div>
-    <div className="flex flex-col">
+    <div className="max-h-20 overflow-hidden">
       {touched.username && errors.username ? (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-96 mt-2 grid-cols-1" role="alert">
+        <div className="login-register-alert" role="alert">
           <p className="font-bold"><FormattedMessage id='username'/> </p>
           <p><FormattedMessage id={ `${errors.username}` }/></p>
         </div>
       ): null}
       {touched.email && errors.email ? (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-96 mt-2 grid-cols-1" role="alert">
+        <div className="login-register-alert" role="alert">
           <p className="font-bold"><FormattedMessage id='email'/></p>
           <p><FormattedMessage id={`${errors.email}`}/></p>
         </div>
       ): null}
       {touched.password && errors.password ? (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-96 mt-2 grid-cols-1" role="alert">
+        <div className="login-register-alert" role="alert">
           <p className="font-bold"><FormattedMessage id='password'/></p>
           <p><FormattedMessage id={ `${errors.password}` }/></p>
         </div>
       ): null}
       {touched.repeatPassword && errors.repeatPassword ? (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-96 mt-2 grid-cols-1" role="alert">
+        <div className="login-register-alert" role="alert">
           <p className="font-bold"><FormattedMessage id='repeatPassword'/></p>
           <p><FormattedMessage id={ `${errors.repeatPassword}` }/></p>
         </div>
       ): null}
       {isValidation ? (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-3 w-full mt-2 grid-cols-1" role="alert">
+        <div className="login-register-alert" role="alert">
           <p className="font-bold"><FormattedMessage id='dataBase'/></p>
           <p><FormattedMessage id={ `${validationText}` }/></p>
-          {/* <p>{validationText}</p> */}
         </div>
       ): null}
+      <div className='p-3 w-80 md:w-96 mt-2 h-96'> </div>
     </div>
   </div>
   )
