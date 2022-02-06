@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Iuser } from '../../models/models';
-import SidemenuProfilesUsersLoading from './SidemenuProfilesUsersLoading';
 import { FormattedMessage } from 'react-intl';
+import { Iuser } from '../../models/models';
+import { jwt } from '../../models/const-variables'
+import SidemenuProfilesUsersLoading from './SidemenuProfilesUsersLoading';
 
 type Props = {
   user: Iuser;
@@ -34,12 +35,16 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
               src={user.avatar}
               alt=""
             />
-            <p className='text-xl font-bold mt-2 mb-5'>
+            <p className='text-xl font-bold mt-2'>
               {user.username}
             </p>
-            <button className='rounded-button w-full'>
-              <FormattedMessage id='follow'/>
-            </button>
+            {
+              jwt ?
+                <button className='rounded-button w-full mt-5'>
+                  <FormattedMessage id='follow'/>
+                </button>
+              : null
+            }
             <hr className='sidemenu-hr' />
             <div className='sidemenu-hash-box'>
               {/* <h2 className='font-bold'><FormattedMessage id='description'/></h2> */}
@@ -78,9 +83,13 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
                     <p className='text-xl font-bold mt-2'>
                       {user.username}
                     </p>
-                    <button className='rounded-button w-full'>
-                      <FormattedMessage id='follow'/>
-                    </button>
+                    {
+                      jwt ?
+                        <button className='rounded-button w-full'>
+                          <FormattedMessage id='follow'/>
+                        </button>
+                      : null
+                    }
                     <hr className='sidemenu-hr' />
                     <div className='mt-5 w-full lg:w-1/2 border-2 border-gray-600 rounded-xl p-3 bg-second'>
                       {/* <h2 className='font-bold'>Opis</h2>

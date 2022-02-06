@@ -61,11 +61,21 @@ export default {
     'enterPassword': 'Wpisz hasło',
     'passwordError': 'Hasło jest nieprawidłowe',
 
+    // forgot password
+    'enterEmail': 'Wpisz email',
+    'emailErorr': 'Konto z tym emailem nie istnieje',
+    'emailSent': 'Wysłano maila',
+    'emailSentInfo': 'Na twojego maila została wysłana wiadomość z linkiem, wejdź w niego a następnie zmień swoje hasło',
+
+    // reset password
+    'resetPassword': 'Zresetuj hasło',
+    'resetPasswordSuccess': 'Twoje hasło zostalo pomyślnie zmienione',
+
     // Article Sorting
     'sorting': 'Sortowanie',
     'latest': 'Data: najnowsze',
     'oldest': 'Data: najstarsze',
- 
+
     // sidemenu profiles users
     'follow': 'Obserwuj',
     'description': 'Opis',
@@ -75,7 +85,7 @@ export default {
     'logout': 'Wyloguj się',
     'accountInformation': 'Informacje o koncie',
 
-    // sidemenu article 
+    // sidemenu article
     'recentHashtags': 'Ostatnie hashtagi',
     'articleHashtags': 'Hashtagi artykułu',
     'noHashtags': 'Brak hashtagów',
@@ -88,6 +98,7 @@ export default {
     // following
     'stopFollowing': 'Przestań obserwować',
     'user': 'użytkownika',
+    'toAddFeedback': ', aby dodać feedback',
 
     // comments
     'comments': 'Komentarze',

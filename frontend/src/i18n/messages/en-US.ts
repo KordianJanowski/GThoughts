@@ -51,7 +51,7 @@ export default {
     'createArticle': 'Create article',
 
     // dashboard
-    'panel': 'Panel użytkownika',
+    'panel': 'Dashboard',
 
     // change user info
     'userInfo': 'User information',
@@ -61,11 +61,21 @@ export default {
     'enterPassword': 'Enter password',
     'passwordError': 'Password is incorrect',
 
+        // forgot password
+        'enterEmail': 'Enter email',
+        'emailErorr': 'The account with this email does not exist',
+        'emailSent': 'Email sent',
+        'emailSentInfo': 'A link to change your password has been sent to your e-mail address. Follow the link to change your password',
+
+        // reset password
+        'resetPassword': 'Reset password',
+        'resetPasswordSuccess': 'Your password has been successfully changed',
+
     // Article Sorting
     'sorting': 'Sorting',
     'latest': 'Date: latest',
     'oldest': 'Date: oldest',
- 
+
     // sidemenu profiles users
     'follow': 'Follow',
     'description': 'Description',
@@ -75,7 +85,7 @@ export default {
     'logout': 'Logout',
     'accountInformation': 'Account information',
 
-    // sidemenu article 
+    // sidemenu article
     'recentHashtags': 'Recent hashtags',
     'articleHashtags': 'Article hashtags',
     'noHashtags': 'No hashtags',
@@ -88,6 +98,7 @@ export default {
     // following
     'stopFollowing': 'Stop following',
     'user': 'user',
+    'toAddFeedback': ', to add feedback',
 
     // comments
     'comments': 'Comments',

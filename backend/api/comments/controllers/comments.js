@@ -8,17 +8,20 @@ const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
 
 module.exports = {
   async find(ctx) {
-    const entity = await strapi.services.comments.find();
-    const comments = [];
-    const isArticleExist = strapi.services.article.find()
+    const entity = await strapi.services.comments.find( { article_id: ctx.request.header.article_id } );
 
-    entity.forEach(comment =>{
-      if(comment.article_id === ctx.request.header.article_id){
-        comments.push(comment);
-      }
-    })
+    let comments = entity
 
-    return sanitizeEntity(comments, { model: strapi.models.comments });
+    if(ctx.request.header.page) {
+      comments = entity.slice(0, ctx.request.header.page * 10)
+    }
+
+    const data = {
+      comments,
+      "allCommentsNumber": entity.length
+    }
+
+    return sanitizeEntity(data, { model: strapi.models.comments });
   },
 
   async update(ctx) {

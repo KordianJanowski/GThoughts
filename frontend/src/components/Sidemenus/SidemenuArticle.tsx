@@ -39,7 +39,6 @@ const SidemenuArticle: React.FC<Props> = ({ article }) =>{
         await axios.get(`${API_URL}/users/${article.author_id}`)
         .then(res => {
           setAuthor(res.data);
-          console.log('dwad')
           setIsAuthorLoaded(true);
         })
       }

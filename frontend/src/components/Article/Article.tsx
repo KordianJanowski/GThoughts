@@ -6,6 +6,7 @@ import { user, jwt } from '../../models/const-variables';
 import { Iarticle, Iliked, Ifollowed, Iuser } from '../../models/models';
 import Liking from './Liking';
 import Following from './Following';
+import userLoadingAvatar from '../../images/user.png'
 
 type Props = {
   article: Iarticle;
@@ -43,8 +44,8 @@ const Article: React.FC<Props> = ({
               <div className='flex md:flex-row items-center'>
                 <Link to={`/profiles-users/${article.author_id}`}>
                   <img
-                    className='w-8 h-8 rounded-full mr-2 hover:opacity-70'
-                    src={author.avatar}
+                    className='w-8 h-8 rounded-full hover:opacity-70 mr-2'
+                    src={author.avatar ? author.avatar : userLoadingAvatar}
                     alt=""
                   />
                 </Link>

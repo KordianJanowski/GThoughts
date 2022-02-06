@@ -23,12 +23,12 @@ const Login:React.FC = () =>{
 
   const {handleSubmit, handleChange, values, handleBlur} = useFormik({
     initialValues: {
-      email: '',
+      identifier: '',
       password: ''
     },
-    onSubmit: async ({email, password}) =>{
+    onSubmit: async ({identifier, password}) =>{
       await axios.post(`${API_URL}/auth/local`, {
-        identifier: email,
+        identifier: identifier,
         password: password
       })
       .then(res =>{
@@ -53,7 +53,7 @@ const Login:React.FC = () =>{
   return(
     <div className="w-screen h-screen flex flex-col justify-center items-center bg-gradient-to-b from-main to-second">
       <GoToHome />
-      <div className="flex flex-col items-center bg-white w-96 md:w-108 h-auto rounded-lg">
+      <div className="flex flex-col items-center bg-white w-80 md:w-96 h-auto rounded-lg">
         <h2 className="text-2xl font-normal mt-10 text-second"><FormattedMessage id='login'/></h2>
         <form onSubmit={handleSubmit} className="p-10 w-full">
           <div className="default-input-box">
@@ -65,12 +65,12 @@ const Login:React.FC = () =>{
             </div>
             <input
               className="icon-input"
-              placeholder="Adres email"
+              placeholder={`${isI18NisEnglish ? 'Username' : 'Nazwa użytkownika'} / Email`}
               onChange={handleChange}
               onBlur={handleBlur}
-              type="email"
-              name="email"
-              value={values.email}
+              type="text"
+              name="identifier"
+              value={values.identifier}
             />
           </div>
           <div className="default-input-box">
@@ -82,7 +82,7 @@ const Login:React.FC = () =>{
             </div>
             <input
               className="icon-input"
-              placeholder="Hasło"
+              placeholder={`${isI18NisEnglish ? 'Password': 'Hasło'}`}
               onChange={handleChange}
               onBlur={handleBlur}
               type="password"
@@ -93,7 +93,7 @@ const Login:React.FC = () =>{
           <input
             className="default-input-submit"
             type="submit"
-            value={`${isI18NisEnglish ? 'Login' : 'Zaloguj się'}`}
+            value={`${isI18NisEnglish ? 'Log in' : 'Zaloguj się'}`}
           />
         </form>
         <Link
@@ -104,14 +104,17 @@ const Login:React.FC = () =>{
         </Link>
       </div>
       <GoToForgotPassword />
-      <div className="top-3/4 absolute">
-        {isValidate ?
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 text-main text-orange-700 p-4 w-96 mt-2" role="alert">
-            <p className="font-bold">Login</p>
-            <p><FormattedMessage id='loginValidate'/></p>
-          </div>
-        : null}
+      <div className='max-h-20 overflow-hidden'>
+      { isValidate ?
+        <div className="login-register-alert" role="alert">
+          <p className="font-bold">Login</p>
+          <p><FormattedMessage id='loginValidate'/></p>
+        </div>
+      : 
+        <div className='p-3 mt-2 h-16'></div>
+      }
       </div>
+      
     </div>
   )
 }

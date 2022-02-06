@@ -44,12 +44,11 @@ export interface Icomment{
 
 export interface Ifeedback{
   body: string;
-  username: string;
-  user_avatar: string;
-  user_id: string
+  author_id: string;
   article_id: string;
   id_: number;
   id?: string;
+  createdAt?: string;
 }
 
 export interface Iliked{

@@ -1,38 +1,41 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import API_URL from '../API_URL';
 import { Iarticle } from '../models/models';
 import { jwt, authorization } from '../models/const-variables';
+import { FormattedMessage } from 'react-intl';
+import { user } from './../models/const-variables';
+import SidemenuDashboard from '../components/Sidemenus/SidemenuDashboard';
 import Article from '../components/Article/Article';
 import ApproveLayer from '../components/ApproveLayer';
 import Navbar from '../components/Navbar';
 import Loading from '../components/Loading';
-import SidemenuDashboard from '../components/Sidemenus/SidemenuDashboard';
-import { FormattedMessage } from 'react-intl';
-import { user } from './../models/const-variables';
+import Pagination from '../components/Pagination'
+
+interface Props {
+  page: string;
+}
 
 const Dashboard:React.FC = () =>{
+  let page:string = useParams<Props>().page;
   const history: any = useHistory();
+  const [articles, setArticles] = useState<Iarticle[]>([]);
+  const [numberOfArticles, setNumberOfArticles] = useState<number>();
+  const [selectedArticleID, setSelectedArticleID] = useState<string>('');
+  const [isDeleteLayerShow, setIsDeleteLayerShow] = useState<boolean>(false);
+  const [articleResponse, setArticleResponse] = useState<boolean>(false);
 
-  const[articles, setArticles] = useState<Iarticle[]>([]);
-  const[selectedArticleID, setSelectedArticleID] = useState<string>('');
-  const[isDeleteLayerShow, setIsDeleteLayerShow] = useState<boolean>(false);
-  // const[isEditLayerShow, setIsEditLayerShow] = useState<boolean>(false);
-  const[articleResponse, setArticleResponse] = useState<boolean>(false);
+  const fetchArticles = async () =>{
+    setArticleResponse(false);
 
-  useEffect(() => {
-    if(!jwt) return history.push('/login');
-
-    const fetchArticles = async () =>{
-      await axios.get(`${API_URL}/authors-articles/${user.id}`)
-      .then(res =>{
-        setArticles(res.data);
-        setArticleResponse(true);
-      })
-    }
-    fetchArticles()// eslint-disable-next-line
-  }, [])
+    await axios.get(`${API_URL}/authors-articles/${user.id}`, { headers: { page: page ? page : '1' }})
+    .then(res =>{
+      setArticles(res.data.articles);
+      setArticleResponse(true);
+      setNumberOfArticles(res.data.numberOfArticles)
+    })
+  }
 
   const toggleDeleteArticleLayer = (id:string) =>{
     setSelectedArticleID(id)
@@ -51,6 +54,12 @@ const Dashboard:React.FC = () =>{
     })
     .catch(err => console.log(err))
   }
+
+  useEffect(() => {
+    if(!jwt) return history.push('/login');
+
+    fetchArticles()// eslint-disable-next-line
+  }, [])
 
   const articlesMap = articles.map((article: Iarticle) =>{
     return (
@@ -97,6 +106,12 @@ const Dashboard:React.FC = () =>{
                     <Loading />
                   }
                 </div>
+                <Pagination
+                  page={parseInt(page) ? parseInt(page) : 1}
+                  numberOfArticles={numberOfArticles!}
+                  fetchArticles={fetchArticles}
+                  defaultRoute={`/dashboard/`}
+                />
               </div>
               <SidemenuDashboard />
             </div>

@@ -53,18 +53,14 @@ const ArticleBodyCreator: React.FC<Props> = ({ body, setBody }) => {
     }// eslint-disable-next-line
   }, [])
 
-  const editorStateChange = (editorState: any) => {
-    setEditorState(editorState)
-  }
-
   return (
     <div className='text-white border border-gray-700 rounded-md my-2 container'>
       <Editor
         editorState={editorState}
-        onEditorStateChange={editorStateChange}
+        onEditorStateChange={(newState) => setEditorState(newState)}
         toolbar={{options: ['inline', 'fontSize', 'fontFamily', 'list', 'textAlign', 'link', 'emoji', 'colorPicker', 'image', 'history']}}
         localization={{
-          locale: 'pl',
+          locale: `${isI18NisEnglish ? 'en': 'pl'}`,
         }}
         placeholder={`${isI18NisEnglish ? 'Write your article here' : 'Tutaj napisz swój artykuł'}`}
       />

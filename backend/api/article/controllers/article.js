@@ -1,29 +1,49 @@
 'use strict';
 const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
+const articlesAtPage = 2
 /**
  * Read the documentation (https://strapi.io/documentation/developer-docs/latest/development/backend-customization.html#core-controllers)
  * to customize this controller
  */
 
+
 module.exports = {
   async find(ctx) {
     let entity = await strapi.services.article.find();
-    let articles = [];
+
     if(ctx.request.header.hash_name) {
-      entity.forEach(article =>{
-        if(article.hashtags.includes(ctx.request.header.hash_name)){
-          articles.push(article);
-        }
-      })
-      entity = articles;
+      entity = entity.filter(article => article.hashtags.includes(ctx.request.header.hash_name))
     }
-    return sanitizeEntity(entity, { model: strapi.models.article });
+
+    let articles = entity
+
+    if(ctx.request.header.page) {
+      articles = articles.slice((ctx.request.header.page * articlesAtPage) - articlesAtPage, ctx.request.header.page * articlesAtPage);
+    }
+
+    const data = {
+      "articles": articles,
+      "numberOfArticles": entity.length
+    }
+
+    return sanitizeEntity(data, { model: strapi.models.article });
   },
   async findAuthorsArticles(ctx){
     const { id } = ctx.params;
     const entity = await strapi.services.article.find({ author_id: id });
 
-    return sanitizeEntity(entity, { model: strapi.models.article });
+    let articles = entity
+
+    if(ctx.request.header.page) {
+      articles = articles.slice((ctx.request.header.page * articlesAtPage) - articlesAtPage, ctx.request.header.page * articlesAtPage);
+    }
+
+    const data = {
+      "articles": articles,
+      "numberOfArticles": entity.length
+    }
+
+    return sanitizeEntity(data, { model: strapi.models.article });
   },
   async update(ctx) {
     const { id } = ctx.params;

@@ -15,13 +15,7 @@
     "body": {
       "type": "text"
     },
-    "username": {
-      "type": "string"
-    },
-    "user_avatar": {
-      "type": "string"
-    },
-    "user_id": {
+    "author_id": {
       "type": "string"
     },
     "article_id": {
