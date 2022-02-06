@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import API_URL from '../../API_URL'
 import { Link } from 'react-router-dom'
-import { Ihashtag } from '../../models/models';
-import { Iarticle } from '../../models/models';
+import { Ihashtag, Iarticle } from '../../models/models';
 import ArticleSearching from '.././ArticlesSearching';
 import ArticlesSorting from '../../components/ArticlesSorting';
 import { authorization, jwt } from '../../models/const-variables';
@@ -85,7 +84,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
             <div className='sidemenu-main md:items-start'>
               <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu}/>
               <ArticlesSorting articles={articles} setArticles={setArticles} />
-              <div className='w-full bg-second border border-gray-600 rounded-xl mt-5 p-3'>
+              <div className='sidemenu-hash-box mt-5'>
                 <h2 className='text-lg font-semibold'><FormattedMessage id='popularHashtags'/></h2>
                 <ul className='m-1 text-red-400'>
                   {
@@ -96,7 +95,7 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
                   }
                 </ul>
               </div>
-              <div className='w-full bg-second border border-gray-600 rounded-xl mt-5 p-3'>
+              <div className='sidemenu-hash-box mt-5'>
                 <h2 className='text-lg font-semibold'><FormattedMessage id='recentHashtags'/></h2>
                 <ul className='m-1 text-red-400'>
                   { jwt ?
@@ -146,26 +145,36 @@ const Sidemenu: React.FC<Props> = ({ articles, setArticles }) =>{
                   <div className='mt-4'>
                     <ArticleSearching articles={articles} setArticles={setArticles} toggleSidemenu={toggleSidemenu} />
                     <ArticlesSorting articles={articles} setArticles={setArticles} />
-                    <div className='mt-5 border border-gray-600 rounded-xl p-3 bg-second'>
+                    <div className='w-full bg-second border border-gray-600 rounded-xl mt-5 p-3'>
                       <h2 className='text-lg font-semibold'><FormattedMessage id='popularHashtags'/></h2>
                       <ul className='m-1 text-red-400'>
                         {
-                          recentHashtags.length > 0 ?
-                            recentHashtagsMap
+                          popularHashtags.length > 0 ?
+                            popularHashtagsMap
                           :
                             <span className='text-gray-500'><FormattedMessage id='noHashtags'/></span>
                         }
                       </ul>
                     </div>
-                    <div className='mt-5 border border-gray-600 rounded-2xl p-3 bg-second'>
-                      <h2 className='text-lg font-semibold'><FormattedMessage id='popularHashtags'/></h2>
+                    <div className='w-full bg-second border border-gray-600 rounded-xl mt-5 p-3'>
+                      <h2 className='text-lg font-semibold'><FormattedMessage id='recentHashtags'/></h2>
                       <ul className='m-1 text-red-400'>
-                        {
-                          popularHashtags.length > 0
-                          ?
-                            popularHashtagsMap
-                          :
-                            <span className='text-gray-500'><FormattedMessage id='noHashtags'/></span>
+                        { jwt ?
+                          <>
+                            {
+                              recentHashtags.length > 0 ?
+                                recentHashtagsMap
+                              :
+                                <span className='text-gray-500'><FormattedMessage id='noHashtags'/></span>
+                            }
+                          </>
+                        :
+                          <div className='text-gray-500 w-40'>
+                            <Link to='login' className='font-bold hover:text-red-400 transform duration-50'>
+                              <FormattedMessage id='loginButton'/>
+                            </Link>
+                            <FormattedMessage id='toSeeRecentHashtags'/>
+                          </div>
                         }
                       </ul>
                     </div>

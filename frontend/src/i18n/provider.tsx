@@ -5,7 +5,7 @@ import messages from './messages'
 
 const Provider = ({ children, locale = LOCALES.POLISH }: any) =>{
   return (
-    <IntlProvider 
+    <IntlProvider
       locale={locale}
       textComponent={Fragment}
       messages={messages[locale]}

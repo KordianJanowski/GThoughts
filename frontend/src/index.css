@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 *::-webkit-scrollbar {
   width: 0.6em;
 }
@@ -23,11 +27,16 @@ textarea::-webkit-scrollbar {
 }
 
 body {
-  @apply bg-main text-white ;
+
+  @apply bg-main text-white;
 }
 
 input, textarea {
   @apply focus:border-red-400 focus:outline-none;
+}
+
+ul {
+  @apply list-disc ml-4;
 }
 
 .wrapper {
@@ -115,7 +124,7 @@ input, textarea {
 }
 
 .rounded-button{
-  @apply flex justify-center items-center bg-red-500 py-2 px-6 text-base button-animation rounded-full cursor-pointer;
+  @apply flex justify-center items-center bg-red-500 py-2 px-6 text-lg button-animation rounded-full cursor-pointer;
 }
 
 .like-follow-button:hover > .like-follow-button-sub-comment{
@@ -146,6 +155,10 @@ input, textarea {
   @apply border border-gray-600 rounded-2xl p-3 bg-second w-full;
 }
 
+.sidemenu-hash-box > ul {
+  @apply list-none;
+}
+
 .sidemenu-hr {
   @apply w-full my-8 border-gray-700;
 }
@@ -160,3 +173,10 @@ input, textarea {
   @apply h-12 w-full md:w-4/5 bg-second text-lg text-white border border-gray-600 shadow-inner px-3 py-1 rounded-xl;
 }
 
+.pagination-btn {
+ @apply px-4 py-2 mx-1 transition-colors duration-200 transform rounded-md sm:inline bg-red-500 hover:opacity-90 text-white;
+}
+
+.pagination-arrow {
+  @apply flex items-center justify-center px-4 py-2 mx-1 capitalize rounded-md bg-red-500 hover:opacity-90;
+}

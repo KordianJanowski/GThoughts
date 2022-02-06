@@ -3,25 +3,30 @@ const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
 module.exports = {
   async find(ctx) {
 
-    let entities;
+    let entities = await strapi.services.hashtags.find(ctx.query);
+    let data = [];
 
-    entities = await strapi.services.hashtags.find(ctx.query);
-
-    const countedHashtagsObject = {};
+    if(ctx.request.header.data_type === 'array') {
+      entities.forEach(hashtag => {
+        data.push(hashtag.name)
+      })
+    }
+    else {
+      const countedHashtagsObject = {};
       entities.forEach((x) => {
         countedHashtagsObject[x.name] = (countedHashtagsObject[x.name] || 0) + 1;
       });
 
-    const countedHashtagsArray = [];
-    Object.keys(countedHashtagsObject).forEach(key => {
-      countedHashtagsArray.push(
-        {
-          name: key,
-          counter: countedHashtagsObject[key]
-        }
-      )
-    });
+      Object.keys(countedHashtagsObject).forEach(key => {
+        data.push(
+          {
+            name: key,
+            counter: countedHashtagsObject[key]
+          }
+        )
+      });
+    }
 
-    return sanitizeEntity(countedHashtagsArray, { model: strapi.models.hashtags });
+    return sanitizeEntity(data, { model: strapi.models.hashtags });
   },
 };

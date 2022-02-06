@@ -17,6 +17,7 @@ const CreateArticle: React.FC = () => {
   const [tagsAsString, setTagsAsString] = useState<string>('');
   const [body, setBody] = useState<IarticleBody>();
   const [image, setImage] = useState<any>('');
+  const [imageLocalURL, setImageLocalURL] = useState<string>()
   const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
 
   useEffect(() => {
@@ -141,12 +142,13 @@ const CreateArticle: React.FC = () => {
               <input
                 type="file"
                 accept="image/png, image/jpeg"
-                onChange={(e: any) => setImage(e.currentTarget.files[0])}
+                onChange={(e: any) => {
+                  setImageLocalURL(URL.createObjectURL(e.currentTarget.files[0]))
+                  setImage(e.currentTarget.files[0])
+                }}
                 className={image ? 'mb-2' : ''}
               />
-              {image ?
-                <img src={URL.createObjectURL(image)}  className="w-96" alt="" />
-              : null}
+              <img src={imageLocalURL} className="w-96" alt="" />
             </div>
           </div>
           <ArticleBodyCreator

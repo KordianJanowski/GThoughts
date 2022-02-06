@@ -75,7 +75,7 @@ export default {
     'sorting': 'Sortowanie',
     'latest': 'Data: najnowsze',
     'oldest': 'Data: najstarsze',
- 
+
     // sidemenu profiles users
     'follow': 'Obserwuj',
     'description': 'Opis',
@@ -85,7 +85,7 @@ export default {
     'logout': 'Wyloguj się',
     'accountInformation': 'Informacje o koncie',
 
-    // sidemenu article 
+    // sidemenu article
     'recentHashtags': 'Ostatnie hashtagi',
     'articleHashtags': 'Hashtagi artykułu',
     'noHashtags': 'Brak hashtagów',
@@ -98,6 +98,7 @@ export default {
     // following
     'stopFollowing': 'Przestań obserwować',
     'user': 'użytkownika',
+    'toAddFeedback': ', aby dodać feedback',
 
     // comments
     'comments': 'Komentarze',

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
 import Home from './views/Home'
 import Article from './views/Article'
 import CreateArticle from './views/CreateArticle'
@@ -14,25 +13,23 @@ import Followeds from './views/Followeds';
 import ProfilesUsers from './views/ProfilesUsers'
 import SingleHashtag from './views/SingleHashtag'
 import NotFound from './views/NotFound';
-
 import { I18nProvider, LOCALES } from './i18n';
 import ForgotPassword from './views/ForgotPassword';
 import ResetPassword from './views/ResetPassword';
-
 
 const App: React.FC = () =>{
   const [locale, setLocale] = useState<any>(localStorage.getItem('i18n') ? localStorage.getItem('i18n') : LOCALES.POLISH);
 
   useEffect(() =>{
     setLocale(localStorage.getItem('i18n') ? localStorage.getItem('i18n') : LOCALES.POLISH)
-  }, [locale]) 
+  }, [locale])
 
   return (
     <I18nProvider locale={locale}>
       <div className='flex justify-center items-center'>
         <Router>
           <Switch>
-            <Route exact path="/">
+            <Route exact path={["/", "/page/:page"]}>
               <Home />
             </Route>
             <Route path="/articles/:id">
@@ -56,13 +53,13 @@ const App: React.FC = () =>{
             <Route path="/reset-password">
               <ResetPassword />
             </Route>
-            <Route path="/dashboard">
+            <Route path={['/dashboard/page/:page', '/dashboard']}>
               <Dashboard />
             </Route>
             <Route path="/change-user-data">
               <ChangeUserData />
             </Route>
-            <Route path="/profiles-users/:id">
+            <Route path={['/profiles-users/:id/page/:page', '/profiles-users/:id']}>
               <ProfilesUsers />
             </Route>
             <Route path="/liked">
@@ -71,7 +68,7 @@ const App: React.FC = () =>{
             <Route path="/followeds">
               <Followeds />
             </Route>
-            <Route path="/hashtags/:hashtag">
+            <Route path={["/hashtags/:hashtag/page/:page", "/hashtags/:hashtag/"]}>
               <SingleHashtag />
             </Route>
             <Route>
