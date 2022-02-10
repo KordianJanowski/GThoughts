@@ -1,5 +1,7 @@
 import Cookies from 'universal-cookie';
 import { Iuser, Ilink } from './models';
+import axios from 'axios'
+import Resizer from 'react-image-file-resizer'
 const cookies: Cookies = new Cookies();
 
 
@@ -27,3 +29,38 @@ export const links: Ilink[] = [
     icon: 'M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z'
   },
 ]
+
+export const changeTagsType = async (tagsAsString: string) => {
+  // removing all whitespaces from tagsAsString, and changes it to an array
+  let tagsArr:string[] = tagsAsString.replaceAll(/\s/g,'').split(',')
+
+  // filtering array of empty hashtags
+  tagsArr = tagsArr.filter(function(str) {
+    return /\S/.test(str);
+  });
+
+  return tagsArr
+}
+
+export const postImage = async (image:any) => {
+  if(image !== '') {
+    const imageResized: any = await resizeFile(image)
+
+    const data = new FormData()
+    data.append('file', imageResized)
+    data.append("api_key", '732376169492789');
+    data.append("api_secret", 'A-dhHrnEZqJYnhAGqLAGcWSDI1M');
+    data.append("cloud_name", 'digj3w8rk');
+    data.append("upload_preset", "bb7forio");
+
+    const res = await axios.post(`https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`, data)
+    return res.data.secure_url
+  }
+}
+
+export const resizeFile = (file: Blob) => new Promise(resolve => {
+  Resizer.imageFileResizer(file, 600, 600, 'JPEG', 100, 0,
+  (uri) => {
+    resolve(uri);
+  }, 'base64' );
+});

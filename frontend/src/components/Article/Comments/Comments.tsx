@@ -4,6 +4,7 @@ import { Icomment } from '../../../models/models';
 import API_URL from '../../../API_URL'
 import AddComment from './AddComment';
 import Comment from './Comment'
+import { FormattedMessage } from 'react-intl';
 
 type Props = {
   articleId: string;
@@ -38,7 +39,12 @@ const Comments: React.FC<Props> = ({ articleId }) => {
         setComments={setComments}
       />
       <div className='mt-10'>
-        {commentsMap}
+        {
+          commentsMap.length > 0 ?
+            commentsMap
+          :
+            <p><FormattedMessage id='noCommentsFound'/></p>
+        }
       </div>
       {
         comments.length < allCommentsNumber! ?

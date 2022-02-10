@@ -88,10 +88,8 @@ const Article: React.FC<Props> = ({
                 </div>
               : null}
             </div>
-            <span className='w-full bg-transparent font-bold h-auto text-xl md:text-2xl my-2'>{article.title}</span>
-            <span>
-              { article.body.blocks[0].substring(0,65) + (article.body.blocks[0].length > 65 ? '...' : '') }
-            </span>
+            <span className='w-full md:w-3/4 lg:w-full bg-transparent font-bold h-auto text-xl md:text-2xl my-2'>{article.title}</span>
+            <span className='w-full md:w-3/4 lg:w-full'>{ article.body.blocks[0].substring(0,65) + (article.body.blocks[0].length > 65 ? '...' : '') }</span>
           </div>
           {
             article.main_image ?

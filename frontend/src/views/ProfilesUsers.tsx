@@ -37,26 +37,25 @@ const ProfilesUsers: React.FC = () =>{
     })
   }
 
-  const fetchFolloweds = async () =>{
+  const fetchFolloweds = async () => {
     await axios.get(`${API_URL}/followeds`, authorization_user_id)
     .then(res => setFolloweds(res.data))
     .catch(err => console.log(err))
   }
 
-  const fetchLikeds = async () =>{
+  const fetchLikeds = async () => {
     await axios.get(`${API_URL}/likeds`, authorization_user_id)
     .then(res => setLikeds(res.data))
     .catch(err => console.log(err))
   }
 
-  const fetchUserData = async () =>{
+  const fetchUserData = async () => {
     await axios.get(`${API_URL}/users/${id}`)
     .then(res => setProfileUser(res.data))
   }
 
   useEffect(() => {
-    if(id === user.id) history.push('/dashboard')
-
+    if(user && user.id === id) history.push('/dashboard')
 
     if(jwt){
       fetchFolloweds();

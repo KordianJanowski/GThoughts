@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import API_URL from '../API_URL';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Iarticle } from '../models/models'
 import { jwt, authorization, user } from '../models/const-variables'
 import Navbar from '../components/Navbar';
@@ -15,6 +15,7 @@ interface Props {
 }
 
 const Article:React.FC = () =>{
+  const history = useHistory()
   const id: string = useParams<Props>().id;
   const [article, setArticle] = useState<Iarticle>();
   const [isArticleExist, setIsArticleExist] = useState<boolean>(false);
@@ -28,7 +29,10 @@ const Article:React.FC = () =>{
         setArticle(res.data);
         setIsArticleExist(true);
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        history.push('/')
+      })
     }
     fetchArticle()// eslint-disable-next-line
   }, [])
@@ -75,7 +79,7 @@ const Article:React.FC = () =>{
         <div className='mt-10 flex flex-col xl:flex-row items-center justify-between'>
           <h2 className='main-header-text font-bold'>{ article?.title }</h2>
           <img
-            className='w-full md:w-4/5 xl:w-3/5 xl:ml-2 xl:mt-0'
+            className='w-full md:w-4/5 xl:w-3/5 xl:ml-3 xl:mt-0'
             src={article?.main_image}
             alt=''
           />

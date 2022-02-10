@@ -6,16 +6,17 @@ export default {
     'noArticlesFound': 'No articles found',
     'noFollowedFound': 'No followed users found',
     'noPageFound': 'No such page found, return to',
+    'noCommentsFound': 'No comments found, comment as first',
     'profileUser': 'Profile user',
-    'toHomepage': 'homepage',
-    'yes': 'yes',
-    'no': 'no',
+    'toHomepage': 'home',
+    'yes': 'Yes',
+    'no': 'No',
     'areYouSure': 'Are you sure you want to delete this article ?',
     'article': 'article',
     'toSeeRecentHashtags': ', to see recent hashtags',
 
     // navbar
-    'homepage': 'Homepage',
+    'homepage': 'Home',
     'liked': 'Liked',
     'followed': 'Followed',
     'addArticle': 'Add article',
@@ -29,7 +30,7 @@ export default {
     'usernameAlreadyTaken': 'Username already taken',
     'emailAlreadyTaken': 'Email already taken',
     'dataBase': 'Data base',
-    'goToHome': 'Go to homepage',
+    'goToHome': 'Go to home',
 
     // login
     'login': 'Log in to your account',
@@ -40,15 +41,13 @@ export default {
     'forgotPassword': 'Forgot password?',
 
     // edit article
-    'editArtice': 'Editing an article',
-    'title': 'title',
-    'hashtag': 'hashtags (after comma ,)',
+    'editArticle': 'Editing an article',
+    'title': 'Title',
+    'hashtag': 'Hashtags (after comma)',
     'mainImage': 'Main image',
-    'saveChanges': 'Save changes',
 
     // create article
     'creatorArticle': 'Creator article',
-    'createArticle': 'Create article',
 
     // dashboard
     'panel': 'Dashboard',
@@ -61,15 +60,15 @@ export default {
     'enterPassword': 'Enter password',
     'passwordError': 'Password is incorrect',
 
-        // forgot password
-        'enterEmail': 'Enter email',
-        'emailErorr': 'The account with this email does not exist',
-        'emailSent': 'Email sent',
-        'emailSentInfo': 'A link to change your password has been sent to your e-mail address. Follow the link to change your password',
+    // forgot password
+    'enterEmail': 'Enter email',
+    'emailErorr': 'The account with this email does not exist',
+    'emailSent': 'Email sent',
+    'emailSentInfo': 'A link to change your password has been sent to your e-mail address. Follow the link to change your password',
 
-        // reset password
-        'resetPassword': 'Reset password',
-        'resetPasswordSuccess': 'Your password has been successfully changed',
+    // reset password
+    'resetPassword': 'Reset password',
+    'resetPasswordSuccess': 'Your password has been successfully changed',
 
     // Article Sorting
     'sorting': 'Sorting',

@@ -3,10 +3,8 @@ import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from "react-router-dom";
 import Resizer from 'react-image-file-resizer'
-
 import API_URL from '../API_URL';
 import axios from 'axios';
-
 import { jwt} from '../models/const-variables'
 import GoToHome from '../components/GoToHome';
 import { FormattedMessage } from 'react-intl';
@@ -30,7 +28,7 @@ const Register:React.FC = () =>{
   useEffect(() => { if(jwt) return history.push('/dashboard') }, []);
 
   const resizeFile = (file: Blob) => new Promise(resolve => {
-    Resizer.imageFileResizer(file, 300, 300, 'JPEG/PNG/JPG', 100, 0,
+    Resizer.imageFileResizer(file, 100, 100, 'JPEG/PNG/JPG', 100, 0,
     (uri) => {
       resolve(uri);
     }, 'base64' );
@@ -47,22 +45,22 @@ const Register:React.FC = () =>{
     },
     validationSchema: Yup.object({
       username: Yup.string()
-        .max(20, `${ isI18NisEnglish ? 'Username must be shorter than 20 characters' : 'Nazwa użytkownika musi być krótsza niż 20 znaków' }`)
-        .min(4, `${ isI18NisEnglish ? 'Username must be longer than 4 characters' : 'Nazwa użytkownika musi być dłuższa niż 4 znaki' }`)
+        .max(20, `${ isI18NisEnglish ? 'Username have to be shorter than 20 characters' : 'Nazwa użytkownika musi być krótsza niż 20 znaków' }`)
+        .min(4, `${ isI18NisEnglish ? 'Username have to be longer than 4 characters' : 'Nazwa użytkownika musi być dłuższa niż 4 znaki' }`)
         .required(`${ isI18NisEnglish ? 'Required' : 'Pole wymagane' }`),
       email: Yup.string()
-        .max(40, `${ isI18NisEnglish ? 'Email must be shorter than 20 characters' : 'Email musi być krótszy niż 20 znaków' }`)
-        .min(4, `${ isI18NisEnglish ? 'Email must be longer than 4 characters' : 'Email musi być dłuższy niż 4 znaków' }`)
-        .email(`${ isI18NisEnglish ? 'It must be email' : 'To musi być email' }`)
+        .max(40, `${ isI18NisEnglish ? 'Email have to be shorter than 20 characters' : 'Email musi być krótszy niż 20 znaków' }`)
+        .min(4, `${ isI18NisEnglish ? 'Email have to be longer than 4 characters' : 'Email musi być dłuższy niż 4 znaków' }`)
+        .email(`${ isI18NisEnglish ? 'It have to be email' : 'To musi być email' }`)
         .required(`${ isI18NisEnglish ? 'Required' : 'Pole wymagane' }`),
       password: Yup.string()
-        .max(30, `${ isI18NisEnglish ? 'Password must be shorter than 30 characters' : 'Hasło musi być krótsze niż 30 znaków'}`)
-        .min(4, `${ isI18NisEnglish ? 'Password must be longer than 4 characters' : 'Hasło musi być dłuższe niż 4 znaków'}`)
+        .max(30, `${ isI18NisEnglish ? 'Password have to be shorter than 30 characters' : 'Hasło musi być krótsze niż 30 znaków'}`)
+        .min(4, `${ isI18NisEnglish ? 'Password have to be longer than 4 characters' : 'Hasło musi być dłuższe niż 4 znaków'}`)
         .required(`${ isI18NisEnglish ? 'Required' : 'Pole wymagane' }`),
       repeatPassword: Yup.string()
-        .max(30, `${ isI18NisEnglish ? 'Repeat password must be shorter than 30 characters' : 'Powtórzone Hasło musi być krótsze niż 30 znaków'}`)
-        .min(4, `${ isI18NisEnglish ? 'Repeat password must be longer than 4 characters' : 'Powtórzone hasło musi być dłuższe niż 4 znaków'}`)
-        .oneOf([Yup.ref('password'), null], `${isI18NisEnglish ? 'Password must match' : 'Hasło musi być zgodne z powtórzonym hasłem'}`)
+        .max(30, `${ isI18NisEnglish ? 'Repeat password have to be shorter than 30 characters' : 'Powtórzone Hasło musi być krótsze niż 30 znaków'}`)
+        .min(4, `${ isI18NisEnglish ? 'Repeat password have to be longer than 4 characters' : 'Powtórzone hasło musi być dłuższe niż 4 znaków'}`)
+        .oneOf([Yup.ref('password'), null], `${isI18NisEnglish ? 'Password have to match' : 'Hasło musi być zgodne z powtórzonym hasłem'}`)
         .required(`${ isI18NisEnglish ? 'Required' : 'Pole wymagane' }`)
     }),
     onSubmit: async ({username, email, password}: RegisterInputsValue) =>{
@@ -79,10 +77,7 @@ const Register:React.FC = () =>{
         data.append("cloud_name", 'digj3w8rk');
         data.append("upload_preset", "bb7forio");
 
-        await axios.post(
-          `	https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`,
-          data
-        )
+        await axios.post('https://api.cloudinary.com/v1_1/digj3w8rk/image/upload', data)
         .then(async res => {
           imageURL = res.data.secure_url;
           isPostedImages = true;
@@ -92,7 +87,6 @@ const Register:React.FC = () =>{
         isPostedImages = true;
         imageURL = 'https://icon-library.com/images/no-user-image-icon/no-user-image-icon-27.jpg'
       }
-
 
       if(isPostedImages){
         const user = {

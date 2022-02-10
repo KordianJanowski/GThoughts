@@ -27,7 +27,6 @@ textarea::-webkit-scrollbar {
 }
 
 body {
-
   @apply bg-main text-white;
 }
 
@@ -37,6 +36,14 @@ input, textarea {
 
 ul {
   @apply list-disc ml-4;
+}
+
+.wrapperStyles {
+  @apply text-black;
+}
+
+.editorStyles {
+  @apply px-2 text-white;
 }
 
 .wrapper {
@@ -165,12 +172,8 @@ ul {
 
 /* Article creator */
 
-.creator-input-box {
-  @apply flex flex-col mb-4;
-}
-
 .creator-input {
-  @apply h-12 w-full md:w-4/5 bg-second text-lg text-white border border-gray-600 shadow-inner px-3 py-1 rounded-xl;
+  @apply w-full px-3 py-2 text-lg rounded-lg bg-transparent text-gray-300 border border-gray-600;
 }
 
 .pagination-btn {

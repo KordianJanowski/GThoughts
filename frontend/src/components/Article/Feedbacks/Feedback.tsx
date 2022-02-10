@@ -32,10 +32,8 @@ const Feedbacks: React.FC<Props> = ({ feedback }) =>{
 
   useEffect(() => {
     if(feedback) {
-      console.log(feedback)
       axios.get(`${API_URL}/users/${feedback.author_id}`)
       .then(res => {
-        console.log(res.data);
         setAuthor(res.data)
       })
       .catch(err => console.log(err))
