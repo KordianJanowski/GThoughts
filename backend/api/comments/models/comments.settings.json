@@ -13,16 +13,18 @@
   "pluginOptions": {},
   "attributes": {
     "body": {
-      "type": "text"
+      "type": "text",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 1500
     },
     "author_id": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 30
     },
     "article_id": {
-      "type": "string"
-    },
-    "id_": {
-      "type": "float"
+      "type": "string",
+      "maxLength": 30
     }
   }
 }

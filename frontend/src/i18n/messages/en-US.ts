@@ -6,18 +6,20 @@ export default {
     'noArticlesFound': 'No articles found',
     'noFollowedFound': 'No followed users found',
     'noPageFound': 'No such page found, return to',
+    'noCommentsFound': 'No comments found, comment as first',
     'profileUser': 'Profile user',
     'toHomepage': 'homepage',
-    'yes': 'yes',
-    'no': 'no',
+    'yes': 'Yes',
+    'no': 'No',
     'areYouSure': 'Are you sure you want to delete this article ?',
     'article': 'article',
     'toSeeRecentHashtags': ', to see recent hashtags',
+    'offline': 'You are offline right now. Check your connection.',
 
     // navbar
-    'homepage': 'Homepage',
+    'homepage': 'Home',
     'liked': 'Liked',
-    'followed': 'Followed',
+    'followed': 'Following',
     'addArticle': 'Add article',
 
     // register
@@ -29,7 +31,7 @@ export default {
     'usernameAlreadyTaken': 'Username already taken',
     'emailAlreadyTaken': 'Email already taken',
     'dataBase': 'Data base',
-    'goToHome': 'Go to homepage',
+    'goToHome': 'Go to home',
 
     // login
     'login': 'Log in to your account',
@@ -41,14 +43,12 @@ export default {
 
     // edit article
     'editArtice': 'Editing an article',
-    'title': 'title',
-    'hashtag': 'hashtags (after comma ,)',
+    'title': 'Title',
+    'hashtag': 'Hashtags (after comma ,)',
     'mainImage': 'Main image',
-    'saveChanges': 'Save changes',
 
     // create article
     'creatorArticle': 'Creator article',
-    'createArticle': 'Create article',
 
     // dashboard
     'panel': 'Dashboard',
@@ -61,14 +61,15 @@ export default {
     'enterPassword': 'Enter password',
     'passwordError': 'Password is incorrect',
 
-        // forgot password
-        'enterEmail': 'Enter email',
-        'emailErorr': 'The account with this email does not exist',
-        'emailSent': 'Email sent',
-        'emailSentInfo': 'A link to change your password has been sent to your e-mail address. Follow the link to change your password',
-        // reset password
-        'resetPassword': 'Reset password',
-        'resetPasswordSuccess': 'Your password has been successfully changed',
+    // forgot password
+    'enterEmail': 'Enter email',
+    'emailErorr': 'The account with this email does not exist',
+    'emailSent': 'Email sent',
+    'emailSentInfo': 'A link to change your password has been sent to your e-mail address. Follow the link to change your password',
+
+    // reset password
+    'resetPassword': 'Reset password',
+    'resetPasswordSuccess': 'Your password has been successfully changed',
 
     // Article Sorting
     'sorting': 'Sorting',
@@ -101,6 +102,11 @@ export default {
 
     // comments
     'comments': 'Comments',
-    'toAddComment': ', to add comment'
+    'toAddComment': ', to add comment',
+
+    // report layer
+    'reportArticle': 'Report article',
+    'report': 'Report',
+    'hide': 'Hide',
   }
 }

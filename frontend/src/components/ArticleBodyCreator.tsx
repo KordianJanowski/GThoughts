@@ -8,8 +8,8 @@ import htmlToDraft from 'html-to-draftjs';
 import { LOCALES } from '../i18n';
 
 interface Props {
-  setBody?: React.Dispatch<React.SetStateAction<IarticleBody | undefined>>
-  body?: IarticleBody
+  setBody?: React.Dispatch<React.SetStateAction<IarticleBody | undefined>>;
+  body?: IarticleBody;
 }
 
 const defaultProps: Props = {
@@ -25,13 +25,15 @@ const ArticleBodyCreator: React.FC<Props> = ({ body, setBody }) => {
 
   useEffect(() => {
     if(editorState !== undefined) {
+      let filteredEditorState = convertToRaw(editorState.getCurrentContent())
+      filteredEditorState.blocks = filteredEditorState.blocks.filter(el => el.text.trim() !== '')
+
+      let htmlString = draftToHtml(filteredEditorState).replace(/\n/ig, '<br>')
+
       let blocksArray:string[] = []
-      convertToRaw(editorState.getCurrentContent()).blocks.forEach(block => {
+      filteredEditorState.blocks.forEach(block => {
         blocksArray.push(block.text)
       })
-
-      let htmlString = draftToHtml(convertToRaw(editorState.getCurrentContent()))
-      htmlString = htmlString.replace(/\n/ig, '<br>')
 
       let data:IarticleBody = {
         html: htmlString,
@@ -54,11 +56,12 @@ const ArticleBodyCreator: React.FC<Props> = ({ body, setBody }) => {
   }, [])
 
   return (
-    <div className='text-white border border-gray-700 rounded-md my-2 container'>
+    <div className='text-white border border-gray-700 rounded-md my-2 container text-2xl'>
       <Editor
         editorState={editorState}
         onEditorStateChange={(newState) => setEditorState(newState)}
-        toolbar={{options: ['inline', 'fontSize', 'fontFamily', 'list', 'textAlign', 'link', 'emoji', 'colorPicker', 'image', 'history']}}
+        wrapperClassName="wrapperStyles"
+        editorClassName="editorStyles"
         localization={{
           locale: `${isI18NisEnglish ? 'en': 'pl'}`,
         }}

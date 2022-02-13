@@ -13,22 +13,28 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "minLength": 5,
+      "maxLength": 75
     },
     "main_image": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 200,
+      "required": true
     },
     "author_id": {
-      "type": "string"
-    },
-    "author_name": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "maxLength": 30
     },
     "hashtags": {
-      "type": "json"
+      "type": "json",
+      "required": true
     },
     "body": {
-      "type": "json"
+      "type": "json",
+      "required": true
     }
   }
 }

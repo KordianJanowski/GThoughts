@@ -28,6 +28,28 @@ module.exports = {
 
     return sanitizeEntity(data, { model: strapi.models.article });
   },
+  async create(ctx) {
+    let entity;
+    if(
+      ctx.request.body.body.html.length > 30000 && 
+      ctx.request.body.body.body.length > 20000 && 
+      ctx.request.body.body.html &&
+      ctx.request.body.body.body &&
+      ctx.request.body.hashtags.length > 75 &&
+      ctx.request.body.hashtags
+    ){
+      return sanitizeEntity({ error_message: 
+        "HTML must be shorter than 30k. Body.body must be shorter than 20k. HTML and body not exist. Hashtags must be shorter than 75. Hashtags not exist" }, { model: strapi.models.article });
+    } else{
+      if (ctx.is('multipart')) {
+        const { data, files } = parseMultipartData(ctx);
+        entity = await strapi.services.article.create(data, { files });
+      } else {
+        entity = await strapi.services.article.create(ctx.request.body);
+      }
+      return sanitizeEntity(entity, { model: strapi.models.article });
+    }
+  },
   async findAuthorsArticles(ctx){
     const { id } = ctx.params;
     const entity = await strapi.services.article.find({ author_id: id });
@@ -59,16 +81,28 @@ module.exports = {
       return ctx.unauthorized(`You can't update this entry`);
     }
 
-    if (ctx.is('multipart')) {
-      const { data, files } = parseMultipartData(ctx);
-      entity = await strapi.services.article.update({ id }, data, {
-        files,
-      });
-    } else {
-      entity = await strapi.services.article.update({ id }, ctx.request.body);
+    if(
+      ctx.request.body.body.html.length > 30000 && 
+      ctx.request.body.body.body.length > 20000 && 
+      ctx.request.body.body.html &&
+      ctx.request.body.body.body &&
+      ctx.request.body.hashtags.length > 75 &&
+      ctx.request.body.hashtags
+    ){
+      return sanitizeEntity({ error_message: 
+        "HTML must be shorter than 30k. Body.body must be shorter than 20k. HTML and body not exist. Hashtags must be shorter than 75. Hashtags not exist" }, { model: strapi.models.article });
+    } else{
+      if (ctx.is('multipart')) {
+        const { data, files } = parseMultipartData(ctx);
+        entity = await strapi.services.article.update({ id }, data, {
+          files,
+        });
+      } else {
+        entity = await strapi.services.article.update({ id }, ctx.request.body);
+      }
+  
+      return sanitizeEntity(entity, { model: strapi.models.article });
     }
-
-    return sanitizeEntity(entity, { model: strapi.models.article });
   },
   async delete(ctx) {
     const { id } = ctx.params;

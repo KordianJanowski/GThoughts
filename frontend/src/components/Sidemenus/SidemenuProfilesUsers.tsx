@@ -85,7 +85,7 @@ const SidemenuProfilesUsers: React.FC<Props> = ({ user }) =>{
                     </p>
                     {
                       jwt ?
-                        <button className='rounded-button w-full'>
+                        <button className='rounded-button w-full md:w-1/2 mt-2'>
                           <FormattedMessage id='follow'/>
                         </button>
                       : null

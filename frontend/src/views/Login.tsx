@@ -5,7 +5,6 @@ import Cookies from 'universal-cookie';
 import { Link, useHistory } from "react-router-dom";
 import API_URL from '../API_URL';
 import { jwt } from '../models/const-variables';
-
 import { IcookieArguments } from '../models/models';
 import GoToHome from '../components/GoToHome';
 import GoToForgotPassword from './../components/GoToForgotPassword';
@@ -15,7 +14,6 @@ import { LOCALES } from './../i18n/locales';
 const Login:React.FC = () =>{
   const history = useHistory();
   const cookies = new Cookies();
-
   const[isValidate, setIsValidate] = useState<boolean>(false);
   const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
   // eslint-disable-next-line
@@ -38,8 +36,8 @@ const Login:React.FC = () =>{
 
         cookies.set('jwt', res.data.jwt, cookieArguments)
         cookies.set('user', res.data.user, cookieArguments)
-        history.go(0)
-        return history.push('/dashboard')
+        history.push('/dashboard')
+        return history.go(0)
       })
       .catch(() =>{
         setTimeout(() =>{
@@ -110,11 +108,11 @@ const Login:React.FC = () =>{
           <p className="font-bold">Login</p>
           <p><FormattedMessage id='loginValidate'/></p>
         </div>
-      : 
+      :
         <div className='p-3 mt-2 h-16'></div>
       }
       </div>
-      
+
     </div>
   )
 }

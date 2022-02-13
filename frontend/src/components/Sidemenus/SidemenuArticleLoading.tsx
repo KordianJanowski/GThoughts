@@ -15,6 +15,9 @@ const SidemenuArticleLoading: React.FC = () =>{
           <button className='rounded-button w-full mt-2'>
             {'\u00A0'}
           </button>
+          <button className='flex justify-center items-center bg-red-900 py-2 px-6 text-lg button-animation rounded-full cursor-pointer w-full mt-2'>
+            {'\u00A0'}
+          </button>
           <hr className='sidemenu-hr' />
           <div className='sidemenu-hash-box'>
             <h2 className='text-lg font-semibold'>{'\u00A0'}</h2>

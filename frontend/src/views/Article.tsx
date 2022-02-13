@@ -1,25 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
+
 import API_URL from '../API_URL';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Iarticle } from '../models/models'
 import { jwt, authorization, user } from '../models/const-variables'
+import { LOCALES } from '../i18n';
+
 import Navbar from '../components/Navbar';
 import SidemenuArticle from '../components/Sidemenus/SidemenuArticle';
 import Comments from '../components/Article/Comments/Comments';
 import Feedbacks from '../components/Article/Feedbacks/Feedbacks';
-import { LOCALES } from '../i18n';
+import ReportLayer from './../components/ReportLayer';
+import ArticleViewLoading from '../components/ArticleViewLoading'
 
 interface Props {
   id: string;
 }
 
 const Article:React.FC = () =>{
+  const history = useHistory()
   const id: string = useParams<Props>().id;
-  const [article, setArticle] = useState<Iarticle>();
-  const [isArticleExist, setIsArticleExist] = useState<boolean>(false);
-  const [commentsActive, setCommentsActive] = useState<boolean>(true);
   const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
+  
+  const[article, setArticle] = useState<Iarticle>();
+  const[isArticleExist, setIsArticleExist] = useState<boolean>(false);
+  const[commentsActive, setCommentsActive] = useState<boolean>(true);
+  const[isReportLayerOpen, setIsReportLayerOpen] = useState<boolean>(false)
+  const[isLoading, setIsLoading] = useState<boolean>(true);
+
+  const toggleReportLayer = () =>{
+    setIsReportLayerOpen(!isReportLayerOpen);
+  }
 
   useEffect(() => {
     const fetchArticle = async () =>{
@@ -27,8 +39,12 @@ const Article:React.FC = () =>{
       .then(res => {
         setArticle(res.data);
         setIsArticleExist(true);
+        setIsLoading(false)
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        history.push('/')
+      })
     }
     fetchArticle()// eslint-disable-next-line
   }, [])
@@ -70,38 +86,56 @@ const Article:React.FC = () =>{
 
   return(
     <div className='wrapper'>
-      <Navbar />
-      <div className='main'>
-        <div className='mt-10 flex flex-col xl:flex-row items-center justify-between'>
-          <h2 className='main-header-text font-bold'>{ article?.title }</h2>
-          <img
-            className='w-full md:w-4/5 xl:w-3/5 xl:ml-2 xl:mt-0'
-            src={article?.main_image}
-            alt=''
-          />
-        </div>
-        <div
-          className='main-content text-xl xl:text-2xl pt-8 mt-5 xl:mt-7 mb-8'
-          dangerouslySetInnerHTML={{__html: article?.body.html!}}>
-        </div>
-        <div className='main-content pb-7'>
-          <hr className='border-t border-gray-800' />
-          <select
-            onChange={() => setCommentsActive(!commentsActive)}
-            className='bg-second text-2xl my-5 -ml-1 focus:outline-none w-40'
-          >
-            <option value="comments">{isI18NisEnglish ? 'Comments' : 'Komentarze'}</option>
-            <option value="feedbacks">{isI18NisEnglish ? 'Feedbacks' : 'Feedbacki'}</option>
-          </select>
-          {
-            commentsActive ?
-              <Comments articleId={id} />
+      { isReportLayerOpen ?
+        <ReportLayer 
+          id={article?.id}
+          toggleReportLayer={toggleReportLayer}
+        />
+      : 
+        <>
+          <Navbar />
+          <div className='main'>
+            { isLoading ? 
+              <ArticleViewLoading />
             :
-              <Feedbacks articleId={id} />
-          }
-        </div>
-      </div>
-      <SidemenuArticle article={article!} />
+              <>
+                <div className='mt-10 flex flex-col xl:flex-row items-center justify-between'>
+                  <h2 className='main-header-text font-bold'>{ article?.title }</h2>
+                  <img
+                    className='w-full md:w-4/5 xl:w-3/5 xl:ml-2 xl:mt-0'
+                    src={article?.main_image}
+                    alt=''
+                  />
+                </div>
+                <div
+                  className='main-content text-xl xl:text-2xl pt-8 mt-5 xl:mt-7 mb-8'
+                  dangerouslySetInnerHTML={{__html: article?.body.html!}}>
+                </div>
+                <div className='main-content pb-7'>
+                  <hr className='border-t border-gray-800' />
+                  <select
+                    onChange={() => setCommentsActive(!commentsActive)}
+                    className='bg-second text-2xl my-5 -ml-1 focus:outline-none w-40'
+                  >
+                    <option value="comments">{isI18NisEnglish ? 'Comments' : 'Komentarze'}</option>
+                    <option value="feedbacks">{isI18NisEnglish ? 'Feedbacks' : 'Feedbacki'}</option>
+                  </select>
+                  {
+                    commentsActive ?
+                      <Comments articleId={id} />
+                    :
+                      <Feedbacks articleId={id} />
+                  }
+                </div>
+              </>
+            }
+          </div>
+          <SidemenuArticle 
+            toggleReportLayer={toggleReportLayer}
+            article={article!} 
+          />
+        </>
+      }
     </div>
   )
 }

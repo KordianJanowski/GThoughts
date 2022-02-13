@@ -10,11 +10,9 @@ module.exports = {
   async find(ctx) {
     const entity = await strapi.services.feedbacks.find( { article_id: ctx.request.header.article_id } );
 
-    let feedbacks = entity
+    let feedbacks = entity.sort((feedback1, feedback2) => +new Date(feedback2.createdAt) - +new Date(feedback1.createdAt))
 
-    if(ctx.request.header.page) {
-      feedbacks = entity.slice(0, ctx.request.header.page * 10)
-    }
+    feedbacks = entity.slice(0, ctx.request.header.page * 10)
 
     const data = {
       feedbacks,

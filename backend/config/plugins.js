@@ -7,8 +7,8 @@ module.exports = () => ({
       apiKey: SENDGRID_API_KEY,
     },
     settings: {
-      defaultFrom: 'rollorzdogzczdopiec@gmail.com',
-      defaultReplyTo: 'rollorzdogzczdopiec@gmail.com',
+      defaultFrom: 'no-reply-golden-arts@op.pl',
+      defaultReplyTo: 'no-reply-golden-arts@op.pl',
     }
   }
 })

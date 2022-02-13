@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
 import Home from './views/Home'
+import FAQ from './views/FAQ'
 import Article from './views/Article'
 import CreateArticle from './views/CreateArticle'
 import EditArticle from './views/EditArticle'
@@ -16,10 +18,11 @@ import NotFound from './views/NotFound';
 import { I18nProvider, LOCALES } from './i18n';
 import ForgotPassword from './views/ForgotPassword';
 import ResetPassword from './views/ResetPassword';
+import DetectOffline from './components/DetectOffline';
 
 const App: React.FC = () =>{
   const [locale, setLocale] = useState<any>(localStorage.getItem('i18n') ? localStorage.getItem('i18n') : LOCALES.POLISH);
-
+  
   useEffect(() =>{
     setLocale(localStorage.getItem('i18n') ? localStorage.getItem('i18n') : LOCALES.POLISH)
   }, [locale])
@@ -27,10 +30,14 @@ const App: React.FC = () =>{
   return (
     <I18nProvider locale={locale}>
       <div className='flex justify-center items-center'>
+        <DetectOffline />
         <Router>
           <Switch>
             <Route exact path={["/", "/page/:page"]}>
               <Home />
+            </Route>
+            <Route path="/faq">
+              <FAQ />
             </Route>
             <Route path="/articles/:id">
               <Article />
@@ -65,7 +72,7 @@ const App: React.FC = () =>{
             <Route path="/liked">
               <Liked />
             </Route>
-            <Route path="/followeds">
+            <Route path="/following">
               <Followeds />
             </Route>
             <Route path={["/hashtags/:hashtag/page/:page", "/hashtags/:hashtag/"]}>

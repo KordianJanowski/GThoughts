@@ -10,11 +10,10 @@ module.exports = {
   async find(ctx) {
     const entity = await strapi.services.comments.find( { article_id: ctx.request.header.article_id } );
 
-    let comments = entity
+    // Sort comments by newest
+  let comments = entity.sort((comment1, comment2) => +new Date(comment2.createdAt) - +new Date(comment1.createdAt))
 
-    if(ctx.request.header.page) {
-      comments = entity.slice(0, ctx.request.header.page * 10)
-    }
+    comments = comments.slice(0, ctx.request.header.page * 10)
 
     const data = {
       comments,

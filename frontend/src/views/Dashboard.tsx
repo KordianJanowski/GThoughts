@@ -85,7 +85,7 @@ const Dashboard:React.FC = () =>{
               toggleLayer={toggleDeleteArticleLayer}
               approve={deleteArticle}
             />
-            :
+          :
             <div className='wrapper'>
               <Navbar />
               <div className='main'>
@@ -110,7 +110,7 @@ const Dashboard:React.FC = () =>{
                   page={parseInt(page) ? parseInt(page) : 1}
                   numberOfArticles={numberOfArticles!}
                   fetchArticles={fetchArticles}
-                  defaultRoute={`/dashboard/`}
+                  defaultRoute={`/dashboard`}
                 />
               </div>
               <SidemenuDashboard />

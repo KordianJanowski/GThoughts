@@ -12,10 +12,14 @@
   "pluginOptions": {},
   "attributes": {
     "user_id": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "maxLength": 30
     },
     "article_id": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "maxLength": 30
     }
   }
 }

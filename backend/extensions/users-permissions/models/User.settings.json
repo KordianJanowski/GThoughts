@@ -12,7 +12,8 @@
   "attributes": {
     "username": {
       "type": "string",
-      "minLength": 3,
+      "minLength": 4,
+      "maxLength": 20,
       "unique": true,
       "configurable": false,
       "required": true
@@ -20,6 +21,7 @@
     "email": {
       "type": "email",
       "minLength": 6,
+      "maxLength": 40,
       "configurable": false,
       "required": true
     },
@@ -30,6 +32,7 @@
     "password": {
       "type": "password",
       "minLength": 6,
+      "maxLength": 30,
       "configurable": false,
       "private": true
     },
@@ -59,14 +62,12 @@
       "plugin": "users-permissions",
       "configurable": false
     },
-    "articles_ids": {
-      "type": "json"
-    },
     "avatar": {
-      "type": "string"
+      "type": "string",
+      "maxLength": 200
     },
     "recent_hashtags": {
-      "type": "json"
+      "type": "array"
     }
   }
 }

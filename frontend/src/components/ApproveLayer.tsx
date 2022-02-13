@@ -25,7 +25,7 @@ const ApproveLayer:React.FC<Props> = ({
             <FormattedMessage id='yes'/>
           </div>
           <div
-            className="w-32 xl:w-1/3 mt-2 p-5 text-center text-2xl bg-main font-bold rounded-xl hover:opacity-80 duration-150 cursor-pointer"
+            className="w-32 xl:w-1/3 mt-2 p-5 text-center text-2xl bg-second font-bold rounded-xl hover:opacity-80 duration-150 cursor-pointer"
             onClick={() => toggleLayer('')}
           >
             <FormattedMessage id='no'/>

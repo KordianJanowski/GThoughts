@@ -6,13 +6,15 @@ export default {
     'noArticlesFound': 'Nie znaleziono żadnych artykułów',
     'noFollowedFound': 'Nie znaleziono żadnych obserwowanych użytkowników',
     'noPageFound': 'Nie znaleziono takiej strony, wróć na',
+    'noCommentsFound': 'Nie znaleziono komentarzy, skomentuj jako pierwszy',
     'profileUser': 'Profil użytkownika',
     'toHomepage': 'stronę główną',
-    'yes': 'tak',
-    'no': 'no',
+    'yes': 'Tak',
+    'no': 'Nie',
     'areYouSure': 'Jesteś pewny, że chcesz usunąć ten artykuł ?',
     'article': 'artykuł',
     'toSeeRecentHashtags': ', aby widzieć ostatnie hashtagi',
+    'offline': 'Jesteś offline. Sprawdź swoje łącze.',
 
     // navbar
     'homepage': 'Strona główna',
@@ -40,15 +42,13 @@ export default {
     'forgotPassword': 'Zapomniałeś hasła ?',
 
     // edit article
-    'editArtice': 'Edytowanie artykułu',
+    'editArticle': 'Edytowanie artykułu',
     'title': 'Tytuł',
-    'hashtag': 'hashtagi (po przecinku)',
+    'hashtag': 'Hashtagi (po przecinku)',
     'mainImage': 'Zdjęcie główne',
-    'saveChanges': 'Zapisz zmiany',
 
     // create article
     'creatorArticle': 'Kreator artykułu',
-    'createArticle': 'Stwórz artykuł',
 
     // dashboard
     'panel': 'Panel użytkownika',
@@ -102,6 +102,11 @@ export default {
 
     // comments
     'comments': 'Komentarze',
-    'toAddComment': ', aby dodać komentarz'
+    'toAddComment': ', aby dodać komentarz',
+
+    // report layer
+    'report': 'Zgłoś',
+    'hide': 'Schowaj',
+    'reportArticle': 'Zgłoś artykuł'
   }
 }

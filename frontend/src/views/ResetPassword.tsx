@@ -16,6 +16,12 @@ interface IregisterInputsValue {
   repeatPassword: string,
 }
 
+interface IresetPassword {
+  code: string,
+  password: string,
+  passwordConfirmation: string
+}
+
 const ResetPassword:React.FC = () =>{
   const history: any = useHistory();
   const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
@@ -44,7 +50,7 @@ const ResetPassword:React.FC = () =>{
     onSubmit: async ({password, repeatPassword}: IregisterInputsValue) =>{
       const code: string = window.location.href.split("").splice(42, window.location.href.length).join('')
 
-      const data = {
+      const data: IresetPassword = {
         code,
         password,
         passwordConfirmation: repeatPassword

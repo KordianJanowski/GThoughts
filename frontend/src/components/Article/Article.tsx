@@ -51,7 +51,7 @@ const Article: React.FC<Props> = ({
                 </Link>
                 <div className='flex flex-col text-gray-300'>
                   <Link to={`/profiles-users/${article.author_id}`} className='font-semibold hover:opacity-70'>{ author.username }</Link>
-                  <span className='text-xs text-gray-400 -mt-1'>{ article.createdAt.substr(0,10) }</span>
+                  <span className='text-xs text-gray-400 -mt-1'>{ article.createdAt?.substr(0,10) }</span>
                 </div>
               </div>
               { jwt && article.author_id !== user.id ?
@@ -71,7 +71,7 @@ const Article: React.FC<Props> = ({
               : null}
               { route === '/dashboard' ?
                 <div className='md:ml-4 mt-2 flex flex-row'>
-                  <Link to='/dashboard' className='' onClick={() => toggleDeleteArticleLayer(article.id)}>
+                  <Link to='/dashboard' className='' onClick={() => toggleDeleteArticleLayer(article?.id)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="trash-edit-button hover:border-red-500 hover:text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -88,10 +88,8 @@ const Article: React.FC<Props> = ({
                 </div>
               : null}
             </div>
-            <span className='w-full bg-transparent font-bold h-auto text-xl md:text-2xl my-2'>{article.title}</span>
-            <span>
-              { article.body.blocks[0].substring(0,65) + (article.body.blocks[0].length > 65 ? '...' : '') }
-            </span>
+            <span className='w-full md:w-3/4 lg:w-full bg-transparent font-bold h-auto text-xl md:text-2xl my-2'>{article.title}</span>
+            <span className='w-full md:w-3/4 lg:w-full'>{ article.body!.blocks[0].substring(0,65) + (article.body!.blocks[0].length > 65 ? '...' : '') }</span>
           </div>
           {
             article.main_image ?

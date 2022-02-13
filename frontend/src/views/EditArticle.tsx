@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import API_URL from '../API_URL'
 import axios from 'axios'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 import { useHistory } from "react-router-dom";
-import { Iarticle, IarticleBody } from '../models/models'
-import {user, jwt, authorization} from '../models/const-variables'
-import Resizer from 'react-image-file-resizer'
-import ArticleBodyCreator from '../components/ArticleBodyCreator'
-import Navbar from '../components/Navbar'
+import { Iarticle, IarticleBody, InewHashtag } from '../models/models'
+import { user, jwt, authorization, changeTagsType, postImage } from '../models/const-variables'
 import { FormattedMessage } from 'react-intl';
 import { LOCALES } from '../i18n';
+import ArticleBodyCreator from '../components/ArticleBodyCreator'
+import Navbar from '../components/Navbar'
 
 interface Props {
   id: string;
@@ -18,164 +19,200 @@ interface Props {
 const EditArticle: React.FC = () => {
   const id: string = useParams<Props>().id;
   const history: any = useHistory();
+  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
   const [article, setArticle] = useState<Iarticle>()
-  const [title, setTitle] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
-  const [tagsAsString, setTagsAsString] = useState<string>('');
+  const [articleRes, setArticleRes] = useState<boolean>(false)
   const [body, setBody] = useState<IarticleBody>();
   const [image, setImage] = useState<any>('');
-  const [imageLocalURL, setImageLocalURL] = useState<string>()
-  const isI18NisEnglish: boolean = localStorage.getItem('i18n') === LOCALES.ENGLISH;
+  const [imageLocalURL, setImageLocalURL] = useState<string>();
+  const [creatorValidationMessage, setCreatorValidationMessage] = useState<string>('');
+  const [creatorValidationError, setCreatorValidationError] = useState<boolean>(false);
 
   useEffect(() => {
-    if(!jwt) return history.push('/login')// eslint-disable-next-line
+    if(!jwt) return history.push('/login')
 
-    const fetchArticle = async () =>{
-      await axios.get(`${API_URL}/articles/${id}`)
-      .then(res => {
-        if(res.data.author_id !== user.id) return history.push('/')
-
-        setArticle(res.data)
-        setTitle(res.data.title)
-        setTagsAsString(res.data.hashtags.join(','))
-        setBody(res.data.body)
-      })
-      .catch(() => {
-        history.push('/')
-      })
-    }
     fetchArticle()// eslint-disable-next-line
   }, [])
 
-  useEffect(() => {
-    if(tagsAsString) {
-      let tagsString = tagsAsString.replaceAll(/\s/g,'')
-      let tags = tagsString.split(',')
-      tags = tags.filter(function(str) {
-        return /\S/.test(str);
-      });
-      setTags(tags)
-    }
-  }, [tagsAsString])
+  const fetchArticle = async () =>{
+    await axios.get(`${API_URL}/articles/${id}`)
+    .then(res => {
+      if(res.data.author_id !== user.id) return history.push('/')
 
-  const editArticle = async () => {
-    let imageURL = await postImage()
+      setArticle(res.data);
+      setBody(res.data.body);
+      values.title = res.data.title
+      values.tagsAsString = res.data.hashtags.join(', ')
+      values.imageValidation = '-'
+      setArticleRes(true);
 
-    if(!imageURL) imageURL = article?.main_image
+    })
+    .catch(() => {
+      history.push('/')
+    })
+  }
 
-    const data = {
-      title,
-      body,
-      main_image: imageURL,
-      hashtags: tags
-    }
-
+  const editArticle = async (data:any) => {
     await axios.put(`${API_URL}/articles/${article?.id}`, data, authorization)
     .then(() => history.push(`/articles/${article?.id}`))
     .catch(err => console.log(err))
+
+    postHashtags()
   }
 
-  const postImage = async () => {
-    if(image !== '') {
-      const imageResized:any = await resizeFile(image)
+  const postHashtags = async () => {
+    let tags = await changeTagsType(values.tagsAsString)
 
-      const data = new FormData()
-      data.append('file', imageResized)
-      data.append("api_key", '732376169492789');
-      data.append("api_secret", 'A-dhHrnEZqJYnhAGqLAGcWSDI1M');
-      data.append("cloud_name", 'digj3w8rk');
-      data.append("upload_preset", "bb7forio");
+    tags.forEach(async tag => {
+      if(!article?.hashtags.includes(tag)) {
+        console.log(tag)
+        const newHashtag:InewHashtag = {
+          name: tag
+        }
 
-      const res = await axios.post(`https://api.cloudinary.com/v1_1/digj3w8rk/image/upload`, data)
-      return res.data.secure_url
+        await axios.post(`${API_URL}/hashtags`, newHashtag, authorization)
+        .catch(err => console.log(err))
+      }
+    })
+  }
+
+  const validateEditorState = () => {
+    if(body) {
+      if(body!.html === '') {
+        setCreatorValidationMessage!(`${ isI18NisEnglish ? 'Field required' : 'Pole wymagane' }`);
+        setCreatorValidationError(true);
+      } else {
+        setCreatorValidationError(false);
+      }
+    } else {
+      setCreatorValidationMessage!(`${ isI18NisEnglish ? 'Field required' : 'Pole wymagane' }`);
+      setCreatorValidationError(true);
     }
   }
 
-  const resizeFile = (file: Blob) => new Promise(resolve => {
-    Resizer.imageFileResizer(file, 600, 600, 'JPEG', 100, 0,
-    (uri) => {
-      resolve(uri);
-    }, 'base64' );
-  });
+  useEffect(() => {
+    if(body) validateEditorState()// eslint-disable-next-line
+  }, [body])
 
-  const titleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value)
-  }
+  const {handleSubmit, handleChange, values, handleBlur, touched, errors} = useFormik({
+    initialValues: {
+      title: article?.title,
+      tagsAsString: '',
+      imageValidation: ''
+    },
+    validationSchema: Yup.object({
+      title: Yup.string()
+        .min(5, `${ isI18NisEnglish ? 'Title have to contain at least 5 characters' : 'Tytuł musi zawierać co najmniej 5 znaków' }`)
+        .max(75, `${ isI18NisEnglish ? 'Title can contain up to 75 characters' : 'Tytuł może zawierać maksymalnie 75 znaków' }`)
+        .required(`${ isI18NisEnglish ? 'Field required' : 'Pole wymagane' }`)
+        .trim(),
+      tagsAsString: Yup.string()
+        .min(3, `${ isI18NisEnglish ? 'This field have to contain at least 3 characters' : 'To pole musi zawierać co najmniej 3 znaki' }`)
+        .max(75, `${ isI18NisEnglish ? 'This field can contain up to 75 characters' : 'To pole może zawierać maksymalnie 75 znaków' }`)
+        .required(`${ isI18NisEnglish ? 'Field required' : 'Pole wymagane' }`)
+        .trim(),
+      imageValidation: Yup.string()
+        .required(`${ isI18NisEnglish ? 'Image required' : 'Zdjęcie wymagane' }`),
+    }),
+    onSubmit: async ({title, tagsAsString}) =>{
+      let imageURL = await postImage(image)
+      if(!imageURL) imageURL = article?.main_image
 
-  const tagsValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTagsAsString(event.target.value)
-  }
+      let tags = await changeTagsType(tagsAsString)
+
+      const data = {
+        title,
+        body,
+        main_image: imageURL,
+        hashtags: tags
+      }
+
+      validateEditorState()
+      if(!creatorValidationError) {
+        editArticle(data)
+      }
+    }
+  })
 
   return(
     <div className='wrapper'>
       <Navbar />
-      <div className="main">
+      <div className='main'>
         <div className='main-header'>
           <h2 className='main-header-text'><FormattedMessage id='editArticle'/></h2>
         </div>
-        <div className='main-content'>
-          <div className='default-input-box'>
-            <label>
-              <FormattedMessage id='title'/>
-            </label>
-            <input
-              placeholder={`${ isI18NisEnglish ? 'Title' : 'Tytuł' }`}
-              onChange={titleValueChange}
-              name="title"
-              type="text"
-              maxLength={50}
-              className="w-full px-3 py-2 text-lg rounded-lg bg-transparent text-gray-300 border border-gray-600"
-              value={title}
-            />
-          </div>
-          <div className='default-input-box'>
-            <label>
-              <FormattedMessage id='hashtag'/>
-            </label>
-            <input
-              placeholder={`Hashtag${ isI18NisEnglish ? 's' : 'i' }`}
-              onChange={tagsValueChange}
-              name="tags"
-              type="text"
-              maxLength={50}
-              className="w-full px-3 py-2 text-lg rounded-lg bg-transparent text-gray-300 border border-gray-600"
-              value={tagsAsString}
-            />
-          </div>
-          <div className="default-input-box">
-            <label>
-              <FormattedMessage id='mainImage'/>
-            </label>
-            <div className="min-h-12 w-full md:w-72 text-sm sm:text-base flex flex-col items-start text-white bg-second border border-gray-600 px-3 py-2 rounded-lg">
+        {
+          articleRes ?
+          <form onSubmit={handleSubmit} className='main-bodyValue'>
+            <div className='default-input-box'>
+              <label><FormattedMessage id='title'/></label>
               <input
-                type="file"
-                className='mb-2'
-                accept="image/png, image/jpeg"
-                value=''
-                onChange={(e: any) => {
-                  setImageLocalURL(URL.createObjectURL(e.currentTarget.files[0]))
-                  setImage(e.currentTarget.files[0])
-                }}
+                type="text"
+                name="title"
+                placeholder={`${isI18NisEnglish ? 'Example: Why programming is good for our brains ?' : 'Np. Dlaczego programowanie jest korzystne dla naszego mózgu ?'}`}
+                value={values.title}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="creator-input"
               />
-              <img src={image ? imageLocalURL : article?.main_image} className="w-96" alt="" />
+              {touched.title && errors.title ? (
+                <p className='mt-1 text-red-500 font-normal'>{errors.title}</p>
+              ): null}
             </div>
-          </div>
-          {body ?
-            <div>
-              <ArticleBodyCreator
-                setBody={setBody}
-                body={body}
+            <div className='default-input-box'>
+              <label><FormattedMessage id='hashtag'/></label>
+              <input
+                type="text"
+                name="tagsAsString"
+                placeholder={`${isI18NisEnglish ? 'Programing, Brain' : 'Programowanie, Mózg'}`}
+                value={values.tagsAsString}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="creator-input"
               />
+              {touched.tagsAsString && errors.tagsAsString ? (
+                <p className='mt-1 text-red-500 font-normal'>{errors.tagsAsString}</p>
+              ): null}
             </div>
-          : null}
-          <button
-            onClick={editArticle}
-            className="w-8 xl:w-80 h-12 flex flex-row justify-center items-center bg-red-500 text-lg mt-5 py-2 xl:py-4 px-6 xl:px-8 rounded-3xl button-animation"
-          >
-            <FormattedMessage id='saveChanges'/>
-          </button>
-        </div>
-
+            <div className="default-input-box">
+              <label><FormattedMessage id='mainImage'/></label>
+              <div className="min-h-12 w-full md:w-72 text-sm sm:text-base flex flex-col items-start text-white bg-second border border-gray-600 mt-1 px-3 py-2 rounded-lg">
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  name="imageValidation"
+                  onChange={(e: any) => {
+                    if(e.currentTarget.files[0]) {
+                      setImage(e.currentTarget.files[0])
+                      setImageLocalURL(URL.createObjectURL(e.currentTarget.files[0]))
+                      touched.imageValidation = false
+                      values.imageValidation = '-'
+                    }
+                  }}
+                  className={image ? 'mb-2' : ''}
+                />
+                <img src={imageLocalURL ? imageLocalURL : article?.main_image} className="mt-2 w-96" alt="" />
+              </div>
+              {touched.imageValidation && errors.imageValidation ? (
+                <p className='mt-1 text-red-500 font-normal'>{errors.imageValidation}</p>
+              ): null}
+            </div>
+            <ArticleBodyCreator
+              setBody={setBody}
+              body={body}
+            />
+            {creatorValidationError ? (
+              <p className='text-red-500 text-xs font-normal'>{creatorValidationMessage}</p>
+            ): null}
+            <input
+              type="submit"
+              onClick={validateEditorState}
+              value={`${isI18NisEnglish ? 'Save changes' : 'Zapisz zmiany'}`}
+              className="rounded-button w-full sm:w-1/2 xl:w-80 mt-5"
+            />
+          </form>
+          : null
+        }
       </div>
     </div>
   )

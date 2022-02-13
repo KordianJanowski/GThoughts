@@ -6,7 +6,7 @@
  *
  * This gives you an opportunity to set up your data model,
  * run jobs, or perform some special logic.
- *
+ *arst
  * See more details here: https://strapi.io/documentation/developer-docs/latest/setup-deployment-guides/configurations.html#bootstrap
  */
 

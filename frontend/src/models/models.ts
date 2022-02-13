@@ -17,16 +17,20 @@ export interface Iarticle {
   body: IarticleBody;
   main_image: string;
   author_id: string;
-  author_name: string;
   hashtags: string[];
   createdAt: string;
   published_at: string;
   updatedAt: string;
   id: string;
-  _id: string;
-  __v: number;
-  isLiked?: boolean;
 }
+
+export interface IcreateArticle {
+  title: string;
+  body?: IarticleBody;
+  main_image: string;
+  author_id: string;
+  hashtags: string[];
+} 
 
 export interface IarticleBody {
   blocks: string[];
@@ -37,7 +41,6 @@ export interface Icomment{
   body: string;
   author_id: string
   article_id: string;
-  id_: number;
   id?: string;
   createdAt?: string;
 }
@@ -46,7 +49,6 @@ export interface Ifeedback{
   body: string;
   author_id: string;
   article_id: string;
-  id_: number;
   id?: string;
   createdAt?: string;
 }
